@@ -31,7 +31,7 @@ export class StocksService {
     }
 
     updateRandomRowWithData(row: Stock): Stock {
-        const shouldUpdateData = Math.random() < 0.3;
+        const shouldUpdateData = Math.random() < 1000;
 
         if (shouldUpdateData) {
             let changePrice = Math.floor(30 * Math.random()) / 10;
@@ -46,12 +46,18 @@ export class StocksService {
             let newRow = {
                 ...row,
                 change_24h: percentageValue,
-                currentPrice: priceValue
+                currentPrice: priceValue,
+
+
+
+
             };
+           newRow.intraday.push(Math.round(Math.random()+1));
 
             this.previousData = [...this.immutableData];
             return newRow;
         } else {
+          //row.intraday.push(Math.round(Math.random()+1));
             return row;
         }
     }
@@ -64,4 +70,8 @@ export interface Stock {
     volume: number;
     currentPrice: number;
     change_24h: number;
+    //intraday: Observable<number[]>;
+    intraday: number[];
+    change_pct:number;
+
 }

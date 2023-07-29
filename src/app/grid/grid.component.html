@@ -1,5 +1,5 @@
 <p class="grid-section-title">Explore the market</p>
-<kendo-grid [kendoGridBinding]="(gridData | async)!" [rowClass]="rowCallback">
+<kendo-grid [kendoGridBinding]="(gridData | async)!" [rowClass]="rowCallback" >
     <kendo-grid-column field="currency" title="Crypto currency">
         <ng-template kendoGridCellTemplate let-dataItem>
             <div class="currency-container">
@@ -29,5 +29,15 @@
         </ng-template>
     </kendo-grid-column>
 
-    <kendo-grid-column field="volume" title="Market Cap" format="c"> </kendo-grid-column>
+    <!-- <kendo-grid-column field="volume" title="Market Cap" format="c"> </kendo-grid-column> -->
+
+    <kendo-grid-column class="grid-one-day-chart" media="(min-width: 992px)" field="intraday" title="1 Day Chart"
+      [width]="170" [sortable]="false">
+      <ng-template kendoGridCellTemplate let-dataItem>
+        <!-- <kendo-sparkline [data]="dataItem.intraday"></kendo-sparkline> -->
+        <!-- <kendo-sparkline  [data] ="(dataItem.intraday)"> </kendo-sparkline> -->
+          <day-chart  [data]="dataItem.intraday" [changePct]="dataItem.change_24h">
+          </day-chart>
+      </ng-template>
+   </kendo-grid-column>
 </kendo-grid>

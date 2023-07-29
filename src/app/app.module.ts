@@ -13,6 +13,7 @@ import { ButtonsModule } from '@progress/kendo-angular-buttons';
 import { TooltipsModule } from '@progress/kendo-angular-tooltip';
 import 'hammerjs';
 
+import { DayChartComponent } from './charts/day/day-chart.component';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { TotalPortfolioComponent } from './total-portfolio/total-portfolio.component';
@@ -33,7 +34,8 @@ import { NewsComponent } from './main-panel/news/news.component';
         TotalPortfolioComponent,
         BalanceComponent,
         TransactionsComponent,
-        NewsComponent
+        NewsComponent,
+        DayChartComponent
     ],
     imports: [
         BrowserModule,

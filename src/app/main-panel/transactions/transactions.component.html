@@ -14,6 +14,10 @@
                     {{ card.symbol }}
                     <span *ngIf="card.status === 'Buy'; else recieve" class="price">{{ card.amount }}$</span>
                 </h1>
+                <p>
+                    <!-- <day-chart [data]="dataItem.intraday" [changePct]="dataItem.change_pct">
+                    </day-chart> -->
+                </p>
                 <p kendoCardSubtitle class="k-card-subtitle">
                     {{ card.status }} {{ card.deduction }}
                     <span class="price"> {{ card.stamp }}</span>
