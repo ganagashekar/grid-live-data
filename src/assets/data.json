@@ -10,17 +10,5 @@
          0.1,0.2,0.1
       ],
         "change_pct":-0.42
-    },
-    {
-        "id": 1,
-        "currency": "Ethereum",
-        "symbol": "ETH",
-        "volume": 23655030.562,
-        "currentPrice": 4062.86,
-        "change_24h": 94.4,
-        "intraday": [
-          0.1,0.2,0.1
-      ],
-      "change_pct": 1.09
     }
 ]

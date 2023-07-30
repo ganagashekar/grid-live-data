@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: false,
+  signalrHubUrl: 'https://localhost:7189/livefeedhub',
 };

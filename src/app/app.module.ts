@@ -12,7 +12,7 @@ import { ChartsModule } from '@progress/kendo-angular-charts';
 import { ButtonsModule } from '@progress/kendo-angular-buttons';
 import { TooltipsModule } from '@progress/kendo-angular-tooltip';
 import 'hammerjs';
-
+import { APP_INITIALIZER } from '@angular/core';
 import { DayChartComponent } from './charts/day/day-chart.component';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
@@ -23,7 +23,7 @@ import { GridComponent } from './grid/grid.component';
 import { BalanceComponent } from './main-panel/balance/balance.component';
 import { TransactionsComponent } from './main-panel/transactions/transactions.component';
 import { NewsComponent } from './main-panel/news/news.component';
-
+import {SignalrService} from './services/signalr.service'
 @NgModule({
     declarations: [
         AppComponent,
@@ -50,7 +50,15 @@ import { NewsComponent } from './main-panel/news/news.component';
         ChartsModule,
         TooltipsModule,
     ],
-    providers: [],
+    providers: [
+      SignalrService,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: (signalrService: SignalrService) => () => signalrService.initiateSignalrConnection(),
+      deps: [SignalrService],
+      multi: true,
+    },
+    ],
     bootstrap: [AppComponent]
 })
 export class AppModule { }

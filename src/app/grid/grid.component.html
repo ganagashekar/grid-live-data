@@ -1,5 +1,7 @@
 <p class="grid-section-title">Explore the market</p>
-<kendo-grid [kendoGridBinding]="(gridDataEquties | async)!" [rowClass]="rowCallback" [resizable]="true" [sortable]="true" [sort]="sort">
+<kendo-grid [kendoGridBinding]="(gridDataEquties | async)!"
+ [rowClass]="rowCallback"
+  [resizable]="true" [sortable]="true" [sort]="sort">
     <kendo-grid-column field="currency" title="Crypto currency"  [sortable]="true" >
         <ng-template kendoGridCellTemplate let-dataItem>
 
@@ -45,13 +47,13 @@
             </span>
         </ng-template>
     </kendo-grid-column> -->
-    <kendo-grid-column class="priceColumn" field="change_24h"  [sortable]="true" title="24h%">
+    <!-- <kendo-grid-column class="priceColumn" field="change_24h"  [sortable]="true" title="24h%">
         <ng-template kendoGridCellTemplate let-dataItem>
             <span> {{ dataItem.change_24h | number }}% </span>
             <span class="k-icon k-i-arrow-60-down arrow-down" *ngIf="dataItem.change_24h < prevDataItem.change_24h"></span>
             <span class="k-icon k-i-arrow-60-up arrow-up" *ngIf="dataItem.change_24h > prevDataItem.change_24h"></span>
         </ng-template>
-    </kendo-grid-column>
+    </kendo-grid-column> -->
 
     <!-- <kendo-grid-column field="volume" title="Market Cap" format="c"> </kendo-grid-column> -->
 
