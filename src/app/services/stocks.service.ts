@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
+import { SignalrService } from './signalr.service';
+import { Equities } from '../models/equities.model';
 
 @Injectable({
     providedIn: 'root'
@@ -8,13 +10,35 @@ import { Observable } from 'rxjs';
 export class StocksService {
     private stocksUrl: string = 'assets/data.json';
     private immutableData!: Stock[];
+    private immutableDataEquties!: Equities[];
     public previousData: Stock[] = [];
-
+    private signalRSubscription: Subscription | undefined;
     public updateFreq: number = 2000;
 
-    constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient,public signalRService: SignalrService) {
 
-    getDataObservable(): Observable<Stock[]> {
+
+    }
+
+    // getDataObservable(): Observable<Stock[]> {
+    //     return new Observable<Stock[]>((observer) => {
+    //         this.http.get<Stock[]>(this.stocksUrl).subscribe((data: Stock[]) => {
+
+
+    //             this.immutableData = data ;
+    //             this.previousData = data;
+    //             observer.next(this.immutableData);
+
+    //             setInterval(() => {
+    //                 this.immutableData = this.immutableData.map((row: Stock) => this.updateRandomRowWithData(row));
+
+    //                 observer.next(this.immutableData);
+    //             }, this.updateFreq);
+    //         });
+    //     });
+    // }
+
+       getDataObservable(): Observable<Stock[]> {
         return new Observable<Stock[]>((observer) => {
             this.http.get<Stock[]>(this.stocksUrl).subscribe((data: Stock[]) => {
 
@@ -30,6 +54,36 @@ export class StocksService {
                 }, this.updateFreq);
             });
         });
+    }
+
+   public async invokeGetEquties() {
+      await this.signalRService.getEquities();
+    }
+    getDataObservableEquties(): Observable<Equities[]> {
+      debugger;
+
+
+
+      return new Observable<Equities[]>((observer) => {
+        this.signalRService.getEquities();
+        // this.signalRSubscription = this.signalRService.getEquities().subscribe(
+        //   (data) => {
+        //     this.immutableDataEquties = data ;
+        // });
+          // this.http.get<Stock[]>(this.stocksUrl).subscribe((data: Stock[]) => {
+
+
+          //     this.immutableData = data ;
+          //     this.previousData = data;
+          //     observer.next(this.immutableData);
+
+          //     // setInterval(() => {
+          //     //     this.immutableData = this.immutableData.map((row: Stock) => this.updateRandomRowWithData(row));
+
+          //     //     observer.next(this.immutableData);
+          //     // }, this.updateFreq);
+          // });
+      });
     }
 
     updateRandomRowWithData(row: Stock): Stock {

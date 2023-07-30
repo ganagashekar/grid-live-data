@@ -1,5 +1,5 @@
 <p class="grid-section-title">Explore the market</p>
-<kendo-grid [kendoGridBinding]="(gridData | async)!" [rowClass]="rowCallback" [resizable]="true" [sortable]="true" [sort]="sort">
+<kendo-grid [kendoGridBinding]="(gridDataEquties | async)!" [rowClass]="rowCallback" [resizable]="true" [sortable]="true" [sort]="sort">
     <kendo-grid-column field="currency" title="Crypto currency"  [sortable]="true" >
         <ng-template kendoGridCellTemplate let-dataItem>
 

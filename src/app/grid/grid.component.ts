@@ -7,6 +7,7 @@ import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
 
 import { HttpClient } from '@angular/common/http';
 import { SignalrService } from '../services/signalr.service';
+import { Equities } from '../models/equities.model';
 
 @Component({
     selector: 'grid',
@@ -30,20 +31,29 @@ import { SignalrService } from '../services/signalr.service';
     ]
 })
 export class GridComponent {
-    public gridData: Observable<Stock[]>;
+    public gridData: Observable<Stock[]> |any;
+    public gridDataEquties: Observable<Equities[]> | any;
     public prevDataItem!: Stock;
 
     constructor(private stockService: StocksService,public signalRService: SignalrService, private http: HttpClient) {
 
-        this.gridData = this.stockService.getDataObservable();
+      //signalRService.startConnection();
+       // this.gridData = this.stockService.getDataObservable();
+        // this.gridDataEquties = this.stockService.getDataObservableEquties();
 
        //orderBy(gridData., [{ field: "name", dir: "asc" }])
     }
 
     ngOnInit() {
-      this.signalRService.startConnection();
-      this.signalRService.addTransferChartDataListener();
-      //this.startHttpRequest();
+    //  this.signalRService.startConnection();
+      this.signalRService.startConnectionBuilder().build().start().then(()=> this.stockService.invokeGetEquties()).catch((err: any) => console.log('Error while starting connection: ' + err))
+
+    //   .start().then(this.stockService.getDataObservableEquties())
+    //     .catch((err: any) => console.log('Error while starting connection: ' + err))
+    //  // this.gridDataEquties = this.stockService.getDataObservableEquties();
+
+     this.signalRService.addTransferChartDataListener();
+    //   //this.startHttpRequest();
     }
 
     // private startHttpRequest = () => {
