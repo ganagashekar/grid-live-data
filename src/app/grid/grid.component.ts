@@ -5,6 +5,9 @@ import { trigger, style, animate, transition, keyframes } from '@angular/animati
 import { Stock, StocksService } from '../services/stocks.service';
 import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
 
+import { HttpClient } from '@angular/common/http';
+import { SignalrService } from '../services/signalr.service';
+
 @Component({
     selector: 'grid',
     templateUrl: './grid.component.html',
@@ -30,14 +33,25 @@ export class GridComponent {
     public gridData: Observable<Stock[]>;
     public prevDataItem!: Stock;
 
-    constructor(private stockService: StocksService) {
+    constructor(private stockService: StocksService,public signalRService: SignalrService, private http: HttpClient) {
 
         this.gridData = this.stockService.getDataObservable();
 
        //orderBy(gridData., [{ field: "name", dir: "asc" }])
     }
 
+    ngOnInit() {
+      this.signalRService.startConnection();
+      this.signalRService.addTransferChartDataListener();
+      //this.startHttpRequest();
+    }
 
+    // private startHttpRequest = () => {
+    //   this.http.get('https://localhost:5001/api/chart')
+    //     .subscribe(res => {
+    //       console.log(res);
+    //     })
+    // }
 
     public sort: SortDescriptor[] = [
       {
