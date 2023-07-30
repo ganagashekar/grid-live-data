@@ -1,16 +1,16 @@
+<!-- [resizable]="true" [sortable]="true" [sort]="sort" -->
 <p class="grid-section-title">Explore the market</p>
 <kendo-grid [kendoGridBinding]="(gridDataEquties | async)!"
- [rowClass]="rowCallback"
-  [resizable]="true" [sortable]="true" [sort]="sort">
+ [rowClass]="rowCallback">
     <kendo-grid-column field="currency" title="Crypto currency"  [sortable]="true" >
         <ng-template kendoGridCellTemplate let-dataItem>
 
           <div class="card-container">
-            <kendo-card width="280px" class="transaction-card">
+            <kendo-card width="320px" class="transaction-card">
                 <kendo-card-header class="k-hstack">
 
                     <div>
-                        <h1 kendoCardTitle class="card-title">
+                        <h1 style="font-size: 10px;" kendoCardTitle class="card-title">
                             {{ dataItem.symbol  }}
                              <span  class="price">{{ dataItem.currentPrice.toFixed(2)  }}$</span>
                             <!-- <span *ngIf="card.status === 'Buy'; else recieve" class="price">{{ dataItem.currentPrice  }}$</span> -->

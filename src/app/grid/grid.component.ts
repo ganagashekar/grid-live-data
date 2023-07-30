@@ -50,6 +50,8 @@ export class GridComponent {
         alert('GetAllStocks error!, see console for details.');
       });
 
+
+
       //signalRService.startConnection();
        // this.gridData = this.stockService.getDataObservable();
         // this.gridDataEquties = this.stockService.getDataObservableEquties();
@@ -57,6 +59,68 @@ export class GridComponent {
        //orderBy(gridData., [{ field: "name", dir: "asc" }])
     }
 
+
+    public UpdatesStock = () => {
+
+      this.signalRService.connection.on("SendLiveData",(val :any) => {
+        debugger;
+        var  i=0;
+       var res={ id: val.symbol,
+        currency:"$",
+        symbol:val.stock_name,
+        volume: val.bQty,
+        currentPrice: val.avgPrice,
+        change_24h: val.change,
+        //intraday: Observable<number[]>;
+        intraday: [val.last],
+        change_pct:val.change}
+
+        // let res = data.map((val: Equities) => {
+
+        //   return { // Return the new object structure
+        //     id: val.symbol,
+        //     currency:"$",
+        //     symbol:val.stock_name,
+        //     volume: val.bQty,
+        //     currentPrice: val.avgPrice,
+        //     change_24h: val.change,
+        //     //intraday: Observable<number[]>;
+        //     intraday: [val.last],
+        //     change_pct:val.change,
+        //   //  label: item.abbreviation, value: item.name
+        //   }
+        //   i++;
+        // });
+
+        this.UpdategetDataObservable(res)
+       // this.gridDataEquties = this.getDataObservable(res);
+       // this.gridData=data;
+       //this.gridDataEquties= (data.map((p:Equities[]) => (p)));
+      // console.log( this.gridDataEquties);
+
+        })
+
+
+    }
+
+    UpdategetDataObservable(equities :Stock) {
+      return new Observable<Stock[]>((observer) => {
+          this.http.get<Stock[]>(this.stocksUrl).subscribe((data: Stock[]) => {
+
+            // const obsof1= of(equities);
+            // obsof1.subscribe((data: Stock[]) => {
+            //   this.immutableData = data ;
+            //   this.previousData = data;
+            //   observer.next(this.immutableData);
+            // })
+              // setInterval(() => {
+                  this.immutableData = this.immutableData.map((row: Stock) => this.updateRandomRowWithData(row));
+
+                  observer.next(this.immutableData);
+              // }, this.updateFreq);
+          });
+      });
+    }
 
     getDataObservable(equities :Stock[]): Observable<Stock[]> {
       return new Observable<Stock[]>((observer) => {
@@ -68,11 +132,56 @@ export class GridComponent {
               this.previousData = data;
               observer.next(this.immutableData);
             })
-              setInterval(() => {
-                  this.immutableData = this.immutableData.map((row: Stock) => this.updateRandomRowWithData(row));
+
+
+
+            this.signalRService.connection.on("SendLiveData",(val :any) => {
+              debugger;
+              var  i=0;
+             var res={ id: val.symbol,
+              currency:"$",
+              symbol:val.stock_name,
+              volume: val.bQty,
+              currentPrice: val.avgPrice,
+              change_24h: val.change,
+              //intraday: Observable<number[]>;
+              intraday: [val.open],
+              change_pct:val.change}
+
+                       this.immutableData = this.immutableData.map((row: Stock) => this.updateRandomRowWithData(row));
 
                   observer.next(this.immutableData);
-              }, this.updateFreq);
+
+              // let res = data.map((val: Equities) => {
+
+              //   return { // Return the new object structure
+              //     id: val.symbol,
+              //     currency:"$",
+              //     symbol:val.stock_name,
+              //     volume: val.bQty,
+              //     currentPrice: val.avgPrice,
+              //     change_24h: val.change,
+              //     //intraday: Observable<number[]>;
+              //     intraday: [val.last],
+              //     change_pct:val.change,
+              //   //  label: item.abbreviation, value: item.name
+              //   }
+              //   i++;
+              // });
+
+             // this.UpdategetDataObservable(res)
+             // this.gridDataEquties = this.getDataObservable(res);
+             // this.gridData=data;
+             //this.gridDataEquties= (data.map((p:Equities[]) => (p)));
+            // console.log( this.gridDataEquties);
+
+              })
+
+              // setInterval(() => {
+              //     this.immutableData = this.immutableData.map((row: Stock) => this.updateRandomRowWithData(row));
+
+              //     observer.next(this.immutableData);
+              // }, this.updateFreq);
           });
       });
 
@@ -129,7 +238,10 @@ export class GridComponent {
   //     });
   // }
 
+
   updateRandomRowWithData(row: Stock): Stock {
+    return row;
+    debugger;
     const shouldUpdateData = Math.random() < 1000;
 
     if (shouldUpdateData) {
@@ -161,6 +273,38 @@ export class GridComponent {
     }
 }
 
+//   updateRandomRowWithData(row: Stock): Stock {
+//     const shouldUpdateData = Math.random() < 1000;
+
+//     if (shouldUpdateData) {
+//         let changePrice = Math.floor(30 * Math.random()) / 10;
+//         changePrice *= Math.round(Math.random()) ? 2 : -0.09;
+
+//         let changePercentage = Math.floor(30 * Math.random()) / 10;
+//         changePercentage *= Math.round(Math.random()) ? 1 : -1;
+
+//         const percentageValue = row.change_24h + changePercentage;
+//         const priceValue = row.currentPrice + changePrice;
+
+//         let newRow = {
+//             ...row,
+//             change_24h: percentageValue,
+//             currentPrice: priceValue,
+
+
+
+
+//         };
+//        newRow.intraday.push(Math.round(Math.random()+1));
+
+//         this.previousData = [...this.immutableData];
+//         return newRow;
+//     } else {
+//       row.intraday.push(Math.round(Math.random()+1));
+//         return row;
+//     }
+// }
+
     ngOnInit() {
 
 
@@ -171,15 +315,15 @@ export class GridComponent {
         let res = data.map((val: Equities) => {
 
           return { // Return the new object structure
-            id: i,
+            id: val.symbol,
             currency:"$",
-            symbol:val.symbol,
-            volume: 123,
+            symbol:val.stock_name,
+            volume: val.bQty,
             currentPrice: val.avgPrice,
             change_24h: val.change,
             //intraday: Observable<number[]>;
-            intraday: [1,2,3,4],
-            change_pct:3
+            intraday: [val.open],
+            change_pct:val.change,
           //  label: item.abbreviation, value: item.name
           }
           i++;
@@ -191,6 +335,8 @@ export class GridComponent {
       // console.log( this.gridDataEquties);
 
         })
+
+        //this.UpdatesStock();
       }
     // //  this.signalRService.startConnection();
     //   this.signalRService.startConnectionBuilder().build().start().then(()=> this.stockService.invokeGetEquties()).catch((err: any) => console.log('Error while starting connection: ' + err))
