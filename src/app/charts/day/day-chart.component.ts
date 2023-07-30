@@ -39,8 +39,8 @@ export class DayChartComponent {
 
       const data= this.data.slice(0);
 
-      // Produce one random value each 100ms
-      data.push(Math.random()+1);
+      // Produce one random val0ue each 100ms
+      data.push((parseFloat(Math.random().toString())));
 
       if (data.length > 1000) {
         // Keep only 10 items in the array

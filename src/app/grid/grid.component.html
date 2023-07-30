@@ -1,17 +1,41 @@
 <p class="grid-section-title">Explore the market</p>
-<kendo-grid [kendoGridBinding]="(gridData | async)!" [rowClass]="rowCallback" >
-    <kendo-grid-column field="currency" title="Crypto currency">
+<kendo-grid [kendoGridBinding]="(gridData | async)!" [rowClass]="rowCallback" [resizable]="true" [sortable]="true" [sort]="sort">
+    <kendo-grid-column field="currency" title="Crypto currency"  [sortable]="true" >
         <ng-template kendoGridCellTemplate let-dataItem>
-            <div class="currency-container">
+
+          <div class="card-container">
+            <kendo-card width="280px" class="transaction-card">
+                <kendo-card-header class="k-hstack">
+
+                    <div>
+                        <h1 kendoCardTitle class="card-title">
+                            {{ dataItem.symbol  }}
+                             <span  class="price">{{ dataItem.currentPrice.toFixed(2)  }}$</span>
+                            <!-- <span *ngIf="card.status === 'Buy'; else recieve" class="price">{{ dataItem.currentPrice  }}$</span> -->
+                        </h1>
+
+                        <p kendoCardSubtitle class="k-card-subtitle">
+                            {{ dataItem.currentPrice.toFixed(2)}} {{ dataItem.currentPrice.toFixed(2)}}
+                            <span class="price"> {{ dataItem.currentPrice.toFixed(2)}}</span>
+                            <ng-template #recieve>
+                                <span class="price">+{{ dataItem.currentPrice.toFixed(2) }} {{  dataItem.currentPrice.toFixed(2)}}</span>
+                            </ng-template>
+                        </p>
+                    </div>
+                </kendo-card-header>
+            </kendo-card>
+        </div>
+
+            <!-- <div class="currency-container">
                 <img class="coin-logo" src="assets/coinslogo/{{ dataItem.currency }}.png" alt="coin logo" />
                 <span class="currency">
                     {{ dataItem.currency }}
                 </span>
                 <span class="crypto-symbol"> ({{ dataItem.symbol }}) </span>
-            </div>
+            </div> -->
         </ng-template>
     </kendo-grid-column>
-    <kendo-grid-column field="currentPrice" title="Price">
+    <!-- <kendo-grid-column field="currentPrice" title="Price">
         <ng-template kendoGridCellTemplate let-dataItem>
             <span
                 [@positiveState]="dataItem.currentPrice > prevDataItem.currentPrice ? true : false"
@@ -20,8 +44,8 @@
                 {{ dataItem.currentPrice | currency }}
             </span>
         </ng-template>
-    </kendo-grid-column>
-    <kendo-grid-column class="priceColumn" field="change_24h" title="24h%">
+    </kendo-grid-column> -->
+    <kendo-grid-column class="priceColumn" field="change_24h"  [sortable]="true" title="24h%">
         <ng-template kendoGridCellTemplate let-dataItem>
             <span> {{ dataItem.change_24h | number }}% </span>
             <span class="k-icon k-i-arrow-60-down arrow-down" *ngIf="dataItem.change_24h < prevDataItem.change_24h"></span>
@@ -31,8 +55,8 @@
 
     <!-- <kendo-grid-column field="volume" title="Market Cap" format="c"> </kendo-grid-column> -->
 
-    <kendo-grid-column class="grid-one-day-chart" media="(min-width: 992px)" field="intraday" title="1 Day Chart"
-      [width]="170" [sortable]="false">
+    <kendo-grid-column class="grid-one-day-chart" media="(min-width: 992px)" media="(max-width: 1500px)"  field="intraday" title="1 Day Chart"
+      [width]="400" [sortable]="false">
       <ng-template kendoGridCellTemplate let-dataItem>
         <!-- <kendo-sparkline [data]="dataItem.intraday"></kendo-sparkline> -->
         <!-- <kendo-sparkline  [data] ="(dataItem.intraday)"> </kendo-sparkline> -->

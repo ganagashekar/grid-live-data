@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { RowClassArgs } from '@progress/kendo-angular-grid';
+import { GridDataResult, RowClassArgs } from '@progress/kendo-angular-grid';
 import { Observable } from 'rxjs';
 import { trigger, style, animate, transition, keyframes } from '@angular/animations';
 import { Stock, StocksService } from '../services/stocks.service';
+import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
 
 @Component({
     selector: 'grid',
@@ -30,10 +31,23 @@ export class GridComponent {
     public prevDataItem!: Stock;
 
     constructor(private stockService: StocksService) {
+
         this.gridData = this.stockService.getDataObservable();
+
+       //orderBy(gridData., [{ field: "name", dir: "asc" }])
     }
 
+
+
+    public sort: SortDescriptor[] = [
+      {
+        field: "change_24h",
+        dir: "desc",
+      },
+    ];
     public rowCallback = (context: RowClassArgs) => {
+
+
         const previousData = this.stockService.previousData;
         const index = previousData.findIndex((item) => item.id === context.dataItem.id);
         this.prevDataItem = previousData[index];

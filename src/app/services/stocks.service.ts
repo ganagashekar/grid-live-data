@@ -17,7 +17,9 @@ export class StocksService {
     getDataObservable(): Observable<Stock[]> {
         return new Observable<Stock[]>((observer) => {
             this.http.get<Stock[]>(this.stocksUrl).subscribe((data: Stock[]) => {
-                this.immutableData = data;
+
+
+                this.immutableData = data ;
                 this.previousData = data;
                 observer.next(this.immutableData);
 
@@ -57,7 +59,7 @@ export class StocksService {
             this.previousData = [...this.immutableData];
             return newRow;
         } else {
-          //row.intraday.push(Math.round(Math.random()+1));
+          row.intraday.push(Math.round(Math.random()+1));
             return row;
         }
     }
