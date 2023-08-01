@@ -35,7 +35,7 @@ export class DayChartComponent {
     }
 
     ngOnChanges(changes: any) {
-      debugger;
+
       //console.log('changes', changes);
 
       const data= this.data.slice(0);

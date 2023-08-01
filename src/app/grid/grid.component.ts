@@ -232,7 +232,7 @@ export class GridComponent {
 
   //var cu_row= [...this.immutableData].find(x=>x.symbol===row.symbol)
   if(row.symbol==live.symbol && row.change_pct != live.change ) {
-debugger;
+
     let changePrice = Math.floor(30 * Math.random()) / 10;
     changePrice *= Math.round(Math.random()) ? 2 : -0.09;
 
@@ -246,6 +246,12 @@ debugger;
         ...row,
         change_24h: live.last,
         currentPrice: live.last,
+        stockName:live.stock_name,
+            change:live.change,
+            volume:live.ttv,
+            open: live.open,
+            low:live.low,
+            high:live.high,
 
 
 
@@ -273,7 +279,7 @@ debugger;
   //   this.previousData = [...this.immutableData];
   //   row.intraday.push(Math.round(Math.random()+1));
   //   return newRow;
-    debugger;
+
     const shouldUpdateData = Math.random() < 1000;
 
     if (shouldUpdateData) {
@@ -350,8 +356,14 @@ debugger;
           return { // Return the new object structure
             id: val.symbol,
             currency:"$",
+            stockName:val.stock_name,
+            change:val.change,
+            volume:val.ttv,
+            open: val.open,
+            low:val.low,
+            high:val.high,
+            //volume: val.bQty,
             symbol:val.symbol,
-            volume: val.bQty,
             currentPrice: val.last,
             change_24h: val.last,
             //intraday: Observable<number[]>;
