@@ -107,7 +107,12 @@ export class GridComponent {
             open: live.open,
             low:live.low,
             high:live.high,
+
             last :live.last,
+            bQty :live.bQty,
+            sQty:live.sQty,
+            netQtry : live.bQty-live.sQty,
+            avgPrice:live.avgPrice,
 
 
 
@@ -152,7 +157,10 @@ export class GridComponent {
             //volume: val.bQty,
             symbol:val.symbol,
             currentPrice: val.last,
-
+            bQty :val.bQty,
+            sQty:val.sQty,
+            netQtry : val.bQty-val.sQty,
+            avgPrice:val.avgPrice,
             //intraday: Observable<number[]>;
             intraday: [val.last],
             dataopen:[val.open],
@@ -208,6 +216,10 @@ export interface Stock {
   low:number,
   high:number,
   last :number,
-  trend:string
+  trend:string,
+  bQty :number,
+  sQty:number,
+  netQtry : number,
+  avgPrice:number,
 
 }
