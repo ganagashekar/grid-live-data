@@ -72,7 +72,10 @@
       <ng-template kendoGridCellTemplate let-dataItem>
         <!-- <kendo-sparkline [data]="dataItem.intraday"></kendo-sparkline> -->
         <!-- <kendo-sparkline  [data] ="(dataItem.intraday)"> </kendo-sparkline> -->
-          <day-chart  [data]="dataItem.intraday" [changePct]="dataItem.change_24h">
+          <!-- <day-chart  [data]="dataItem.intraday" [dataopen]="dataItem.dataopen" [changePct]="dataItem.change_24h">
+          </day-chart> -->
+
+          <day-chart  [data]="dataItem.intraday" [CurrentData]="dataItem" >
           </day-chart>
       </ng-template>
    </kendo-grid-column>

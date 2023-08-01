@@ -231,8 +231,10 @@ export class GridComponent {
 
 
   //var cu_row= [...this.immutableData].find(x=>x.symbol===row.symbol)
-  if(row.symbol==live.symbol && row.change_pct != live.change ) {
+  if(row.symbol==live.symbol) {
 
+
+   // if( row.change_pct != live.change) {
     let changePrice = Math.floor(30 * Math.random()) / 10;
     changePrice *= Math.round(Math.random()) ? 2 : -0.09;
 
@@ -252,18 +254,22 @@ export class GridComponent {
             open: live.open,
             low:live.low,
             high:live.high,
+            last :live.last,
 
 
 
 
     };
     newRow.intraday.push(live.last);
+    newRow.dataopen.push(live.open);
 
     this.previousData = [...this.immutableData];
     return newRow;
 
   }
   else{
+    // row.intraday.push(live.last);
+    // row.dataopen.push(live.open);
     return row;
   }
 
@@ -280,35 +286,35 @@ export class GridComponent {
   //   row.intraday.push(Math.round(Math.random()+1));
   //   return newRow;
 
-    const shouldUpdateData = Math.random() < 1000;
+    // const shouldUpdateData = Math.random() < 1000;
 
-    if (shouldUpdateData) {
-        let changePrice = Math.floor(30 * Math.random()) / 10;
-        changePrice *= Math.round(Math.random()) ? 2 : -0.09;
+    // if (shouldUpdateData) {
+    //     let changePrice = Math.floor(30 * Math.random()) / 10;
+    //     changePrice *= Math.round(Math.random()) ? 2 : -0.09;
 
-        let changePercentage = Math.floor(30 * Math.random()) / 10;
-        changePercentage *= Math.round(Math.random()) ? 1 : -1;
+    //     let changePercentage = Math.floor(30 * Math.random()) / 10;
+    //     changePercentage *= Math.round(Math.random()) ? 1 : -1;
 
-        const percentageValue = row.change_24h + changePercentage;
-        const priceValue = row.currentPrice + changePrice;
+    //     const percentageValue = row.change_24h + changePercentage;
+    //     const priceValue = row.currentPrice + changePrice;
 
-        let newRow = {
-            ...row,
-            change_24h: percentageValue,
-            currentPrice: priceValue,
-
-
+    //     let newRow = {
+    //         ...row,
+    //         change_24h: percentageValue,
+    //         currentPrice: priceValue,
 
 
-        };
-      // newRow.intraday.push(Math.round(Math.random()+1));
 
-        //this.previousData = [...this.immutableData];
-        return newRow;
-    } else {
-      //row.intraday.push(Math.round(Math.random()+1));
-        return row;
-    }
+
+    //     };
+    //   // newRow.intraday.push(Math.round(Math.random()+1));
+
+    //     //this.previousData = [...this.immutableData];
+    //     return newRow;
+    // } else {
+    //   //row.intraday.push(Math.round(Math.random()+1));
+    //     return row;
+    // }
 }
 
 //   updateRandomRowWithData(row: Stock): Stock {
@@ -362,12 +368,14 @@ export class GridComponent {
             open: val.open,
             low:val.low,
             high:val.high,
+            last :val.last,
             //volume: val.bQty,
             symbol:val.symbol,
             currentPrice: val.last,
             change_24h: val.last,
             //intraday: Observable<number[]>;
             intraday: [val.last],
+            dataopen:[val.open],
             change_pct:val.last,
           //  label: item.abbreviation, value: item.name
           }
@@ -375,6 +383,7 @@ export class GridComponent {
         });
 
         this.gridDataEquties = this.getDataObservable(res);
+
        // this.gridData=data;
        //this.gridDataEquties= (data.map((p:Equities[]) => (p)));
       // console.log( this.gridDataEquties);
@@ -429,8 +438,8 @@ export interface Stock {
   volume: number;
   currentPrice: number;
   change_24h: number;
-  //intraday: Observable<number[]>;
   intraday: number[];
+  dataopen : number[];
   change_pct:number;
 
 }
