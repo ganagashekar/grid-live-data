@@ -1,6 +1,6 @@
 <!-- [resizable]="true" [sortable]="true" [sort]="sort" -->
 <p class="grid-section-title">Explore the market</p>
-<kendo-grid [kendoGridBinding]="(gridDataEquties | async)!"
+<kendo-grid [kendoGridBinding]="(gridDataEquties | async)!" [resizable]="true" [sortable]="true" [sort]="sort"
  [rowClass]="rowCallback">
     <kendo-grid-column field="currency" title="Crypto currency"  [sortable]="true" >
         <ng-template kendoGridCellTemplate let-dataItem>
@@ -12,15 +12,15 @@
                     <div>
                         <h1 style="font-size: 10px;" kendoCardTitle class="card-title">
                             {{ dataItem.symbol  }}
-                             <span  class="price">{{ dataItem.currentPrice.toFixed(2)  }}$</span>
+                             <span  class="price">{{ dataItem.currentPrice }}$</span>
                             <!-- <span *ngIf="card.status === 'Buy'; else recieve" class="price">{{ dataItem.currentPrice  }}$</span> -->
                         </h1>
 
                         <p kendoCardSubtitle class="k-card-subtitle">
-                            {{ dataItem.currentPrice.toFixed(2)}} {{ dataItem.currentPrice.toFixed(2)}}
-                            <span class="price"> {{ dataItem.currentPrice.toFixed(2)}}</span>
+                            {{ dataItem.currentPrice}} {{ dataItem.currentPrice}}
+                            <span class="price"> {{ dataItem.currentPrice}}</span>
                             <ng-template #recieve>
-                                <span class="price">+{{ dataItem.currentPrice.toFixed(2) }} {{  dataItem.currentPrice.toFixed(2)}}</span>
+                                <span class="price">+{{ dataItem.currentPrice }} {{  dataItem.currentPrice}}</span>
                             </ng-template>
                         </p>
                     </div>

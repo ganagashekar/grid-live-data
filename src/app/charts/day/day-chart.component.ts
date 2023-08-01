@@ -35,12 +35,14 @@ export class DayChartComponent {
     }
 
     ngOnChanges(changes: any) {
+      debugger;
       //console.log('changes', changes);
 
       const data= this.data.slice(0);
 
+      data.push(changes.changePct.currentValue)
       // Produce one random val0ue each 100ms
-      data.push((parseFloat(Math.random().toString())));
+      //data.push((parseFloat(Math.random().toString())));
 
       if (data.length > 1000) {
         // Keep only 10 items in the array
