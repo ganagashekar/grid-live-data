@@ -14,10 +14,10 @@
     color: #37b400;
 }
 
-.coin-logo {
+/* .coin-logo {
     height: 22px;
     width: 22px;
-}
+} */
 .currency {
     margin: 3px 5px 0px 5px;
     color: #4b5ffa;
@@ -30,4 +30,9 @@
 }
 .crypto-symbol {
     color: #959595;
+}
+
+::ng-deep .k-grid th  .k-grid td {
+    padding: 0px 0px !important;
+
 }

@@ -13,27 +13,26 @@
                       <!-- <span style="font-size: 12px;">  Low : {{ dataItem.low}} High : {{ dataItem.high}}</span> -->
                         <h1 style="font-size: 10px;" kendoCardTitle class="card-title">
                             {{ dataItem.stockName  }}
-                             <span  class="price">{{ dataItem.change }}%</span>
+
+                            <span class="k-icon k-i-arrow-60-down arrow-down" *ngIf="dataItem.change < prevDataItem.change"></span>
+            <span class="k-icon k-i-arrow-60-up arrow-up" *ngIf="dataItem.change > prevDataItem.change"></span>
+                             <!-- <span  class="price">{{ dataItem.change }}%</span> -->
+
+
+                             <span class="price"
+                             [@positiveState]="dataItem.last > prevDataItem.last ? true : false"
+                             [@negativeState]="dataItem.last < prevDataItem.last ? true : false"
+                         >
+                             {{ dataItem.last  }}
+                         </span>
+
                             <!-- <span *ngIf="card.status === 'Buy'; else recieve" class="price">{{ dataItem.currentPrice  }}$</span> -->
-                        </h1>
+          </h1>
 
-                        <p kendoCardSubtitle class="k-card-subtitle">
-                          <span style="font-size: 12px;">  Low : {{ dataItem.low}}</span>
-                          <span style="font-size: 12px;">  : High : {{ dataItem.high}}</span>
 
-                          <span  class="price"
-                          [@positiveState]="dataItem.currentPrice > prevDataItem.currentPrice ? true : false"
-                          [@negativeState]="dataItem.currentPrice < prevDataItem.currentPrice ? true : false"
-                      >
-                          {{ dataItem.currentPrice | currency }}
-                      </span>
-                            <!-- <span class="price"> {{ dataItem.currentPrice}}</span> -->
 
-                            <ng-template #recieve>
-                                <!-- <span class="price">+{{ dataItem.currentPrice }} {{  dataItem.currentPrice}}</span> -->
-                            </ng-template>
-                        </p>
                     </div>
+
                 </kendo-card-header>
             </kendo-card>
         </div>
@@ -47,16 +46,23 @@
             </div> -->
         </ng-template>
     </kendo-grid-column>
-    <!-- <kendo-grid-column field="currentPrice" [width]="100" title="Price">
+    <kendo-grid-column field="currentPrice" [width]="150" title="Price">
         <ng-template kendoGridCellTemplate let-dataItem>
-            <span
+          <div>
+            <span>
+              <app-slider-Componeent [currentPrice]="dataItem.last" [min_len]="dataItem.low" [max_len]="dataItem.high">
+
+              </app-slider-Componeent>
+            </span>
+          </div>
+            <!-- <span
                 [@positiveState]="dataItem.currentPrice > prevDataItem.currentPrice ? true : false"
                 [@negativeState]="dataItem.currentPrice < prevDataItem.currentPrice ? true : false"
             >
                 {{ dataItem.currentPrice | currency }}
-            </span>
+            </span> -->
         </ng-template>
-    </kendo-grid-column> -->
+    </kendo-grid-column>
     <!-- <kendo-grid-column class="priceColumn" field="change_24h"  [sortable]="true" title="24h%">
         <ng-template kendoGridCellTemplate let-dataItem>
             <span> {{ dataItem.change_24h | number }}% </span>
@@ -67,8 +73,8 @@
 
     <!-- <kendo-grid-column field="volume" title="Market Cap" format="c"> </kendo-grid-column> -->
 
-    <kendo-grid-column class="grid-one-day-chart" media="(min-width: 702px)" media="(max-width: 1500px)"  field="intraday" title="1 Day Chart"
-      [width]="250" [sortable]="false">
+    <kendo-grid-column class="grid-one-day-chart"   field="intraday" title="1 Day Chart"
+      [sortable]="false">
       <ng-template kendoGridCellTemplate let-dataItem>
         <!-- <kendo-sparkline [data]="dataItem.intraday"></kendo-sparkline> -->
         <!-- <kendo-sparkline  [data] ="(dataItem.intraday)"> </kendo-sparkline> -->

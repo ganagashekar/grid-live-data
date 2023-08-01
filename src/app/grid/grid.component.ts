@@ -49,58 +49,6 @@ export class GridComponent {
         console.log(`SGetAllStocks error: ${error}`);
         alert('GetAllStocks error!, see console for details.');
       });
-
-
-
-      //signalRService.startConnection();
-       // this.gridData = this.stockService.getDataObservable();
-        // this.gridDataEquties = this.stockService.getDataObservableEquties();
-
-       //orderBy(gridData., [{ field: "name", dir: "asc" }])
-    }
-
-
-    public UpdatesStock = () => {
-
-      this.signalRService.connection.on("SendLiveData",(val :any) => {
-        debugger;
-        var  i=0;
-       var res={ id: val.symbol,
-        currency:"$",
-        symbol:val.symbol,
-        volume: val.bQty,
-        currentPrice: val.avgPrice,
-        change_24h: val.change,
-        //intraday: Observable<number[]>;
-        intraday: [val.last],
-        change_pct:val.change}
-
-        // let res = data.map((val: Equities) => {
-
-        //   return { // Return the new object structure
-        //     id: val.symbol,
-        //     currency:"$",
-        //     symbol:val.stock_name,
-        //     volume: val.bQty,
-        //     currentPrice: val.avgPrice,
-        //     change_24h: val.change,
-        //     //intraday: Observable<number[]>;
-        //     intraday: [val.last],
-        //     change_pct:val.change,
-        //   //  label: item.abbreviation, value: item.name
-        //   }
-        //   i++;
-        // });
-
-        //this.UpdategetDataObservable(res)
-       // this.gridDataEquties = this.getDataObservable(res);
-       // this.gridData=data;
-       //this.gridDataEquties= (data.map((p:Equities[]) => (p)));
-      // console.log( this.gridDataEquties);
-
-        })
-
-
     }
 
 
@@ -119,113 +67,18 @@ export class GridComponent {
 
 
             this.signalRService.connection.on("SendLiveData",(val :string) => {
-
               var  i=0;
-
-
               const obj = JSON.parse(val);
-              // var  res = Stock | any ;
-              // res.change_24h= Math.random()
-            //  let res={ Id :133,
-            //   currency:"$",
-            //   symbol:'1.1!539992',
-            //   volume: Math.random(),
-            //   currentPrice: Math.random(),
-            //   change_24h: Math.random(),
-            //   //intraday: Observable<number[]>;
-            //   intraday: [Math.random()],
-            //   change_pct:Math.random()}
-
                        this.immutableData = this.immutableData.map((row: Stock) => this.updateRandomRowWithData(row,obj ));
-
                   observer.next(this.immutableData);
-
-              // let res = data.map((val: Equities) => {
-
-              //   return { // Return the new object structure
-              //     id: val.symbol,
-              //     currency:"$",
-              //     symbol:val.stock_name,
-              //     volume: val.bQty,
-              //     currentPrice: val.avgPrice,
-              //     change_24h: val.change,
-              //     //intraday: Observable<number[]>;
-              //     intraday: [val.last],
-              //     change_pct:val.change,
-              //   //  label: item.abbreviation, value: item.name
-              //   }
-              //   i++;
-              // });
-
-             // this.UpdategetDataObservable(res)
-             // this.gridDataEquties = this.getDataObservable(res);
-             // this.gridData=data;
-             //this.gridDataEquties= (data.map((p:Equities[]) => (p)));
-            // console.log( this.gridDataEquties);
-
               })
 
-              // setInterval(() => {
-              //     this.immutableData = this.immutableData.map((row: Stock) => this.updateRandomRowWithData(row));
 
-              //     observer.next(this.immutableData);
-              // }, this.updateFreq);
           });
       });
 
-    //   return new Observable<Stock[]>((observer) => {
 
-    //        const obsof1= of(equities);
-    //      obsof1.subscribe((data: Stock[]) => {
-
-
-    //          this.immutableDataEquties = data ;
-    //          this.previousData = data;
-    //          observer.next(this.immutableData);
-
-    //          // setInterval(() => {
-    //          //     this.immutableData = this.immutableData.map((row: Stock) => this.updateRandomRowWithData(row));
-
-    //          //     observer.next(this.immutableData);
-    //          // }, this.updateFreq);
-    //      });
-    //  });
-      // return new Observable<Stock[]>((observer) => {
-      //     this.http.get<Stock[]>(this.stocksUrl).subscribe((data: Stock[]) => {
-
-
-      //         this.immutableData = data ;
-      //         this.previousData = data;
-      //         observer.next(this.immutableData);
-
-      //         // setInterval(() => {
-      //         //     this.immutableData = this.immutableData.map((row: Stock) => this.updateRandomRowWithData(row));
-
-      //         //     observer.next(this.immutableData);
-      //         // }, this.updateFreq);
-      //     });
-      // });
   }
-
-
-  //   getDataObservable(): Observable<Stock[]> {
-  //     return new Observable<Stock[]>((observer) => {
-  //         this.http.get<Stock[]>(this.stocksUrl).subscribe((data: Stock[]) => {
-
-
-  //             this.immutableData = data ;
-  //             this.previousData = data;
-  //             observer.next(this.immutableData);
-
-  //             // setInterval(() => {
-  //             //     this.immutableData = this.immutableData.map((row: Stock) => this.updateRandomRowWithData(row));
-
-  //             //     observer.next(this.immutableData);
-  //             // }, this.updateFreq);
-  //         });
-  //     });
-  // }
-
 
   updateRandomRowWithData(row: Stock,live :any): Stock {
 
@@ -273,81 +126,8 @@ export class GridComponent {
     return row;
   }
 
-  //   let newRow = {
-  //     ...row,
-  //     change_24h: row.change_24h,
-  //     currentPrice: row.currentPrice,
-
-
-
-
-  // };
-  //   this.previousData = [...this.immutableData];
-  //   row.intraday.push(Math.round(Math.random()+1));
-  //   return newRow;
-
-    // const shouldUpdateData = Math.random() < 1000;
-
-    // if (shouldUpdateData) {
-    //     let changePrice = Math.floor(30 * Math.random()) / 10;
-    //     changePrice *= Math.round(Math.random()) ? 2 : -0.09;
-
-    //     let changePercentage = Math.floor(30 * Math.random()) / 10;
-    //     changePercentage *= Math.round(Math.random()) ? 1 : -1;
-
-    //     const percentageValue = row.change_24h + changePercentage;
-    //     const priceValue = row.currentPrice + changePrice;
-
-    //     let newRow = {
-    //         ...row,
-    //         change_24h: percentageValue,
-    //         currentPrice: priceValue,
-
-
-
-
-    //     };
-    //   // newRow.intraday.push(Math.round(Math.random()+1));
-
-    //     //this.previousData = [...this.immutableData];
-    //     return newRow;
-    // } else {
-    //   //row.intraday.push(Math.round(Math.random()+1));
-    //     return row;
-    // }
 }
 
-//   updateRandomRowWithData(row: Stock): Stock {
-//     const shouldUpdateData = Math.random() < 1000;
-
-//     if (shouldUpdateData) {
-//         let changePrice = Math.floor(30 * Math.random()) / 10;
-//         changePrice *= Math.round(Math.random()) ? 2 : -0.09;
-
-//         let changePercentage = Math.floor(30 * Math.random()) / 10;
-//         changePercentage *= Math.round(Math.random()) ? 1 : -1;
-
-//         const percentageValue = row.change_24h + changePercentage;
-//         const priceValue = row.currentPrice + changePrice;
-
-//         let newRow = {
-//             ...row,
-//             change_24h: percentageValue,
-//             currentPrice: priceValue,
-
-
-
-
-//         };
-//        newRow.intraday.push(Math.round(Math.random()+1));
-
-//         this.previousData = [...this.immutableData];
-//         return newRow;
-//     } else {
-//       row.intraday.push(Math.round(Math.random()+1));
-//         return row;
-//     }
-// }
 
     ngOnInit() {
 
@@ -372,11 +152,11 @@ export class GridComponent {
             //volume: val.bQty,
             symbol:val.symbol,
             currentPrice: val.last,
-            change_24h: val.last,
+
             //intraday: Observable<number[]>;
             intraday: [val.last],
             dataopen:[val.open],
-            change_pct:val.last,
+
           //  label: item.abbreviation, value: item.name
           }
           i++;
@@ -384,46 +164,26 @@ export class GridComponent {
 
         this.gridDataEquties = this.getDataObservable(res);
 
-       // this.gridData=data;
-       //this.gridDataEquties= (data.map((p:Equities[]) => (p)));
-      // console.log( this.gridDataEquties);
+
 
         })
 
-        //this.UpdatesStock();
+
       }
-    // //  this.signalRService.startConnection();
-    //   this.signalRService.startConnectionBuilder().build().start().then(()=> this.stockService.invokeGetEquties()).catch((err: any) => console.log('Error while starting connection: ' + err))
 
-    // //   .start().then(this.stockService.getDataObservableEquties())
-    // //     .catch((err: any) => console.log('Error while starting connection: ' + err))
-    // //  // this.gridDataEquties = this.stockService.getDataObservableEquties();
-
-    //  this.signalRService.addTransferChartDataListener();
-    //   //this.startHttpRequest();
-   // }
-
-    // private startHttpRequest = () => {
-    //   this.http.get('https://localhost:5001/api/chart')
-    //     .subscribe(res => {
-    //       console.log(res);
-    //     })
-    // }
 
     public sort: SortDescriptor[] = [
       {
-        field: "change_24h",
+        field: "change",
         dir: "desc",
       },
     ];
     public rowCallback = (context: RowClassArgs) => {
-
-
         const previousData = this.previousData;
         const index = previousData.findIndex((item: { id: any; }) => item.id === context.dataItem.id);
         this.prevDataItem = previousData[index];
 
-        if (context.dataItem.change_24h > 0) {
+        if (context.dataItem.change > 0) {
             return { 'price-up': true };
         } else {
             return { 'price-down': true };
@@ -435,11 +195,19 @@ export interface Stock {
   id: number;
   currency: string;
   symbol: string;
-  volume: number;
+
   currentPrice: number;
   change_24h: number;
   intraday: number[];
   dataopen : number[];
   change_pct:number;
+  stockName:number,
+  change:number,
+  volume:number,
+  open: number,
+  low:number,
+  high:number,
+  last :number,
+  trend:string
 
 }
