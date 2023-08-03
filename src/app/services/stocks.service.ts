@@ -1,3 +1,32 @@
+
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable, Subject, Subscription, finalize } from 'rxjs';
+import { SignalrService } from './signalr.service';
+import { Equities } from '../models/equities.model';
+import { environment } from 'src/environments/environment';
+
+@Injectable({
+    providedIn: 'root'
+})
+
+export class StocksService {
+
+  constructor(private http: HttpClient) {}
+  public saveData(Data: any ): any {
+    const url = environment.SignalrAPISaveJson;
+
+    const headers = { 'content-type': 'application/json'}
+    const body=JSON.stringify(Data);
+
+    return this.http.post(url, body,{'headers':headers})
+
+  }
+
+}
+
+
+
 // import { HttpClient } from '@angular/common/http';
 // import { Injectable } from '@angular/core';
 // import { Observable, Subject, Subscription, finalize } from 'rxjs';

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { GridDataResult, RowClassArgs } from '@progress/kendo-angular-grid';
-import { Observable, Subscription, of } from 'rxjs';
+import { Observable, Subscription, interval, of } from 'rxjs';
 import { trigger, style, animate, transition, keyframes } from '@angular/animations';
 // import { Stock, StocksService } from '../services/stocks.service';
 import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
@@ -8,6 +8,8 @@ import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
 import { HttpClient } from '@angular/common/http';
 import { SignalrService } from '../services/signalr.service';
 import { Equities } from '../models/equities.model';
+import { StocksService } from '../services/stocks.service';
+
 
 @Component({
     selector: 'grid',
@@ -41,7 +43,7 @@ export class GridComponent {
     private signalRSubscription: Subscription | undefined;
     public updateFreq: number = 2000;
 
-    constructor(public signalRService: SignalrService, private http: HttpClient) {
+    constructor(public signalRService: SignalrService, public stocksService: StocksService, private http: HttpClient) {
 
       this.signalRService.connection
       .invoke('GetAllStocks')
@@ -83,6 +85,7 @@ export class GridComponent {
   updateRandomRowWithData(row: Stock,live :any): Stock {
 
 
+
   //var cu_row= [...this.immutableData].find(x=>x.symbol===row.symbol)
   if(row.symbol==live.symbol) {
 
@@ -120,6 +123,7 @@ export class GridComponent {
     };
     newRow.intraday.push(live.last);
     newRow.dataopen.push(live.open);
+    newRow.dataavgPrice.push(live.avgPrice);
 
     this.previousData = [...this.immutableData];
     return newRow;
@@ -136,6 +140,30 @@ export class GridComponent {
 
     ngOnInit() {
 
+
+      interval(10000 *6*5).subscribe(x => {
+
+        const sub=this.gridDataEquties.subscribe((res: any[]) => {
+          sub.unsubscribe();
+          this.stocksService.saveData( { dataSetName :"" ,jsonString :JSON.stringify(res)}).subscribe(() => {
+
+          });;
+          // this.totalDeals = forApprovalResponse  + draftResponse;
+
+          //  if (forApprovalResponse > 0) {
+          //     // ... logic goes here
+          //  }
+
+          //  if (draftResponse > 0) {
+          //    // ...logic goes here
+          //  }
+
+          //  if (this.totalDeals > 0) {
+          //     // do something with it
+          //  }
+        });
+
+    });
 
      // const pairs =  this.signalRService.connection.on("SendAllStocks");
      // console.log(pairs.map((p:Equities[]) => (p)));
@@ -164,6 +192,7 @@ export class GridComponent {
             //intraday: Observable<number[]>;
             intraday: [val.last],
             dataopen:[val.open],
+            dataavgPrice:[val.avgPrice]
 
           //  label: item.abbreviation, value: item.name
           }
@@ -208,6 +237,7 @@ export interface Stock {
   change_24h: number;
   intraday: number[];
   dataopen : number[];
+  dataavgPrice: number[];
   change_pct:number;
   stockName:number,
   change:number,

@@ -63,10 +63,19 @@ export class SliderComponeentComponent  {
     };
   }
   ngOnChanges(changes: any): void {
-debugger;
+
     // this.options.floor=changes.currentValue.min_len;
     // this.options.ceil=changes.currentValue.max_len;
-    this.value= changes.currentPrice.currentValue;
+    if (changes.currentPrice === null || changes.currentPrice  === undefined) {
+    }
+    else{
+
+      if (changes.currentPrice.currentValue != changes.currentPrice.previousValue )
+      {
+
+      this.value= changes.currentPrice.currentValue;
+      }
+    }
 
   }
 }

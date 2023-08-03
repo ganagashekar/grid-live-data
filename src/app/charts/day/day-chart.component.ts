@@ -11,6 +11,7 @@ export class DayChartComponent {
     @Input() public data: number[] = [];
     @Input() public CurrentData : any;
     @Input() public dataopen: number[] = [];
+    @Input() public dataavgPrice: number[] = [];
     @Input() public changePct: number = 0;
 
     public lineStyle: SeriesLine = { width: 2, style: 'smooth', color: '#4B5FFA' };
@@ -39,10 +40,11 @@ export class DayChartComponent {
 
     ngOnChanges(changes: any) {
 
-      console.log('changes', changes);
 
       const dataopen=  this.dataopen.slice(0);
        const data= this.data.slice(0);
+       const dataavgPrice=  this.dataavgPrice.slice(0);
+
 
 
       if(changes.CurrentData.currentValue.open < changes.CurrentData.currentValue.last){
@@ -56,7 +58,8 @@ export class DayChartComponent {
 
       // dataopen.push(changes.CurrentData.currentValue.open);
        dataopen.push(changes.CurrentData.currentValue.open);
-       data.push(changes.CurrentData.currentValue.last)
+       data.push(changes.CurrentData.currentValue.last);
+       dataavgPrice.push(changes.CurrentData.currentValue.avgPrice)
       // const dataopen=  this.dataopen.slice(0);
       // dataopen.push(70.5);
       // data.push(changes.changePct.currentValue)
@@ -72,6 +75,7 @@ export class DayChartComponent {
       // // Replace with the new array instance
       this.dataopen=dataopen;
       this.data = data;
+      this.dataavgPrice=dataavgPrice;
 
 
 

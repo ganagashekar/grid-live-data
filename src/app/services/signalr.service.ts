@@ -28,7 +28,9 @@ export class SignalrService {
           skipNegotiation: true,
          transport: signalR.HttpTransportType.WebSockets
         })
+        .withAutomaticReconnect()
         .build();
+      this.connection.serverTimeoutInMilliseconds = 3600000;
 
       this.setSignalrClientMethods();
 
