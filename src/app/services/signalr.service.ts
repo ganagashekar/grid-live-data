@@ -30,6 +30,7 @@ export class SignalrService {
         })
         .withAutomaticReconnect()
         .build();
+
       this.connection.serverTimeoutInMilliseconds = 3600000;
 
       this.setSignalrClientMethods();

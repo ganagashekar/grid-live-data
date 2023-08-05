@@ -38,7 +38,7 @@ export class GridComponent {
     public gridDataEquties: Observable<Equities[]> | any;
     public prevDataItem!: Stock;
     private stocksUrl: string = 'assets/data.json';
-    private immutableData!: any[];
+    private immutableData!: Stock[];
     private immutableDataEquties!: Stock[];
     public previousData: Stock[] = [];
     private signalRSubscription: Subscription | undefined;
@@ -70,10 +70,11 @@ export class GridComponent {
 
 
             this.signalRService.connection.on("SendLiveData",(val :string) => {
-
+              var  i=0;
+             // console.log(`asof: ${asof}`);
               const obj = JSON.parse(val);
-            this.updateRandomRowWithData(obj )
-
+              var data =this.updateRandomRowWithData(obj )
+                   //    this.immutableData = this.immutableData.map((row: Stock) => this.updateRandomRowWithData(row,obj ));
                   observer.next(this.immutableData);
               })
 
@@ -84,12 +85,11 @@ export class GridComponent {
 
   }
 
-  updateRandomRowWithData(val :any): any {
+  updateRandomRowWithData(row: Stock,live :any): Stock {
 
 
-  var row = [...this.immutableData].find(x=>x.symbol===val.symbol)
-  var rowlast=row?.last;
-  if(row?.symbol==val.symbol && val.last != rowlast ) {
+  //var cu_row= [...this.immutableData].find(x=>x.symbol===row.symbol)?.last
+  if(row.symbol==live.symbol && live.last != row.last ) {
 
 
 
@@ -106,58 +106,30 @@ export class GridComponent {
 
     let newRow = {
         ...row,
-        id: val.symbol,
-            currency:"$",
-            stockName:val.stock_name,
-            change:val.change,
-            volume:val.ttv,
-            open: val.open,
-            low:val.low,
-            high:val.high,
-            last :val.last,
-            //volume: val.bQty,
-            symbol:val.symbol,
-            currentPrice: val.last,
-            bQty :val.bQty,
-            sQty:val.sQty,
-            netQtry : val.bQty-val.sQty,
-            avgPrice:val.avgPrice,
-            //intraday: Observable<number[]>;
-            // intraday: [],
-            // dataopen:[val.open],
-            // dataavgPrice:[val.avgPrice],
-            // change_24h:val.last,
-            // change_pct:val.change,
+        change_24h: live.last,
+        currentPrice: live.last,
+        stockName:live.stock_name,
+            change:live.change,
+            volume:live.ttv,
+            open: live.open,
+            low:live.low,
+            high:live.high,
 
-        // currentPrice: live.last,
-        // stockName:live.stock_name,
-        //     change:live.change,
-        //     volume:live.ttv,
-        //     open: live.open,
-        //     low:live.low,
-        //     high:live.high,
-
-        //     last :live.last,
-        //     bQty :live.bQty,
-        //     sQty:live.sQty,
-        //     netQtry : live.bQty-live.sQty,
-        //     avgPrice:live.avgPrice,
-        //     intraday:[live.last],
-        //     dataopen:[live.open]
+            last :live.last,
+            bQty :live.bQty,
+            sQty:live.sQty,
+            netQtry : live.bQty-live.sQty,
+            avgPrice:live.avgPrice,
 
 
 
 
     };
+    newRow.intraday.push(live.last);
+    newRow.dataopen.push(live.open);
+    newRow.dataavgPrice.push(live.avgPrice);
 
     this.previousData = [...this.immutableData];
-    let indexToUpdate = this.immutableData.findIndex(item => item.symbol === val.symbol);
-    newRow.intraday.push(val.last);
-    this.immutableData[indexToUpdate] = newRow;
-    //newRow.dataopen.push(live.open);
-   // newRow.dataavgPrice.push(live.avgPrice);
-
-
     return newRow;
   }
   else{
