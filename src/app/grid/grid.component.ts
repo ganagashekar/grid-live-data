@@ -84,6 +84,14 @@ export class GridComponent {
 
   }
 
+  getMostFrequent(arr:any) :any {
+    const hashmap = arr.reduce( (acc :any, val:any) => {
+     acc[val] = (acc[val] || 0 ) + 1
+     return acc
+  },{})
+ return Object.keys(hashmap).reduce((a, b) => hashmap[a] > hashmap[b] ? a : b)
+ }
+
   updateRandomRowWithData(val :any): any {
 
 
@@ -92,7 +100,7 @@ export class GridComponent {
   if(row?.symbol==val.symbol && val.last != rowlast ) {
 
 
-
+ var nmostnumber = this.getMostFrequent(row.intraday);
 
    // if( row.change_pct != live.change) {
     // let changePrice = Math.floor(30 * Math.random()) / 10;
@@ -110,6 +118,7 @@ export class GridComponent {
             currency:"$",
             stockName:val.stock_name,
             change:val.change,
+            mostnumber:nmostnumber,
             volume:val.ttv,
             open: val.open,
             low:val.low,
@@ -173,29 +182,29 @@ export class GridComponent {
     ngOnInit() {
 
 
-      interval(10000 *6*5).subscribe(x => {
+    //   interval(10000 *6*5).subscribe(x => {
 
-        const sub=this.gridDataEquties.subscribe((res: any[]) => {
-          sub.unsubscribe();
-          this.stocksService.saveData( { dataSetName :"" ,jsonString :JSON.stringify(res)}).subscribe(() => {
+    //     const sub=this.gridDataEquties.subscribe((res: any[]) => {
+    //       sub.unsubscribe();
+    //       this.stocksService.saveData( { dataSetName :"" ,jsonString :JSON.stringify(res)}).subscribe(() => {
 
-          });;
-          // this.totalDeals = forApprovalResponse  + draftResponse;
+    //       });;
+    //       // this.totalDeals = forApprovalResponse  + draftResponse;
 
-          //  if (forApprovalResponse > 0) {
-          //     // ... logic goes here
-          //  }
+    //       //  if (forApprovalResponse > 0) {
+    //       //     // ... logic goes here
+    //       //  }
 
-          //  if (draftResponse > 0) {
-          //    // ...logic goes here
-          //  }
+    //       //  if (draftResponse > 0) {
+    //       //    // ...logic goes here
+    //       //  }
 
-          //  if (this.totalDeals > 0) {
-          //     // do something with it
-          //  }
-        });
+    //       //  if (this.totalDeals > 0) {
+    //       //     // do something with it
+    //       //  }
+    //     });
 
-    });
+    // });
 
      // const pairs =  this.signalRService.connection.on("SendAllStocks");
      // console.log(pairs.map((p:Equities[]) => (p)));
@@ -224,7 +233,8 @@ export class GridComponent {
             //intraday: Observable<number[]>;
             intraday: [val.last],
             dataopen:[val.open],
-            dataavgPrice:[val.avgPrice]
+            dataavgPrice:[val.avgPrice],
+            mostnumber:val.last
 
           //  label: item.abbreviation, value: item.name
           }
