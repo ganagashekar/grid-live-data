@@ -12,6 +12,7 @@ export class SliderComponeentComponent  {
   @Input()  public min_len :number |any
   @Input()  public max_len :number |any
   @Input() public open : number| any
+  public value : number | any
 
   options: Options = {
     floor: 0,
@@ -64,17 +65,18 @@ export class SliderComponeentComponent  {
   }
   ngOnChanges(changes: any): void {
 
+    this.value= changes.currentPrice.currentValue;
     // this.options.floor=changes.currentValue.min_len;
     // this.options.ceil=changes.currentValue.max_len;
     if (changes.currentPrice === null || changes.currentPrice  === undefined) {
     }
     else{
 
-    //   if (changes.currentPrice.currentValue != changes.currentPrice.previousValue )
-    //   {
+      if (changes.currentPrice.currentValue != changes.currentPrice.previousValue )
+      {
 
-    //  // this.value= changes.currentPrice.currentValue;
-    //   }
+        this.value= changes.currentPrice.currentValue;
+      }
     }
 
   }
