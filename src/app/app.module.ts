@@ -1,4 +1,5 @@
 
+
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -15,7 +16,7 @@ import { TooltipsModule } from '@progress/kendo-angular-tooltip';
 import 'hammerjs';
 import { APP_INITIALIZER } from '@angular/core';
 import { DayChartComponent } from './charts/day/day-chart.component';
-
+import {MatSliderModule} from '@angular/material/slider';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { TotalPortfolioComponent } from './total-portfolio/total-portfolio.component';
@@ -26,8 +27,11 @@ import { BalanceComponent } from './main-panel/balance/balance.component';
 import { TransactionsComponent } from './main-panel/transactions/transactions.component';
 import { NewsComponent } from './main-panel/news/news.component';
 import {SignalrService} from './services/signalr.service'
-import { NgxSliderModule } from '@angular-slider/ngx-slider';
+import { SliderColorDirective } from './directives/sildercolor';
+// import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { SliderComponeentComponent } from './charts/slider-Componeent/slider-Componeent.component';
+import { ListViewModule } from '@progress/kendo-angular-listview';
+
 @NgModule({
     declarations: [
         AppComponent,
@@ -41,10 +45,13 @@ import { SliderComponeentComponent } from './charts/slider-Componeent/slider-Com
         NewsComponent,
         DayChartComponent,
         SliderComponeentComponent,
+        SliderColorDirective
+
 
     ],
     imports: [
-      NgxSliderModule,
+      MatSliderModule,
+      // NgxSliderModule,
         BrowserModule,
         HttpClientModule,
         GridModule,
@@ -56,6 +63,7 @@ import { SliderComponeentComponent } from './charts/slider-Componeent/slider-Com
         ButtonsModule,
         ChartsModule,
         TooltipsModule,
+        ListViewModule,
     ],
     providers: [
       SignalrService,
