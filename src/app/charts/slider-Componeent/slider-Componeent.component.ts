@@ -1,10 +1,12 @@
 import { Component, Input, SimpleChanges } from '@angular/core';
 import { Options } from '@angular-slider/ngx-slider';
+import { MatSliderChange } from '@angular/material/slider';
 @Component({
   selector: 'app-slider-Componeent',
   templateUrl: './slider-Componeent.component.html',
   styleUrls: ['./slider-Componeent.component.css']
 })
+
 
 export class SliderComponeentComponent  {
   public sliders: SliderDetails[] = [];
@@ -12,8 +14,20 @@ export class SliderComponeentComponent  {
   @Input()  public min_len :number |any
   @Input()  public max_len :number |any
   @Input() public open : number| any
+  @Input() public bgcolor : string| any
   public value : number | any
+  showTicks = false;
 
+
+
+  slidervalue: number =0;
+    formatLabel(val: number) {
+    if (val >= 1000) {
+    this.slidervalue = val;
+    return val;
+    }
+    return val;
+}
   options: Options = {
     floor: 0,
     ceil: 0,
@@ -63,24 +77,40 @@ export class SliderComponeentComponent  {
       ceil:this.max_len
     };
   }
-  ngOnChanges(changes: any): void {
 
-    this.value= changes.currentPrice.currentValue;
-    // this.options.floor=changes.currentValue.min_len;
-    // this.options.ceil=changes.currentValue.max_len;
-    if (changes.currentPrice === null || changes.currentPrice  === undefined) {
+
+
+  ngOnChanges(changes: any): void {
+   this. bgcolor ='#2AE02A';
+    if(changes.currentPrice.currentValue> this.min_len){
+     // this.color='#2AE02A'
     }
     else{
-
-      if (changes.currentPrice.currentValue != changes.currentPrice.previousValue )
-      {
-
-        this.value= changes.currentPrice.currentValue;
-      }
+    //  this.color='red'
     }
+    // this.currentPrice=changes.currentPrice.currentValue;
+    // this.value= changes.currentPrice.currentValue;
+    // // this.options.floor=changes.currentValue.min_len;
+    // // this.options.ceil=changes.currentValue.max_len;
+    // if (changes.currentPrice === null || changes.currentPrice  === undefined) {
+    // }
+    // else{
+
+    //   if (changes.currentPrice.currentValue != changes.currentPrice.previousValue )
+    //   {
+
+    //     this.value= changes.currentPrice.currentValue;
+    //   }
+    // }
 
   }
+
+  onSlide(event: any) {
+     debugger;
 }
+}
+
+
 
 interface SliderDetails {
   value: number;

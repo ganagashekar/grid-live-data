@@ -1,5 +1,15 @@
 <p class="right-panel-title">Recent transactions</p>
 <div class="card-container">
+
+  <!-- <kendo-listview
+      [data]="transactionCards"
+      [style.height.px]="280"
+      [itemClass]="{ 'item-border': true }"
+    >
+      <ng-template kendoListViewItemTemplate let-dataItem="dataItem">
+        {{ dataItem.ProductName }}
+      </ng-template>
+  </kendo-listview> -->
     <kendo-card width="380px" class="transaction-card" *ngFor="let card of transactionCards">
         <kendo-card-header class="k-hstack">
             <kendo-avatar

@@ -44,6 +44,7 @@ export class GridComponent {
     private signalRSubscription: Subscription | undefined;
     public updateFreq: number = 2000;
 
+
     constructor(public signalRService: SignalrService, public stocksService: StocksService, private http: HttpClient) {
 
       this.signalRService.connection

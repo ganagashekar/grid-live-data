@@ -72,9 +72,12 @@
         <ng-template kendoGridCellTemplate let-dataItem>
           <div>
             <span>
+             <span style="font-size: 10px;float: left;">{{dataItem.low}}</span>
+             <span style="font-size: 10px; float: right;">  {{dataItem.high}}</span>
               <app-slider-Componeent [currentPrice]="dataItem.last" [open]="dataItem.open" [min_len]="dataItem.low" [max_len]="dataItem.high">
 
               </app-slider-Componeent>
+
             </span>
           </div>
             <!-- <span
