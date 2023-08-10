@@ -10,12 +10,31 @@ import { RowClassArgs } from '@progress/kendo-angular-grid';
 import { SortDescriptor } from '@progress/kendo-data-query';
 import { ThemePalette } from '@angular/material/core';
 import { ProgressBarMode } from '@angular/material/progress-bar';
+import { animate, keyframes, style, transition, trigger } from '@angular/animations';
 
 
 @Component({
     selector: 'transactions',
     templateUrl: './transactions.component.html',
-    styleUrls: ['./transactions.component.css']
+    styleUrls: ['./transactions.component.css'],
+    animations: [
+      trigger('positiveState', [
+          transition('void => *', []),
+          transition('* => void', []),
+          transition('* => *', [
+              animate(1500, keyframes([style({ backgroundColor: '#32CD32', offset: 0.0 }), style({ backgroundColor: 'inherit', offset: 1.0 })]))
+          ])
+      ]),
+      trigger('negativeState', [
+          transition('void => *', []),
+          transition('* => void', []),
+          transition('* => *', [
+              animate(1500, keyframes([style({ backgroundColor: '#FF0000', offset: 0.0 }), style({ backgroundColor: 'inherit', offset: 1.0 })]))
+          ])
+      ])
+  ]
+
+
 })
 export class TransactionsComponent {
     public transactionCards: Transactions[] = accountTransactions;
@@ -60,13 +79,17 @@ export class TransactionsComponent {
               low:obj.low,
               high:obj.high,
               last :obj.last,
+              bPrice:obj.bPrice,
+            sPrice :obj.sPrice,
+            volumeNumber:parseInt((parseFloat(obj.ttv.toString().replace('L',''))*100000).toString().replace('C',(parseFloat(obj.ttv.toString().replace('C',''))*100000).toString())),
+
 
               symbol:obj.symbol,
               currentPrice: obj.last,
               bQty :obj.bQty,
               sQty:obj.sQty,
               value:(parseInt(obj.totalBuyQt)/(parseInt(obj.totalBuyQt) + parseInt(obj.totalSellQ)))*100 ,//-obj.totalBuyQt),
-             bufferValue:(parseInt(obj.totalSellQ)/(parseInt(obj.totalBuyQt) + parseInt(obj.totalSellQ)))*100
+               bufferValue:(parseInt(obj.totalSellQ)/(parseInt(obj.totalBuyQt) + parseInt(obj.totalSellQ)))*100
 
 
 
@@ -86,7 +109,8 @@ export class TransactionsComponent {
     sortData(_case: string) {
       switch(_case) {
         case 'stackname':
-         return this.gridData.sort((a: { change: number; }, b: { change: number; }) => (b.change > a.change) ? 1 : -1)
+         //return this.gridData.sort((a: { change: number; }, b: { change: number; }) => (b.change > a.change) ? 1 : -1)
+         return this.gridData.sort((a: { volumeNumber: number; }, b: { volumeNumber: number; }) => (b.volumeNumber > a.volumeNumber) ? 1 : -1)
 
       }
     }
@@ -132,7 +156,11 @@ export class TransactionsComponent {
             netQtry : val.bQty-val.sQty,
             avgPrice:val.avgPrice,
            // value:val.totalSellQ,
-            bufferValue:val.totalBuyQt
+            bufferValue:val.totalBuyQt,
+            bPrice:val.bPrice,
+            sPrice :val.sPrice,
+            volumeNumber:parseInt((parseFloat(val.ttv.toString().replace('L',''))*100000).toString().replace('C',(parseFloat(val.ttv.toString().replace('C',''))*100000).toString())),
+
 
 
 
@@ -216,6 +244,10 @@ export class TransactionsComponent {
             dataopen:[val.open],
             dataavgPrice:[val.avgPrice],
             mostnumber:val.last,
+            bPrice:val.bPrice,
+            sPrice :val.sPrice,
+            volumeNumber:parseInt((parseFloat(val.ttv.toString().replace('L',''))*100000).toString().replace('C',(parseFloat(val.ttv.toString().replace('C',''))*100000).toString())),
+
             // value:val.totalSellQ,
             // bufferValue:val.totalSellQ
           //  label: item.abbreviation, value: item.name

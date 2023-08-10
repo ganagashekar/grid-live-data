@@ -31,3 +31,38 @@
   padding: 4px;
   font-size: 20px;
 }
+.price-down .priceColumn,
+.arrow-down {
+    color: #f31700;
+
+}
+
+.price-down:focus + span { background-color: red }
+.testcolor > .price-down{
+    position: relative;
+    background-color:red;
+}
+
+.testcolor .arrow-up {
+  position: relative;
+  background-color:green;
+}
+
+.testcolor .arrow-down {
+  position: relative;
+  background-color:red;
+}
+
+.testcolorCng .arrow-down {
+  position: relative;
+  background-color:red;
+}
+
+.testcolorCng .arrow-up {
+  position: relative;
+  background-color:green;
+}
+.price-up .priceColumn,
+.arrow-up {
+    color: #37b400;
+}

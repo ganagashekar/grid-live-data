@@ -1,9 +1,9 @@
 <p class="right-panel-title">Recent transactions</p>
 <div class="card-container">
 
-  <kendo-listview [data]="gridData"  [itemClass]="{ 'item-border': true }"
+  <kendo-listview [data]="gridData" [itemClass]="{ 'item-border': true }"
   >
-      <ng-template kendoListViewItemTemplate let-dataItem="dataItem">
+      <ng-template [width]="150" kendoListViewItemTemplate let-dataItem="dataItem">
         <mat-progress-bar
                     class="example-margin"
                     [color]="color"
@@ -12,50 +12,43 @@
                     [bufferValue]="dataItem.bufferValue">
                 </mat-progress-bar>
 
-        <kendo-card width="350px" class="transaction-card">
-          <kendo-card-header class="k-hstack">
-              <!-- <kendo-avatar
-                  width="40px"
-                  height="40px"
-                  [imageSrc]="getCardImg(card)"
-                  shape="circle"
-                  style="background-color: transparent;"
-              ></kendo-avatar> -->
+        <kendo-card min-width="400px" width="auto" class="transaction-card">
+          <kendo-card-header class="k-hstack"  width="auto">
 
-              <!-- <kendo-avatar  width="40px"
-              height="40px" [initials]="dataItem.stockName"  shape="circle"></kendo-avatar> -->
+             <span  style="float: left;  font-size: 12px;"> {{dataItem.stockName}}
+              <span class="testcolor"  style="font-size: 12px;">
+                <span class="k-icon k-i-arrow-60-down arrow-down" *ngIf="dataItem.sPrice < dataItem.bPrice"></span>
+                <span class="k-icon k-i-arrow-60-up arrow-up" *ngIf="dataItem.sPrice > dataItem.bPrice"></span>
+                {{ (dataItem.sPrice - dataItem.bPrice).toFixed(2) }}
+              </span>
 
-              <div>
-                  <h4 kendoCardTitle >
 
-                    <span style="float: left;font-size: 15px;"> {{dataItem.stockName}}</span>
-                    &nbsp;
-                    &nbsp;
-                    <span>
-                      {{dataItem.trend}}
-                    </span>
-                    <span style="float: right;">  {{ dataItem.change }}</span>
-                      <!-- <span *ngIf="dataItem.change === 'Buy'; else recieve" class="price"> {{dataItem.trend}}{{ dataItem.change }}$</span> -->
-                  </h4>
-                  <p>
-                      <!-- <day-chart [data]="dataItem.intraday" [changePct]="dataItem.change_pct">
-                      </day-chart> -->
-                  </p>
-                  <p kendoCardSubtitle class="k-card-subtitle">
-                    <span style="float: left;font-size: 12px;"> L : {{ dataItem.low }} - H :  {{ dataItem.high }}</span>
-                    <span style="float: right;font-size: 12px;">  {{ dataItem.volume }}</span>
-                      <!-- <span class="price"> {{dataItem.volume }}</span> -->
-                      <ng-template #recieve>
-                          <span class="price">{{ dataItem.change }}</span>
-                      </ng-template>
-                  </p>
+              <span  class="testcolorCng" style="float: right;font-size: 12px;">
 
-              </div>
+                <span class="k-icon k-i-arrow-60-down arrow-down" *ngIf="dataItem.change < 2"></span>
+                <span class="k-icon k-i-arrow-60-up arrow-up" *ngIf="dataItem.change > 2"></span>
+                 CHG : {{ dataItem.change }}
+              </span>
+             </span>
+
+
+
+
+
+
 
           </kendo-card-header>
-          <!-- <kendo-card-body>
 
-          </kendo-card-body> -->
+          <kendo-card-footer>
+            <p kendoCardSubtitle class="k-card-subtitle">
+              <span style="float: left;font-size: 12px;"> L : {{ dataItem.low }} |  H :  {{ dataItem.high }} </span>
+              <span style="float: right;font-size: 12px;"> {{ dataItem.volumeNumber }} ( {{ dataItem.volume }} )</span>
+                <!-- <span class="price"> {{dataItem.volume }}</span> -->
+                <ng-template #recieve>
+                    <!-- <span class="price">{{ dataItem.change }}</span> -->
+                </ng-template>
+            </p>
+          </kendo-card-footer>
 
 
       </kendo-card>

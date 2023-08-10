@@ -44,12 +44,12 @@
                              <!-- <span  class="price">{{ dataItem.change }}%</span> -->
 
 
-                             <!-- <span class="price"
+                             <span class="price"
                              [@positiveState]="dataItem.last > prevDataItem.last ? true : false"
                              [@negativeState]="dataItem.last < prevDataItem.last ? true : false"
                          >
                              {{ dataItem.last  }}
-                         </span> -->
+                         </span>
 
                             <!-- <span *ngIf="card.status === 'Buy'; else recieve" class="price">{{ dataItem.currentPrice  }}$</span> -->
                             <span class="price"> {{ dataItem.last  }}</span> </h1>
@@ -83,6 +83,7 @@
 
 
             </span>
+
           </div>
             <!-- <span
                 [@positiveState]="dataItem.currentPrice > prevDataItem.currentPrice ? true : false"
