@@ -3,9 +3,9 @@
 <p class="grid-section-title">Explore the market</p>
 
 
-<kendo-grid [kendoGridBinding]="(gridDataEquties | async)!"
+<kendo-grid  [sortable]="true" [kendoGridBinding]="(gridDataEquties | async)!"
  [rowClass]="rowCallback">
-    <kendo-grid-column field="currency" title="Crypto currency"  [sortable]="true" >
+    <kendo-grid-column field="currency" title="Crypto currency"    >
         <ng-template kendoGridCellTemplate let-dataItem>
 
           <div class="card-container">
@@ -77,9 +77,10 @@
             <span>
              <span style="font-size: 10px;float: left;">{{dataItem.low}}</span>
              <span style="font-size: 10px; float: right;">  {{dataItem.high}}</span>
-              <app-slider-Componeent [currentPrice]="dataItem.last" [open]="dataItem.open" [min_len]="dataItem.low" [max_len]="dataItem.high">
+             <span> <app-slider-Componeent [currentPrice]="dataItem.last" [open]="dataItem.open" [min_len]="dataItem.low" [max_len]="dataItem.high">
 
-              </app-slider-Componeent>
+             </app-slider-Componeent></span>
+
 
             </span>
           </div>
@@ -91,26 +92,33 @@
             </span> -->
         </ng-template>
     </kendo-grid-column>
-    <!-- <kendo-grid-column class="priceColumn" field="change_24h"  [sortable]="true" title="24h%">
-        <ng-template kendoGridCellTemplate let-dataItem>
-            <span> {{ dataItem.change_24h | number }}% </span>
-            <span class="k-icon k-i-arrow-60-down arrow-down" *ngIf="dataItem.change_24h < prevDataItem.change_24h"></span>
-            <span class="k-icon k-i-arrow-60-up arrow-up" *ngIf="dataItem.change_24h > prevDataItem.change_24h"></span>
-        </ng-template>
-    </kendo-grid-column> -->
+    <kendo-grid-column class="priceColumn" [width]="120" title="MA_WMA">
+      <ng-template kendoGridCellTemplate let-dataItem>
 
-    <!-- <kendo-grid-column field="volume" title="Market Cap" format="c"> </kendo-grid-column> -->
+          <span> {{ dataItem.volumeNumber  }} </span>
+          <!-- <span class="k-icon k-i-arrow-60-down arrow-down" *ngIf="dataItem.change_24h < prevDataItem.change_24h"></span>
+          <span class="k-icon k-i-arrow-60-up arrow-up" *ngIf="dataItem.change_24h > prevDataItem.change_24h"></span>-->
+      </ng-template>
+  </kendo-grid-column>
+    <kendo-grid-column class="priceColumn" [width]="120" title="MA_WMA">
+        <ng-template kendoGridCellTemplate let-dataItem>
+            <span> {{ dataItem.calc_ma  }} </span> -
+            <span> {{ dataItem.calc_wma  }} </span>
+            <!-- <span class="k-icon k-i-arrow-60-down arrow-down" *ngIf="dataItem.change_24h < prevDataItem.change_24h"></span>
+            <span class="k-icon k-i-arrow-60-up arrow-up" *ngIf="dataItem.change_24h > prevDataItem.change_24h"></span>-->
+        </ng-template>
+    </kendo-grid-column>
 
     <kendo-grid-column class="grid-one-day-chart"   field="intraday" title="1 Day Chart"
-      [sortable]="false">
-      <ng-template kendoGridCellTemplate let-dataItem>
-        <!-- <kendo-sparkline [data]="dataItem.intraday"></kendo-sparkline> -->
-        <!-- <kendo-sparkline  [data] ="(dataItem.intraday)"> </kendo-sparkline> -->
-          <!-- <day-chart  [data]="dataItem.intraday" [dataopen]="dataItem.dataopen" [changePct]="dataItem.change_24h">
-          </day-chart> -->
+    [sortable]="false">
+    <ng-template kendoGridCellTemplate let-dataItem>
+      <!-- <kendo-sparkline [data]="dataItem.intraday"></kendo-sparkline> -->
+      <!-- <kendo-sparkline  [data] ="(dataItem.intraday)"> </kendo-sparkline> -->
+        <!-- <day-chart  [data]="dataItem.intraday" [dataopen]="dataItem.dataopen" [changePct]="dataItem.change_24h">
+        </day-chart> -->
 
-          <day-chart  [data]="dataItem.intraday" [CurrentData]="dataItem" >
-          </day-chart>
-      </ng-template>
-   </kendo-grid-column>
+        <day-chart  [data]="dataItem.intraday" [CurrentData]="dataItem" >
+        </day-chart>
+    </ng-template>
+ </kendo-grid-column>
 </kendo-grid>

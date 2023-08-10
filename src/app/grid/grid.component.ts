@@ -9,6 +9,7 @@ import { HttpClient } from '@angular/common/http';
 import { SignalrService } from '../services/signalr.service';
 import { Equities } from '../models/equities.model';
 import { StocksService } from '../services/stocks.service';
+import { isNumber } from '@progress/kendo-angular-grid/dist/es2015/utils';
 
 
 
@@ -58,6 +59,105 @@ export class GridComponent {
     }
 
 
+    getwma (data: any[], size: any) {
+      const length = data.length;
+
+      if (size <= 1) {
+        return data.slice();
+      }
+
+      if (size > length) {
+        return Array(length);
+      }
+
+      const ret = [];
+      const denominator = size * (size + 1) / 2;
+      const prepare = size - 1;
+      let sum = 0;
+      let numerator = 0;
+      let datum = 0;
+      let i = 0;
+      let real = -1;
+
+      for (; i < prepare; i++) {
+        datum = data[i];
+
+        if (isNumber(datum)) {
+          sum += datum;
+          numerator += (i + 1) * datum;
+        }
+      }
+
+      for (; i < length; i++, real++) {
+        datum = data[i];
+
+        if (isNumber(datum)) {
+          sum += datum;
+          numerator += size * datum;
+        }
+
+        if (real >= 0 && isNumber(data[real])) {
+          sum -= data[real];
+        }
+
+        ret[i] = numerator / denominator;
+        numerator -= sum;
+      }
+
+      return ret;
+    };
+
+     getma (data: any[], size: any)  {
+      const length = data.length;
+
+      if (!size) {
+        return data.reduce((a, b) => a + b) / length;
+      }
+
+      if (size <= 1) {
+        return data.slice();
+      }
+
+      if (size > length) {
+        return Array(length);
+      }
+
+      const prepare = size - 1;
+      const ret = [];
+      let sum = 0;
+      let i = 0;
+      let counter = 0;
+      let datum;
+
+      for (; i < length && counter < prepare; i++) {
+        datum = data[i];
+
+        if (  (datum)) {
+          sum += datum;
+          counter++;
+        }
+      }
+
+      for (; i < length; i++) {
+        datum = data[i];
+
+        if (isNumber(datum)) {
+          sum += datum;
+        }
+
+        if (isNumber(data[i - size])) {
+          sum -= data[i - size];
+        }
+
+        ret[i] = sum / size;
+      }
+
+      return ret;
+    };
+    // const isNumber = (subject: number) => typeof subject === 'number'
+    // // is not NaN: `NaN === NaN` => `false`
+    // && subject === subject;
+
 
     getDataObservable(equities :Stock[]): Observable<Stock[]> {
       return new Observable<Stock[]>((observer) => {
@@ -70,13 +170,11 @@ export class GridComponent {
               observer.next(this.immutableData);
             })
 
-
-
             this.signalRService.connection.on("SendLiveData",(val :string) => {
 
               const obj = JSON.parse(val);
             this.updateRandomRowWithData(obj )
-             this.gridDataEquties = this.sortData('stackname');
+
                   observer.next(this.immutableData);
               })
 
@@ -90,7 +188,7 @@ export class GridComponent {
   sortData(_case: string) {
     switch(_case) {
       case 'stackname':
-       return this.gridData.sort((a: { change: number; }, b: { change: number; }) => (b.change > a.change) ? 1 : -1)
+       return this.gridDataEquties.sort((a: { change: number; }, b: { change: number; }) => (b.change > a.change) ? 1 : -1)
 
     }
   }
@@ -112,17 +210,6 @@ export class GridComponent {
 
 
  var nmostnumber = this.getMostFrequent(row.intraday);
-
-   // if( row.change_pct != live.change) {
-    // let changePrice = Math.floor(30 * Math.random()) / 10;
-    // changePrice *= Math.round(Math.random()) ? 2 : -0.09;
-
-    // let changePercentage = Math.floor(30 * Math.random()) / 10;
-    // changePercentage *= Math.round(Math.random()) ? 1 : -1;
-
-    // const percentageValue = row.change_24h + changePercentage;
-    // const priceValue = row.currentPrice + changePrice;
-
     let newRow = {
         ...row,
         id: val.symbol,
@@ -131,6 +218,7 @@ export class GridComponent {
             change:val.change,
             mostnumber:nmostnumber,
             volume:val.ttv,
+            volumeNumber:parseInt((parseFloat(val.ttv.toString().replace('L',''))*100000).toString().replace('C',(parseFloat(val.ttv.toString().replace('C',''))*100000).toString())),
             open: val.open,
             low:val.low,
             high:val.high,
@@ -142,28 +230,9 @@ export class GridComponent {
             sQty:val.sQty,
             netQtry : val.bQty-val.sQty,
             avgPrice:val.avgPrice,
-            //intraday: Observable<number[]>;
-            // intraday: [],
-            // dataopen:[val.open],
-            // dataavgPrice:[val.avgPrice],
-            // change_24h:val.last,
-            // change_pct:val.change,
+            calc_ma: parseFloat(this.getma(row.intraday,null).toString()).toFixed(2),
+            calc_wma:parseFloat(this.getwma(row.intraday,null).toString()).toFixed(2),
 
-        // currentPrice: live.last,
-        // stockName:live.stock_name,
-        //     change:live.change,
-        //     volume:live.ttv,
-        //     open: live.open,
-        //     low:live.low,
-        //     high:live.high,
-
-        //     last :live.last,
-        //     bQty :live.bQty,
-        //     sQty:live.sQty,
-        //     netQtry : live.bQty-live.sQty,
-        //     avgPrice:live.avgPrice,
-        //     intraday:[live.last],
-        //     dataopen:[live.open]
 
 
 
@@ -174,6 +243,7 @@ export class GridComponent {
     let indexToUpdate = this.immutableData.findIndex(item => item.symbol === val.symbol);
     newRow.intraday.push(val.last);
     this.immutableData[indexToUpdate] = newRow;
+   // this.gridDataEquties = this.sortData('stackname');
     //newRow.dataopen.push(live.open);
    // newRow.dataavgPrice.push(live.avgPrice);
 
@@ -193,32 +263,7 @@ export class GridComponent {
     ngOnInit() {
 
 
-    //   interval(10000 *6*5).subscribe(x => {
 
-    //     const sub=this.gridDataEquties.subscribe((res: any[]) => {
-    //       sub.unsubscribe();
-    //       this.stocksService.saveData( { dataSetName :"" ,jsonString :JSON.stringify(res)}).subscribe(() => {
-
-    //       });;
-    //       // this.totalDeals = forApprovalResponse  + draftResponse;
-
-    //       //  if (forApprovalResponse > 0) {
-    //       //     // ... logic goes here
-    //       //  }
-
-    //       //  if (draftResponse > 0) {
-    //       //    // ...logic goes here
-    //       //  }
-
-    //       //  if (this.totalDeals > 0) {
-    //       //     // do something with it
-    //       //  }
-    //     });
-
-    // });
-
-     // const pairs =  this.signalRService.connection.on("SendAllStocks");
-     // console.log(pairs.map((p:Equities[]) => (p)));
        this.signalRService.connection.on("SendAllStocks",(data :any) => {
         debugger;
         var  i=0;
@@ -245,7 +290,9 @@ export class GridComponent {
             intraday: [val.last],
             dataopen:[val.open],
             dataavgPrice:[val.avgPrice],
-            mostnumber:val.last
+            mostnumber:val.last,
+            calc_ma:this.getma([val.last],null),
+            calc_wma:this.getwma([val.last],null)
 
           //  label: item.abbreviation, value: item.name
           }
