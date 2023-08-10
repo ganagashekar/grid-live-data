@@ -1,41 +1,67 @@
 <p class="right-panel-title">Recent transactions</p>
 <div class="card-container">
 
-  <!-- <kendo-listview
-      [data]="transactionCards"
-      [style.height.px]="280"
-      [itemClass]="{ 'item-border': true }"
-    >
+  <kendo-listview [data]="gridData"  [itemClass]="{ 'item-border': true }"
+  >
       <ng-template kendoListViewItemTemplate let-dataItem="dataItem">
-        {{ dataItem.ProductName }}
+        <mat-progress-bar
+                    class="example-margin"
+                    [color]="color"
+                    [mode]="mode"
+                    [value]="dataItem.value"
+                    [bufferValue]="dataItem.bufferValue">
+                </mat-progress-bar>
+
+        <kendo-card width="350px" class="transaction-card">
+          <kendo-card-header class="k-hstack">
+              <!-- <kendo-avatar
+                  width="40px"
+                  height="40px"
+                  [imageSrc]="getCardImg(card)"
+                  shape="circle"
+                  style="background-color: transparent;"
+              ></kendo-avatar> -->
+
+              <!-- <kendo-avatar  width="40px"
+              height="40px" [initials]="dataItem.stockName"  shape="circle"></kendo-avatar> -->
+
+              <div>
+                  <h4 kendoCardTitle >
+
+                    <span style="float: left;font-size: 15px;"> {{dataItem.stockName}}</span>
+                    &nbsp;
+                    &nbsp;
+                    <span>
+                      {{dataItem.trend}}
+                    </span>
+                    <span style="float: right;">  {{ dataItem.change }}</span>
+                      <!-- <span *ngIf="dataItem.change === 'Buy'; else recieve" class="price"> {{dataItem.trend}}{{ dataItem.change }}$</span> -->
+                  </h4>
+                  <p>
+                      <!-- <day-chart [data]="dataItem.intraday" [changePct]="dataItem.change_pct">
+                      </day-chart> -->
+                  </p>
+                  <p kendoCardSubtitle class="k-card-subtitle">
+                    <span style="float: left;font-size: 12px;"> L : {{ dataItem.low }} - H :  {{ dataItem.high }}</span>
+                    <span style="float: right;font-size: 12px;">  {{ dataItem.volume }}</span>
+                      <!-- <span class="price"> {{dataItem.volume }}</span> -->
+                      <ng-template #recieve>
+                          <span class="price">{{ dataItem.change }}</span>
+                      </ng-template>
+                  </p>
+
+              </div>
+
+          </kendo-card-header>
+          <!-- <kendo-card-body>
+
+          </kendo-card-body> -->
+
+
+      </kendo-card>
+
       </ng-template>
-  </kendo-listview> -->
-    <kendo-card width="380px" class="transaction-card" *ngFor="let card of transactionCards">
-        <kendo-card-header class="k-hstack">
-            <kendo-avatar
-                width="40px"
-                height="40px"
-                [imageSrc]="getCardImg(card)"
-                shape="circle"
-                style="background-color: transparent;"
-            ></kendo-avatar>
-            <div>
-                <h1 kendoCardTitle class="card-title">
-                    {{ card.symbol }}
-                    <span *ngIf="card.status === 'Buy'; else recieve" class="price">{{ card.amount }}$</span>
-                </h1>
-                <p>
-                    <!-- <day-chart [data]="dataItem.intraday" [changePct]="dataItem.change_pct">
-                    </day-chart> -->
-                </p>
-                <p kendoCardSubtitle class="k-card-subtitle">
-                    {{ card.status }} {{ card.deduction }}
-                    <span class="price"> {{ card.stamp }}</span>
-                    <ng-template #recieve>
-                        <span class="price">+{{ card.amount }} {{ card.symbol }}</span>
-                    </ng-template>
-                </p>
-            </div>
-        </kendo-card-header>
-    </kendo-card>
+      <hr>
+  </kendo-listview>
+
 </div>

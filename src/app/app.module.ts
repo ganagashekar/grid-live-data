@@ -4,7 +4,8 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
-
+;
+import { ListViewModule } from '@progress/kendo-angular-listview';
 import { GridModule } from '@progress/kendo-angular-grid';
 import { NavigationModule } from '@progress/kendo-angular-navigation';
 import { IndicatorsModule } from '@progress/kendo-angular-indicators';
@@ -27,11 +28,11 @@ import { BalanceComponent } from './main-panel/balance/balance.component';
 import { TransactionsComponent } from './main-panel/transactions/transactions.component';
 import { NewsComponent } from './main-panel/news/news.component';
 import {SignalrService} from './services/signalr.service'
+
 import { SliderColorDirective } from './directives/sildercolor';
 // import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { SliderComponeentComponent } from './charts/slider-Componeent/slider-Componeent.component';
-import { ListViewModule } from '@progress/kendo-angular-listview';
-
+import {ProgressBarMode, MatProgressBarModule} from '@angular/material/progress-bar';
 @NgModule({
     declarations: [
         AppComponent,
@@ -45,13 +46,15 @@ import { ListViewModule } from '@progress/kendo-angular-listview';
         NewsComponent,
         DayChartComponent,
         SliderComponeentComponent,
-        SliderColorDirective
+
+
 
 
     ],
     imports: [
       MatSliderModule,
-      // NgxSliderModule,
+      ListViewModule,
+
         BrowserModule,
         HttpClientModule,
         GridModule,
@@ -63,7 +66,7 @@ import { ListViewModule } from '@progress/kendo-angular-listview';
         ButtonsModule,
         ChartsModule,
         TooltipsModule,
-        ListViewModule,
+        MatProgressBarModule,
     ],
     providers: [
       SignalrService,

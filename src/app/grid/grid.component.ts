@@ -33,6 +33,8 @@ import { StocksService } from '../services/stocks.service';
         ])
     ]
 })
+
+
 export class GridComponent {
     public gridData: Observable<Stock[]> |any;
     public gridDataEquties: Observable<Equities[]> | any;
@@ -74,7 +76,7 @@ export class GridComponent {
 
               const obj = JSON.parse(val);
             this.updateRandomRowWithData(obj )
-
+             this.gridDataEquties = this.sortData('stackname');
                   observer.next(this.immutableData);
               })
 
@@ -83,6 +85,14 @@ export class GridComponent {
       });
 
 
+  }
+
+  sortData(_case: string) {
+    switch(_case) {
+      case 'stackname':
+       return this.gridData.sort((a: { change: number; }, b: { change: number; }) => (b.change > a.change) ? 1 : -1)
+
+    }
   }
 
   getMostFrequent(arr:any) :any {

@@ -2,8 +2,14 @@ import { Component } from '@angular/core';
 import { Transactions } from 'src/app/models/transaction.model';
 import { accountTransactions } from '../transaction-data/transactions';
 import { SignalrService } from 'src/app/services/signalr.service';
-import { StocksService } from 'src/app/services/stocks.service';
+import { Stock, StocksService } from 'src/app/services/stocks.service';
 import { HttpClient } from '@angular/common/http';
+import { Observable, Subscription, of } from 'rxjs';
+import { Equities } from 'src/app/models/equities.model';
+import { RowClassArgs } from '@progress/kendo-angular-grid';
+import { SortDescriptor } from '@progress/kendo-data-query';
+import { ThemePalette } from '@angular/material/core';
+import { ProgressBarMode } from '@angular/material/progress-bar';
 
 
 @Component({
@@ -13,10 +19,20 @@ import { HttpClient } from '@angular/common/http';
 })
 export class TransactionsComponent {
     public transactionCards: Transactions[] = accountTransactions;
+    public gridData: Equities[] |any;
+    color: ThemePalette = 'primary';
+    mode: ProgressBarMode = 'determinate';
+    value = 0;
+    bufferValue = 0;
 
-    public getCardImg(card: Transactions): string {
-        return `assets/coinslogo/${card.currency}.png`;
-    }
+    public prevDataItem!: Stock;
+    private stocksUrl: string = 'assets/data.json';
+    private immutableData!: any[];
+
+    public previousData: Equities[] = [];
+    private signalRSubscription: Subscription | undefined;
+    public updateFreq: number = 2000;
+
 
     constructor(public signalRService: SignalrService, public stocksService: StocksService, private http: HttpClient) {
 
@@ -26,5 +42,202 @@ export class TransactionsComponent {
         console.log(`SGetAllStocks error: ${error}`);
         alert('GetAllStocks error!, see console for details.');
       });
+
+        this.signalRService.connection.on("SendLiveData",(val :string) => {
+
+        const obj = JSON.parse(val);
+        let indexToUpdate = [...this.gridData].findIndex((item: { symbol: any; }) => item.symbol===obj.symbol)
+
+        let newRow = {
+         indexToUpdate,
+          id: obj.symbol,
+              currency:"$",
+              stockName:obj.stock_name,
+              change:obj.change,
+              trend:obj.trend,
+              volume:obj.ttv,
+              open: obj.open,
+              low:obj.low,
+              high:obj.high,
+              last :obj.last,
+
+              symbol:obj.symbol,
+              currentPrice: obj.last,
+              bQty :obj.bQty,
+              sQty:obj.sQty,
+              value:(parseInt(obj.totalBuyQt)/(parseInt(obj.totalBuyQt) + parseInt(obj.totalSellQ)))*100 ,//-obj.totalBuyQt),
+             bufferValue:(parseInt(obj.totalSellQ)/(parseInt(obj.totalBuyQt) + parseInt(obj.totalSellQ)))*100
+
+
+
+
+      };
+      this.gridData[indexToUpdate] = newRow;
+
+
+
+   this.gridData = Object.assign([], this.gridData);
+   this.gridData = this.sortData('stackname');
+
+              })
     }
+
+
+    sortData(_case: string) {
+      switch(_case) {
+        case 'stackname':
+         return this.gridData.sort((a: { change: number; }, b: { change: number; }) => (b.change > a.change) ? 1 : -1)
+
+      }
+    }
+
+
+  getMostFrequent(arr:any) :any {
+    const hashmap = arr.reduce( (acc :any, val:any) => {
+     acc[val] = (acc[val] || 0 ) + 1
+     return acc
+  },{})
+ return Object.keys(hashmap).reduce((a, b) => hashmap[a] > hashmap[b] ? a : b)
+ }
+
+  updateRandomRowWithData(val :any): any {
+
+
+  var row = [...this.gridData].find(x=>x.symbol===val.symbol)
+  var rowlast=row?.last;
+  if(row?.symbol==val.symbol && val.last != rowlast ) {
+
+
+ var nmostnumber = this.getMostFrequent(row.intraday);
+
+
+
+    let newRow = {
+        ...row,
+        id: val.symbol,
+            currency:"$",
+            stockName:val.stock_name,
+            change:val.change,
+            mostnumber:nmostnumber,
+            volume:val.ttv,
+            open: val.open,
+            low:val.low,
+            high:val.high,
+            last :val.last,
+
+            symbol:val.symbol,
+            currentPrice: val.last,
+            bQty :val.bQty,
+            sQty:val.sQty,
+            netQtry : val.bQty-val.sQty,
+            avgPrice:val.avgPrice,
+           // value:val.totalSellQ,
+            bufferValue:val.totalBuyQt
+
+
+
+
+    };
+
+    // this.previousData = [...this.immutableData];
+    let indexToUpdate = [...this.gridData].findIndex(item => item.symbol === val.symbol);
+
+    // this.immutableData[indexToUpdate] = newRow;
+    this.gridData[indexToUpdate]== newRow;
+    //newRow.dataopen.push(live.open);
+   // newRow.dataavgPrice.push(live.avgPrice);
+
+
+    return newRow;
+  }
+  else{
+    return row;
+  }
+
+  }
+
+
+
+
+
+    ngOnInit() {
+
+
+    //   interval(10000 *6*5).subscribe(x => {
+
+    //     const sub=this.gridDataEquties.subscribe((res: any[]) => {
+    //       sub.unsubscribe();
+    //       this.stocksService.saveData( { dataSetName :"" ,jsonString :JSON.stringify(res)}).subscribe(() => {
+
+    //       });;
+    //       // this.totalDeals = forApprovalResponse  + draftResponse;
+
+    //       //  if (forApprovalResponse > 0) {
+    //       //     // ... logic goes here
+    //       //  }
+
+    //       //  if (draftResponse > 0) {
+    //       //    // ...logic goes here
+    //       //  }
+
+    //       //  if (this.totalDeals > 0) {
+    //       //     // do something with it
+    //       //  }
+    //     });
+
+    // });
+
+     // const pairs =  this.signalRService.connection.on("SendAllStocks");
+     // console.log(pairs.map((p:Equities[]) => (p)));
+       this.signalRService.connection.on("SendAllStocks",(data :any) => {
+        debugger;
+        var  i=0;
+        let res = data.map((val: Equities) => {
+
+          return { // Return the new object structure
+            id: val.symbol,
+            currency:"$",
+            stockName:val.stock_name,
+            change:val.change,
+            volume:val.ttv,
+            open: val.open,
+            low:val.low,
+            high:val.high,
+            last :val.last,
+            //volume: val.bQty,
+            symbol:val.symbol,
+            currentPrice: val.last,
+            bQty :val.bQty,
+            sQty:val.sQty,
+            netQtry : val.bQty-val.sQty,
+            avgPrice:val.avgPrice,
+            //intraday: Observable<number[]>;
+            intraday: [val.last],
+            dataopen:[val.open],
+            dataavgPrice:[val.avgPrice],
+            mostnumber:val.last,
+            // value:val.totalSellQ,
+            // bufferValue:val.totalSellQ
+          //  label: item.abbreviation, value: item.name
+          }
+          i++;
+        });
+
+        this.gridData = res;// this.getDataObservable(res);
+
+
+
+        })
+
+
+      }
+
+
+    public sort: SortDescriptor[] = [
+      {
+        field: "change",
+        dir: "desc",
+      },
+    ];
+
 }
