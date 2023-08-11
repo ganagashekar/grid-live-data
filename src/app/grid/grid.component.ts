@@ -46,6 +46,7 @@ export class GridComponent {
     public previousData: Stock[] = [];
     private signalRSubscription: Subscription | undefined;
     public updateFreq: number = 2000;
+    public scrollingData:[] |any ;
 
 
     constructor(public signalRService: SignalrService, public stocksService: StocksService, private http: HttpClient) {
@@ -159,6 +160,9 @@ export class GridComponent {
     // && subject === subject;
 
 
+     relDiff(a: number, b: number) {
+      return  100 * Math.abs( ( a - b ) / ( (a+b)/2 ) );
+     }
     getDataObservable(equities :Stock[]): Observable<Stock[]> {
       return new Observable<Stock[]>((observer) => {
           this.http.get<Stock[]>(this.stocksUrl).subscribe((data: Stock[]) => {
@@ -173,7 +177,9 @@ export class GridComponent {
             this.signalRService.connection.on("SendLiveData",(val :string) => {
 
               const obj = JSON.parse(val);
-            this.updateRandomRowWithData(obj )
+              var row = [...this.immutableData].find(x=>x.symbol===obj.symbol)
+
+              this.updateRandomRowWithData(obj,row )
 
                   observer.next(this.immutableData);
               })
@@ -183,6 +189,27 @@ export class GridComponent {
       });
 
 
+  }
+
+  updatescrollingtext(obj:any){
+    let indexToUpdate = [...this.scrollingData].findIndex((item: { symbol: any; }) => item.symbol===obj.symbol)
+    let newRow = {
+      indexToUpdate,
+       id: obj.symbol,
+           stockName:obj.stock_name,
+           change:obj.change,
+         //  volumeNumber:parseInt((parseFloat(obj.ttv.toString().replace('L',''))*100000).toString().replace('C',(parseFloat(obj.ttv.toString().replace('C',''))*100000).toString())),
+          symbol:obj.symbol
+   };
+
+    if( indexToUpdate !=null) {
+
+  this.scrollingData[indexToUpdate] = newRow;
+  this.scrollingData = Object.assign([], this.scrollingData);
+}else{
+
+  this.scrollingData.push(newRow);
+}
   }
 
   sortData(_case: string) {
@@ -201,24 +228,25 @@ export class GridComponent {
  return Object.keys(hashmap).reduce((a, b) => hashmap[a] > hashmap[b] ? a : b)
  }
 
-  updateRandomRowWithData(val :any): any {
+  updateRandomRowWithData(val :any,row:any): any {
 
 
-  var row = [...this.immutableData].find(x=>x.symbol===val.symbol)
+  // var row = [...this.immutableData].find(x=>x.symbol===val.symbol)
   var rowlast=row?.last;
   if(row?.symbol==val.symbol && val.last != rowlast ) {
 
 
- var nmostnumber = this.getMostFrequent(row.intraday);
+
+ //var nmostnumber = this.getMostFrequent(row.intraday);
     let newRow = {
         ...row,
         id: val.symbol,
             currency:"$",
             stockName:val.stock_name,
             change:val.change,
-            mostnumber:nmostnumber,
+//mostnumber:nmostnumber,
             volume:val.ttv,
-            volumeNumber:parseInt((parseFloat(val.ttv.toString().replace('L',''))*100000).toString().replace('C',(parseFloat(val.ttv.toString().replace('C',''))*100000).toString())),
+          //  volumeNumber:parseInt((parseFloat(val.ttv.toString().replace('L',''))*100000).toString().replace('C',(parseFloat(val.ttv.toString().replace('C',''))*100000).toString())),
             open: val.open,
             low:val.low,
             high:val.high,
@@ -243,6 +271,9 @@ export class GridComponent {
     let indexToUpdate = this.immutableData.findIndex(item => item.symbol === val.symbol);
     newRow.intraday.push(val.last);
     this.immutableData[indexToUpdate] = newRow;
+    // if( this.relDiff(row?.volumeNumber,newRow.volumeNumber) > 90){
+    //   this.updatescrollingtext(newRow)
+    // }
    // this.gridDataEquties = this.sortData('stackname');
     //newRow.dataopen.push(live.open);
    // newRow.dataavgPrice.push(live.avgPrice);
@@ -265,7 +296,7 @@ export class GridComponent {
 
 
        this.signalRService.connection.on("SendAllStocks",(data :any) => {
-        debugger;
+
         var  i=0;
         let res = data.map((val: Equities) => {
 

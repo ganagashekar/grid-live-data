@@ -81,7 +81,7 @@ export class TransactionsComponent {
               last :obj.last,
               bPrice:obj.bPrice,
             sPrice :obj.sPrice,
-            volumeNumber:parseInt((parseFloat(obj.ttv.toString().replace('L',''))*100000).toString().replace('C',(parseFloat(obj.ttv.toString().replace('C',''))*100000).toString())),
+           // volumeNumber:(((obj.ttv.toString().replace('L',(parseFloat(obj.ttv.toString().replace('L',''))*100000)))).toString().replace('C',(parseFloat(obj.ttv.toString().replace('C',''))*10000000).toString())),
 
 
               symbol:obj.symbol,
@@ -109,8 +109,8 @@ export class TransactionsComponent {
     sortData(_case: string) {
       switch(_case) {
         case 'stackname':
-         //return this.gridData.sort((a: { change: number; }, b: { change: number; }) => (b.change > a.change) ? 1 : -1)
-         return this.gridData.sort((a: { volumeNumber: number; }, b: { volumeNumber: number; }) => (b.volumeNumber > a.volumeNumber) ? 1 : -1)
+         return this.gridData.sort((a: { volume: number; }, b: { volume: number; }) => (b.volume > a.volume) ? 1 : -1)
+         //return this.gridData.sort((a: { volumeNumber: number; }, b: { volumeNumber: number; }) => (b.volumeNumber > a.volumeNumber) ? 1 : -1)
 
       }
     }
@@ -159,7 +159,7 @@ export class TransactionsComponent {
             bufferValue:val.totalBuyQt,
             bPrice:val.bPrice,
             sPrice :val.sPrice,
-            volumeNumber:parseInt((parseFloat(val.ttv.toString().replace('L',''))*100000).toString().replace('C',(parseFloat(val.ttv.toString().replace('C',''))*100000).toString())),
+           // volumeNumber:parseInt((parseFloat(val.ttv.toString().replace('L',''))*100000).toString().replace('C',(parseFloat(val.ttv.toString().replace('C',''))*100000).toString())),
 
 
 
@@ -190,35 +190,9 @@ export class TransactionsComponent {
 
     ngOnInit() {
 
-
-    //   interval(10000 *6*5).subscribe(x => {
-
-    //     const sub=this.gridDataEquties.subscribe((res: any[]) => {
-    //       sub.unsubscribe();
-    //       this.stocksService.saveData( { dataSetName :"" ,jsonString :JSON.stringify(res)}).subscribe(() => {
-
-    //       });;
-    //       // this.totalDeals = forApprovalResponse  + draftResponse;
-
-    //       //  if (forApprovalResponse > 0) {
-    //       //     // ... logic goes here
-    //       //  }
-
-    //       //  if (draftResponse > 0) {
-    //       //    // ...logic goes here
-    //       //  }
-
-    //       //  if (this.totalDeals > 0) {
-    //       //     // do something with it
-    //       //  }
-    //     });
-
-    // });
-
-     // const pairs =  this.signalRService.connection.on("SendAllStocks");
-     // console.log(pairs.map((p:Equities[]) => (p)));
+;
        this.signalRService.connection.on("SendAllStocks",(data :any) => {
-        debugger;
+
         var  i=0;
         let res = data.map((val: Equities) => {
 
@@ -246,11 +220,7 @@ export class TransactionsComponent {
             mostnumber:val.last,
             bPrice:val.bPrice,
             sPrice :val.sPrice,
-            volumeNumber:parseInt((parseFloat(val.ttv.toString().replace('L',''))*100000).toString().replace('C',(parseFloat(val.ttv.toString().replace('C',''))*100000).toString())),
 
-            // value:val.totalSellQ,
-            // bufferValue:val.totalSellQ
-          //  label: item.abbreviation, value: item.name
           }
           i++;
         });

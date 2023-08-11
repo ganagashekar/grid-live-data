@@ -1,9 +1,8 @@
-<p class="right-panel-title">Recent transactions</p>
+
 <div class="card-container">
 
-  <kendo-listview [data]="gridData" [itemClass]="{ 'item-border': true }"
-  >
-      <ng-template [width]="150" kendoListViewItemTemplate let-dataItem="dataItem">
+  <kendo-listview [data]="gridData" [itemClass]="{ 'item-border': true }">
+      <ng-template  kendoListViewItemTemplate let-dataItem="dataItem">
         <mat-progress-bar
                     class="example-margin"
                     [color]="color"
@@ -12,46 +11,37 @@
                     [bufferValue]="dataItem.bufferValue">
                 </mat-progress-bar>
 
-        <kendo-card min-width="400px" width="auto" class="transaction-card">
-          <kendo-card-header class="k-hstack"  width="auto">
 
-             <span  style="float: left;  font-size: 12px;"> {{dataItem.stockName}}
-              <span class="testcolor"  style="font-size: 12px;">
-                <span class="k-icon k-i-arrow-60-down arrow-down" *ngIf="dataItem.sPrice < dataItem.bPrice"></span>
-                <span class="k-icon k-i-arrow-60-up arrow-up" *ngIf="dataItem.sPrice > dataItem.bPrice"></span>
-                {{ (dataItem.sPrice - dataItem.bPrice).toFixed(2) }}
-              </span>
-
-
-              <span  class="testcolorCng" style="float: right;font-size: 12px;">
-
-                <span class="k-icon k-i-arrow-60-down arrow-down" *ngIf="dataItem.change < 2"></span>
-                <span class="k-icon k-i-arrow-60-up arrow-up" *ngIf="dataItem.change > 2"></span>
-                 CHG : {{ dataItem.change }}
-              </span>
-             </span>
+                <table>
+                  <tr>
+                    <td style="text-align: left;min-width: 250px;"> <span  style="justify-content: space-between;text-align: left; font-size: 12px;"> {{dataItem.stockName}}</span></td>
+                    <td style="text-align: right;">
+                        <span style="font-size: 12px;">
+                          <span class="k-icon k-i-arrow-60-down arrow-down" *ngIf="dataItem.sPrice < dataItem.bPrice"></span>
+                          <span class="k-icon k-i-arrow-60-up arrow-up" *ngIf="dataItem.sPrice > dataItem.bPrice"></span>
+                        |  {{ (dataItem.sPrice - dataItem.bPrice).toFixed(2) }} |
+                        </span>
 
 
+                        <span style="font-size:12px;">
+                          <span class="k-icon k-i-arrow-60-down arrow-down" *ngIf="dataItem.change < 1"></span>
+                          <span class="k-icon k-i-arrow-60-up arrow-up" *ngIf="dataItem.change > 1"></span>
+                          |  {{ dataItem.change }} |
+                        </span>
+                        <span style="font-size: 12px;">
 
+                          <span class="k-icon k-i-arrow-60-down arrow-down" *ngIf="dataItem.last < dataItem.open"></span>
+                          <span class="k-icon k-i-arrow-60-up arrow-up" *ngIf="dataItem.last > dataItem.open"></span>
+                            | {{ dataItem.last }} |
+                        </span>
+                  </td>
+                  </tr>
+                  <tr>
+                  <td><span style="float: left;font-size: 12px;"> L : {{ dataItem.low }} |  H :  {{ dataItem.high }} </span></td>
+                  <td><span style="float: right;font-size: 12px;">  {{ dataItem.volume }} </span></td>
+                  </tr>
+                </table>
 
-
-
-
-          </kendo-card-header>
-
-          <kendo-card-footer>
-            <p kendoCardSubtitle class="k-card-subtitle">
-              <span style="float: left;font-size: 12px;"> L : {{ dataItem.low }} |  H :  {{ dataItem.high }} </span>
-              <span style="float: right;font-size: 12px;"> {{ dataItem.volumeNumber }} ( {{ dataItem.volume }} )</span>
-                <!-- <span class="price"> {{dataItem.volume }}</span> -->
-                <ng-template #recieve>
-                    <!-- <span class="price">{{ dataItem.change }}</span> -->
-                </ng-template>
-            </p>
-          </kendo-card-footer>
-
-
-      </kendo-card>
 
       </ng-template>
       <hr>

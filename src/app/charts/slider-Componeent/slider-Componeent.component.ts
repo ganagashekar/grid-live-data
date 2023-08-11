@@ -106,7 +106,7 @@ export class SliderComponeentComponent  {
   }
 
   onSlide(event: any) {
-     debugger;
+
 }
 }
 
