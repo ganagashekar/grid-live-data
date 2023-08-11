@@ -1,9 +1,3 @@
-.grid-section-title {
-    font-weight: 500;
-    font-size: 24px;
-    color: #626880;
-}
-
 .price-down .priceColumn,
 .arrow-down {
     color: #f31700;
@@ -14,10 +8,15 @@
     color: #37b400;
 }
 
-/* .coin-logo {
-    height: 22px;
-    width: 22px;
+.currency {
+    color: #4b5ffa;
+    font-weight: bold;
+}
+
+/* .crypto-symbol {
+    color: #959595;
 } */
+
 .currency {
     margin: 3px 5px 0px 5px;
     color: #4b5ffa;
@@ -28,11 +27,11 @@
     display: flex;
     align-items: center;
 }
-.crypto-symbol {
-    color: #959595;
+
+#my-grid tr.green {
+  background-color: b2f699;
 }
 
-::ng-deep .k-grid th  .k-grid td {
-    padding: 0px 0px !important;
-
+#my-grid tr.red {
+  background-color: orange;
 }

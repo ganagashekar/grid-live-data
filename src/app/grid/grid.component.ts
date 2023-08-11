@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { GridDataResult, RowClassArgs } from '@progress/kendo-angular-grid';
+import {  RowClassArgs } from '@progress/kendo-angular-grid';
 import { Observable, Subscription, interval, of } from 'rxjs';
 import { trigger, style, animate, transition, keyframes } from '@angular/animations';
 // import { Stock, StocksService } from '../services/stocks.service';
@@ -351,10 +351,10 @@ export class GridComponent {
         const index = previousData.findIndex((item: { id: any; }) => item.id === context.dataItem.id);
         this.prevDataItem = previousData[index];
 
-        if (context.dataItem.change > 0) {
-            return { 'price-up': true };
+        if (context.dataItem.change > this.prevDataItem.change) {
+            return { 'green': true };
         } else {
-            return { 'price-down': true };
+            return { 'red': true };
         }
     };
 }

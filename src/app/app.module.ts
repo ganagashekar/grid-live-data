@@ -33,6 +33,7 @@ import { SliderColorDirective } from './directives/sildercolor';
 // import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { SliderComponeentComponent } from './charts/slider-Componeent/slider-Componeent.component';
 import {ProgressBarMode, MatProgressBarModule} from '@angular/material/progress-bar';
+import { WeekChartComponent } from './charts/week-chart/week-chart.component';
 @NgModule({
     declarations: [
         AppComponent,
@@ -46,6 +47,7 @@ import {ProgressBarMode, MatProgressBarModule} from '@angular/material/progress-
         NewsComponent,
         DayChartComponent,
         SliderComponeentComponent,
+        WeekChartComponent,
 
 
 
