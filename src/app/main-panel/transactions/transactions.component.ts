@@ -109,7 +109,7 @@ export class TransactionsComponent {
     sortData(_case: string) {
       switch(_case) {
         case 'stackname':
-         return this.gridData.sort((a: { volume: number; }, b: { volume: number; }) => (b.volume > a.volume) ? 1 : -1)
+         return this.gridData.sort((a: { volume: number; }, b: { volume: number; }) => (b.volume - a.volume) )
          //return this.gridData.sort((a: { volumeNumber: number; }, b: { volumeNumber: number; }) => (b.volumeNumber > a.volumeNumber) ? 1 : -1)
 
       }
