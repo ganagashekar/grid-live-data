@@ -4,7 +4,6 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
-;
 import { ListViewModule } from '@progress/kendo-angular-listview';
 import { GridModule } from '@progress/kendo-angular-grid';
 import { NavigationModule } from '@progress/kendo-angular-navigation';
@@ -34,6 +33,25 @@ import { SliderColorDirective } from './directives/sildercolor';
 import { SliderComponeentComponent } from './charts/slider-Componeent/slider-Componeent.component';
 import {ProgressBarMode, MatProgressBarModule} from '@angular/material/progress-bar';
 import { WeekChartComponent } from './charts/week-chart/week-chart.component';
+import { TopPerformerComponent } from './top-performer/top-performer.component';
+import { RouterModule, Routes } from '@angular/router';
+import { HomeComponent } from './home/home.component';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatInputModule} from '@angular/material/input';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatNativeDateModule} from '@angular/material/core';
+import {MatSelectModule} from '@angular/material/select';
+import {MatCardModule} from '@angular/material/card';
+import { PivotHistComponent } from './pivot-hist/pivot-hist.component';
+const routes: Routes = [
+  { path: '', component: HomeComponent },
+  { path: 'top', component: TopPerformerComponent },
+  { path: 'pivot', component: PivotHistComponent },
+  // { path: 'about', component: AboutComponent },
+  // { path: 'products', component: ProductsComponent },
+  // { path: '**', component: HomeComponent }, // If no matching route found, go back to home route
+];
+
 @NgModule({
     declarations: [
         AppComponent,
@@ -48,15 +66,15 @@ import { WeekChartComponent } from './charts/week-chart/week-chart.component';
         DayChartComponent,
         SliderComponeentComponent,
         WeekChartComponent,
-
-
-
-
+        TopPerformerComponent,
+        HomeComponent,
+        PivotHistComponent,
     ],
     imports: [
       MatSliderModule,
+      RouterModule.forRoot(routes),
       ListViewModule,
-
+      MatSelectModule,
         BrowserModule,
         HttpClientModule,
         GridModule,
@@ -69,6 +87,12 @@ import { WeekChartComponent } from './charts/week-chart/week-chart.component';
         ChartsModule,
         TooltipsModule,
         MatProgressBarModule,
+        MatDatepickerModule,
+        MatInputModule,
+        MatFormFieldModule,
+        MatNativeDateModule,
+        MatCardModule
+
     ],
     providers: [
       SignalrService,
