@@ -94,27 +94,38 @@ export class PivotHistComponent {
 
               })
 
-              interval(30000).subscribe(x => {
-                this.signalRService.connection
-                .invoke('GetPivotData',this.SelectedDate,this.selectedTop)
-                .catch((error: any) => {
-                  console.log(`SGetAllStocks error: ${error}`);
-                  alert('GetAllStocks error!, see console for details.');
-            });
-          })
+          //     interval(5000).subscribe(x => {
+          //       this.signalRService.connection
+          //       .invoke('GetPivotData',this.SelectedDate,this.selectedTop)
+          //       .catch((error: any) => {
+          //         console.log(`SGetAllStocks error: ${error}`);
+          //         alert('GetAllStocks error!, see console for details.');
+          //   });
+          // })
     }
 
     selected(event: MatSelectChange) {
       debugger;
 
       this.selectedTop=event;
+      this.signalRService.connection
+                .invoke('GetPivotData',this.SelectedDate,this.selectedTop)
+                .catch((error: any) => {
+                  console.log(`SGetAllStocks error: ${error}`);
+                  alert('GetAllStocks error!, see console for details.');
+            });
 
     }
 
      onDateChange(event: any ): void {
       debugger;
       this.SelectedDate = event.value.toUTCString();
-      console.log('Teste', this.SelectedDate);
+      this.signalRService.connection
+                .invoke('GetPivotData',this.SelectedDate,this.selectedTop)
+                .catch((error: any) => {
+                  console.log(`SGetAllStocks error: ${error}`);
+                  alert('GetAllStocks error!, see console for details.');
+            });
     }
     sortData(_case: string) {
       switch(_case) {
@@ -129,7 +140,7 @@ export class PivotHistComponent {
 
     this.signalRService.connection.on("SendPivotData",(data :any) => {
 
-      
+
       //this.displayedColumns= Object.keys(data[0])
       this.html = this._sanitizer.bypassSecurityTrustHtml(data);// this.getDataObservable(res);
 

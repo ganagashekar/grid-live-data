@@ -43,8 +43,9 @@ interface Food {
 
 })
 export class TopPerformerComponent {
-    public transactionCards: Transactions[] = accountTransactions;
+
     public gridData: Equities[] |any;
+    public gridData_BuyRunner :any;
     color: ThemePalette = 'primary';
 
     mode: ProgressBarMode = 'determinate';
@@ -73,7 +74,8 @@ export class TopPerformerComponent {
     public updateFreq: number = 2000;
 
 
-    constructor(public signalRService: SignalrService, public stocksService: StocksService, private http: HttpClient) {
+    constructor(public signalRService: SignalrService, public stocksService: StocksService, private http: HttpClient)
+    {
 
       this.signalRService.connection
       .invoke('FecthTopStocks',this.SelectedDate,this.selectedTop)
@@ -82,49 +84,21 @@ export class TopPerformerComponent {
         alert('GetAllStocks error!, see console for details.');
       });
 
-     
+
 
         this.signalRService.connection.on("SendTopStocks",(val :[any]) => {
-         debugger;
-      //   const obj = JSON.parse(val);
-      //   let indexToUpdate = [...this.gridData].findIndex((item: { symbol: any; }) => item.symbol===obj.symbol)
 
-      //   let newRow = {
-      //    indexToUpdate,
-      //     id: obj.symbol,
-      //         currency:"$",
-      //         stockName:obj.stock_name,
-      //         change:obj.change,
-      //         trend:obj.trend,
-      //         volume:obj.ttv,
-      //         open: obj.open,
-      //         low:obj.low,
-      //         high:obj.high,
-      //         last :obj.last,
-      //         bPrice:obj.bPrice,
-      //       sPrice :obj.sPrice,
-      //      // volumeNumber:(((obj.ttv.toString().replace('L',(parseFloat(obj.ttv.toString().replace('L',''))*100000)))).toString().replace('C',(parseFloat(obj.ttv.toString().replace('C',''))*10000000).toString())),
-
-
-      //         symbol:obj.symbol,
-      //         currentPrice: obj.last,
-      //         bQty :obj.bQty,
-      //         sQty:obj.sQty,
-      //         value:(parseInt(obj.totalBuyQt)/(parseInt(obj.totalBuyQt) + parseInt(obj.totalSellQ)))*100 ,//-obj.totalBuyQt),
-      //          bufferValue:(parseInt(obj.totalSellQ)/(parseInt(obj.totalBuyQt) + parseInt(obj.totalSellQ)))*100
-
-
-
-
-      // };
-      //this.gridData[indexToUpdate] = newRow;
-
-
-
-   this.gridData = Object.assign([], val);
-   this.gridData = this.sortData('stackname');
+          this.gridData = Object.assign([], val);
+          this.gridData = this.sortData('stackname');
 
               })
+
+              this.signalRService.connection.on("SendSTockToBuy",(val :[any]) => {
+
+                 this.gridData_BuyRunner = Object.assign([], val);
+                 this.gridData_BuyRunner =  this.gridData_BuyRunner;
+
+                     })
 
               interval(5000).subscribe(x => {
                 this.signalRService.connection
@@ -133,18 +107,27 @@ export class TopPerformerComponent {
                   console.log(`SGetAllStocks error: ${error}`);
                   alert('GetAllStocks error!, see console for details.');
             });
+
+            this.signalRService.connection
+            .invoke('GetSTockToBuy')
+            .catch((error: any) => {
+              console.log(`GetSTockToBuy error: ${error}`);
+              alert('GetSTockToBuy error!, see console for details.');
+        });
           })
+
+
     }
 
     selected(event: MatSelectChange) {
-      debugger;
+
 
       this.selectedTop=event;
-     
+
     }
 
      onDateChange(event: any ): void {
-      debugger;
+
       this.SelectedDate = event.value.toUTCString();
       console.log('Teste', this.SelectedDate);
     }
@@ -152,10 +135,11 @@ export class TopPerformerComponent {
       switch(_case) {
         case 'stackname':
          return this.gridData.sort((a: { volume: number; }, b: { volume: number; }) => (b.volume - a.volume) )
-         //return this.gridData.sort((a: { volumeNumber: number; }, b: { volumeNumber: number; }) => (b.volumeNumber > a.volumeNumber) ? 1 : -1)
 
       }
     }
+
+
 
 
   getMostFrequent(arr:any) :any {
@@ -166,115 +150,13 @@ export class TopPerformerComponent {
  return Object.keys(hashmap).reduce((a, b) => hashmap[a] > hashmap[b] ? a : b)
  }
 
-  updateRandomRowWithData(val :any): any {
-
-
-  var row = [...this.gridData].find(x=>x.symbol===val.symbol)
-  var rowlast=row?.last;
-  if(row?.symbol==val.symbol && val.last != rowlast ) {
-
-
- var nmostnumber = this.getMostFrequent(row.intraday);
-
-
-
-    let newRow = {
-        ...row,
-        id: val.symbol,
-            currency:"$",
-            stockName:val.stock_name,
-            change:val.change,
-            mostnumber:nmostnumber,
-            volume:val.ttv,
-            open: val.open,
-            low:val.low,
-            high:val.high,
-            last :val.last,
-
-            symbol:val.symbol,
-            currentPrice: val.last,
-            bQty :val.bQty,
-            sQty:val.sQty,
-            netQtry : val.bQty-val.sQty,
-            avgPrice:val.avgPrice,
-           // value:val.totalSellQ,
-            bufferValue:val.totalBuyQt,
-            bPrice:val.bPrice,
-            sPrice :val.sPrice,
-           // volumeNumber:parseInt((parseFloat(val.ttv.toString().replace('L',''))*100000).toString().replace('C',(parseFloat(val.ttv.toString().replace('C',''))*100000).toString())),
 
 
 
 
 
-    };
-
-    // this.previousData = [...this.immutableData];
-    let indexToUpdate = [...this.gridData].findIndex(item => item.symbol === val.symbol);
-
-    // this.immutableData[indexToUpdate] = newRow;
-    this.gridData[indexToUpdate]== newRow;
-    //newRow.dataopen.push(live.open);
-   // newRow.dataavgPrice.push(live.avgPrice);
 
 
-    return newRow;
-  }
-  else{
-    return row;
-  }
-
-  }
-
-
-
-
-
-    ngOnInit() {
-
-;
-       this.signalRService.connection.on("SendAllStocks",(data :any) => {
-
-        var  i=0;
-        let res = data.map((val: Equities) => {
-
-          return { // Return the new object structure
-            id: val.symbol,
-            currency:"$",
-            stockName:val.stock_name,
-            change:val.change,
-            volume:val.ttv,
-            open: val.open,
-            low:val.low,
-            high:val.high,
-            last :val.last,
-            //volume: val.bQty,
-            symbol:val.symbol,
-            currentPrice: val.last,
-            bQty :val.bQty,
-            sQty:val.sQty,
-            netQtry : val.bQty-val.sQty,
-            avgPrice:val.avgPrice,
-            //intraday: Observable<number[]>;
-            intraday: [val.last],
-            dataopen:[val.open],
-            dataavgPrice:[val.avgPrice],
-            mostnumber:val.last,
-            bPrice:val.bPrice,
-            sPrice :val.sPrice,
-
-          }
-          i++;
-        });
-
-        this.gridData = res;// this.getDataObservable(res);
-
-
-
-        })
-
-
-      }
 
 
     public sort: SortDescriptor[] = [
