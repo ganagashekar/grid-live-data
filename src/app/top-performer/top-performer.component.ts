@@ -54,6 +54,9 @@ export class TopPerformerComponent {
     selectedTop : number |any ;
     SelectedDate : string | any ;
 
+    buy_selectedTop : number |any ;
+    buy_SelectedDate : string | any ;
+
     foods: Food[] = [
       {value: '1', viewValue: '1'},
       {value: '5', viewValue: '5'},
@@ -65,6 +68,33 @@ export class TopPerformerComponent {
       {value: '70', viewValue: '70'},
       {value: '100', viewValue: '100'},
     ];
+
+    buyRatio: Food[] = [
+
+      {value: '10', viewValue: '10'},
+      {value: '15', viewValue: '15'},
+      {value: '20', viewValue: '20'},
+      {value: '30', viewValue: '30'},
+      {value: '50', viewValue: '50'},
+      {value: '70', viewValue: '70'},
+      {value: '100', viewValue: '100'},
+      {value: '100', viewValue: '100'},
+      {value: '120', viewValue: '120'},
+      {value: '150', viewValue: '150'},
+      {value: '200', viewValue: '200'},
+      {value: '300', viewValue: '300'},
+      
+      {value: '400', viewValue: '400'},
+      {value: '500', viewValue: '500'},
+      {value: '600', viewValue: '600'},
+      {value: '700', viewValue: '700'},
+      {value: '800', viewValue: '800'},
+       {value: '900', viewValue: '900'},
+       {value: '1000', viewValue: '1000'},
+
+
+    ];
+
     public prevDataItem!: Stock;
     private stocksUrl: string = 'assets/data.json';
     private immutableData!: any[];
@@ -109,7 +139,7 @@ export class TopPerformerComponent {
             });
 
             this.signalRService.connection
-            .invoke('GetSTockToBuy')
+            .invoke('GetSTockToBuy',this.buy_SelectedDate,this.buy_selectedTop)
             .catch((error: any) => {
               console.log(`GetSTockToBuy error: ${error}`);
               alert('GetSTockToBuy error!, see console for details.');
@@ -131,6 +161,21 @@ export class TopPerformerComponent {
       this.SelectedDate = event.value.toUTCString();
       console.log('Teste', this.SelectedDate);
     }
+
+
+    buy_selected(event: MatSelectChange) {
+
+
+      this.buy_selectedTop=event;
+
+    }
+
+     buy_onDateChange(event: any ): void {
+
+      this.buy_SelectedDate = event.value.toUTCString();
+      console.log('Teste', this.buy_SelectedDate);
+    }
+
     sortData(_case: string) {
       switch(_case) {
         case 'stackname':

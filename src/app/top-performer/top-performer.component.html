@@ -2,9 +2,9 @@
 
 
 
-<div class="card-container" style="width: 70%;float: left;">
-  <mat-card>
-    <mat-card-content><div>
+<div class="card-container" style="width: 65%;float: left;">
+  <br>
+  <div>
 
     <div class="example-container">
 
@@ -17,19 +17,17 @@
         </mat-select>
       </mat-form-field>
       <mat-form-field>
-        <mat-label>Choose a date</mat-label>
-        <input  (dateChange)="onDateChange($event)" matInput [matDatepicker]="picker">
-
-        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <input  (dateChange)="onDateChange($event)" matInput [matDatepicker]="picker" placeholder="Choose a date">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>
+      
 
 
     </div>
 
 
-  </div></mat-card-content>
-  </mat-card>
+  </div>
   <kendo-listview [data]="gridData">
       <ng-template  kendoListViewItemTemplate let-dataItem="dataItem">
         <mat-progress-bar
@@ -44,7 +42,7 @@
                 <table>
                   <tr>
                     <td style="text-align: left;min-width: 250px;"> <span  style="justify-content: space-between;text-align: left; font-size: 12px;"> {{dataItem.stock_name}}</span></td>
-                    <td style="text-align: right;">
+                    <!-- <td style="text-align: right;">
                       <span style="font-size: 12px;">
                         <span class="k-icon k-i-arrow-60-down arrow-down" *ngIf="dataItem.sPrice < dataItem.bPrice"></span>
                         <span class="k-icon k-i-arrow-60-up arrow-up" *ngIf="dataItem.sPrice > dataItem.bPrice"></span>
@@ -54,20 +52,10 @@
 
 
 
-                </td>
-                    <td style="text-align: right;">
-
-
-                      &nbsp;
-                        <span style="font-size:12px;">
-
-                          |  {{ dataItem.avg }} |
-                        </span>
-                        &nbsp;
-                  </td>
-                  </tr>
-                  <tr>
-                    &nbsp; <td><span style="float: left;font-size: 12px;"> L : {{ dataItem.min_last }} |  H :  {{ dataItem.max_last }} </span></td>
+                </td> -->
+                   
+                 
+                    &nbsp; <td><span style="float: left;font-size: 12px;"> L : {{ dataItem.min_last }} |  H :  {{ dataItem.max_last }}  | Avg : {{ dataItem.avg }} </span></td>
                   &nbsp;<td><span style="float: right;font-size: 12px;">  {{ dataItem.volume }} </span></td>
             &nbsp;
                   |  &nbsp;&nbsp;<td>Changes  Min : {{dataItem.min_change}}  - Max : {{dataItem.max_change}}</td>
@@ -82,14 +70,28 @@
   </kendo-listview>
 
 </div>
-<div class="card-container" style="width: 30%;float: right;">
-  <mat-card>
-    <mat-card-content><div>
+<div class="card-container" style="width: 34.5%;float: right;">
+ 
+      <div class="example-container">
+
+        <mat-form-field floatLabel="always">
+          <mat-label>Amount</mat-label>
+          <mat-select (selectionChange)="buy_selected($event.value)">
+            <mat-option  *ngFor="let food of buyRatio" [value]="food.value">
+              {{food.viewValue}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+          <input (dateChange)="buy_onDateChange($event)"  matInput [matDatepicker]="picker2" placeholder="Choose a date">
+          <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+          <mat-datepicker #picker2></mat-datepicker>
+        </mat-form-field>
+      
 
 
-
-  </div></mat-card-content>
-  </mat-card>
+      </div>
+    
   <kendo-listview [data]="gridData_BuyRunner">
       <ng-template  kendoListViewItemTemplate let-dataItem="dataItem">
         <mat-progress-bar
@@ -103,7 +105,9 @@
 
                 <table>
                   <tr>
-                    <td style="text-align: left;min-width: 250px;"> <span  style="justify-content: space-between;text-align: left; font-size: 12px;"> {{dataItem.stock_name}}</span></td>
+                    <td style="text-align: left;min-width: 350px;"> <span  style="justify-content: space-between;text-align: left; font-size: 12px;"> {{dataItem.stock_name}} |   <span style="font-size: smaller;">
+                      {{dataItem.ltt}}
+                    </span> </span></td>
                     <td style="text-align: right;">
                       <!-- <span style="font-size: 12px;">
                         <span class="k-icon k-i-arrow-60-down arrow-down" *ngIf="dataItem.sPrice < dataItem.bPrice"></span>
@@ -113,6 +117,8 @@
                       <span>
                         {{dataItem.ratio}}
                       </span>
+
+                      
 
 
 
@@ -124,7 +130,7 @@
                       &nbsp;
                         <span style="font-size:12px;">
 
-                          |  Current : {{ dataItem.ttv }} |
+                          |  Current : {{ dataItem.ttv }} 
                           |  Pre : {{ dataItem.prev }} |
                         </span>
                         &nbsp;
