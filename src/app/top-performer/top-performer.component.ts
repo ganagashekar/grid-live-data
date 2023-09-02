@@ -78,12 +78,11 @@ export class TopPerformerComponent {
       {value: '50', viewValue: '50'},
       {value: '70', viewValue: '70'},
       {value: '100', viewValue: '100'},
-      {value: '100', viewValue: '100'},
       {value: '120', viewValue: '120'},
       {value: '150', viewValue: '150'},
       {value: '200', viewValue: '200'},
       {value: '300', viewValue: '300'},
-      
+
       {value: '400', viewValue: '400'},
       {value: '500', viewValue: '500'},
       {value: '600', viewValue: '600'},
@@ -91,6 +90,28 @@ export class TopPerformerComponent {
       {value: '800', viewValue: '800'},
        {value: '900', viewValue: '900'},
        {value: '1000', viewValue: '1000'},
+
+
+       {value: '-10', viewValue: '-10'},
+      {value: '-15', viewValue: '-15'},
+      {value: '-20', viewValue: '-20'},
+      {value: '-30', viewValue: '-30'},
+      {value: '-50', viewValue: '-50'},
+      {value: '-70', viewValue: '-70'},
+      {value: '-100', viewValue: '-100'},
+
+      {value: '-120', viewValue: '-120'},
+      {value: '-150', viewValue: '-150'},
+      {value: '-200', viewValue: '-200'},
+      {value: '-300', viewValue: '-300'},
+      {value: '-400', viewValue: '-400'},
+      {value: '-500', viewValue: '-500'},
+      {value: '-600', viewValue: '-600'},
+      {value: '-700', viewValue: '-700'},
+      {value: '-800', viewValue: '-800'},
+       {value: '-900', viewValue: '-900'},
+       {value: '-1000', viewValue: '-1000'},
+
 
 
     ];
@@ -124,19 +145,14 @@ export class TopPerformerComponent {
               })
 
               this.signalRService.connection.on("SendSTockToBuy",(val :[any]) => {
-
+                debugger;
                  this.gridData_BuyRunner = Object.assign([], val);
                  this.gridData_BuyRunner =  this.gridData_BuyRunner;
 
                      })
 
-              interval(5000).subscribe(x => {
-                this.signalRService.connection
-                .invoke('FecthTopStocks',this.SelectedDate,this.selectedTop)
-                .catch((error: any) => {
-                  console.log(`SGetAllStocks error: ${error}`);
-                  alert('GetAllStocks error!, see console for details.');
-            });
+              interval(8000).subscribe(x => {
+
 
             this.signalRService.connection
             .invoke('GetSTockToBuy',this.buy_SelectedDate,this.buy_selectedTop)
@@ -145,6 +161,18 @@ export class TopPerformerComponent {
               alert('GetSTockToBuy error!, see console for details.');
         });
           })
+
+
+          interval(20000).subscribe(x => {
+            this.signalRService.connection
+            .invoke('FecthTopStocks',this.SelectedDate,this.selectedTop)
+            .catch((error: any) => {
+              console.log(`SGetAllStocks error: ${error}`);
+              alert('GetAllStocks error!, see console for details.');
+        });
+
+
+      })
 
 
     }

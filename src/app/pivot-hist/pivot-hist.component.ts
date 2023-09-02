@@ -47,11 +47,11 @@ interface Food {
 })
 export class PivotHistComponent {
      html: SafeHtml;
-    displayedColumns!: string[];
+     displayedColumns!: string[];
      dataSource!: any[];
-         public transactionCards: Transactions[] = accountTransactions;
-    public gridData: Equities[] |any;
-    color: ThemePalette = 'primary';
+     public transactionCards: Transactions[] = accountTransactions;
+      public gridData: Equities[] |any;
+      color: ThemePalette = 'primary';
 
     mode: ProgressBarMode = 'determinate';
     value = 0;
