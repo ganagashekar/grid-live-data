@@ -2,33 +2,6 @@
 
 <app-common-filters></app-common-filters>
 
-<div class="card-container">
-  <mat-card>
-    <mat-card-content><div>
-
-    <div class="example-container">
-
-      <mat-form-field floatLabel="always">
-        <mat-label>Amount</mat-label>
-        <mat-select (selectionChange)="selected($event.value)">
-          <mat-option  *ngFor="let food of foods" [value]="food.value">
-            {{food.viewValue}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-      <mat-form-field>
-        <input  (dateChange)="onDateChange($event)" matInput [matDatepicker]="picker" placeholder="Choose a date">
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-      </mat-form-field>
-
-    </div>
-
-
-  </div></mat-card-content>
-  </mat-card>
-  <div >
-    <div calss="bodyMsg" [innerHTML]="html"></div>
-</div>
-
+<div >
+  <div calss="bodyMsg" [innerHTML]="html"></div>
 </div>

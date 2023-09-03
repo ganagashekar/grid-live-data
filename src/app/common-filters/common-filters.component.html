@@ -1,7 +1,64 @@
 
+<mat-form-field>
+  <mat-select  #selectSector placeholder="Sectors" (selectionChange)="selectedsectorNameChange($event.value)"[formControl]="sectorName"  [(value)]="selectedsectorName" multiple>
 
+    <div class="select-all">
+      <mat-checkbox [(ngModel)]="SectorallSelected"
+                      [ngModelOptions]="{standalone: true}"
+                      (change)="toggleAllSelection_selectSector()">Select All</mat-checkbox>
+  </div>
+    <mat-option *ngFor="let topping of sectorNameList" [value]="topping.text">{{topping.text}}</mat-option>
+  </mat-select>
+</mat-form-field>
+&nbsp;
+<mat-form-field>
+  <mat-select #selectindustry placeholder="Industry Name" (selectionChange)="selectedIndustryNameChange($event.value)"  [formControl]="industryNewName" [(value)]="selectedIndustryNewName" multiple>
+    <div class="select-all">
+      <mat-checkbox [(ngModel)]="industryallSelected"
+                      [ngModelOptions]="{standalone: true}"
+                      (change)="toggleAllSelection_industry()">Select All</mat-checkbox>
+  </div>
+    <mat-option *ngFor="let topping of industryNewNameList" [value]="topping.text">{{topping.text}}</mat-option>
+  </mat-select>
+</mat-form-field>
+&nbsp;
+<mat-form-field>
+  <mat-select #selectgroup placeholder="Group Name"  (selectionChange)="selectedgroupNameNameChange($event.value)"  [formControl]="groupName" [(value)]="selectedgroupName" multiple>
+    <div class="select-all">
+      <mat-checkbox [(ngModel)]="groupallSelected"
+                      [ngModelOptions]="{standalone: true}"
+                      (change)="toggleAllSelection_selectgroup()">Select All</mat-checkbox>
+  </div>
+    <mat-option *ngFor="let topping of groupNameList" [value]="topping.text">{{topping.text}}</mat-option>
+  </mat-select>
+</mat-form-field>
+&nbsp;
+<mat-form-field>
+  <mat-select #selectSubgroup placeholder="Sub Group" (selectionChange)="selectedsubgroupNameNameChange($event.value)" [formControl]="SubgroupName" [(value)]="selectedSubgroupName" multiple>
+    <div class="select-all">
+      <mat-checkbox [(ngModel)]="subgroupallSelected"
+                      [ngModelOptions]="{standalone: true}"
+                      (change)="toggleAllSelection_selectSubgroup()">Select All</mat-checkbox>
+  </div>
+    <mat-option *ngFor="let topping of SubgroupNameList" [value]="topping.text">{{topping.text}}</mat-option>
+  </mat-select>
+</mat-form-field>
 
+<mat-form-field >
+  <mat-label>Column</mat-label>
+  <mat-select (selectionChange)="selected($event.value)">
+    <mat-option  *ngFor="let food of ColumnLists" [value]="food.value">
+      {{food.viewValue}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+<mat-form-field>
+  <input  (dateChange)="onDateChange($event)" matInput [matDatepicker]="picker" placeholder="Choose a date">
+  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+  <mat-datepicker #picker></mat-datepicker>
+</mat-form-field>
 
+<!--
 <div class="card-container">
   <mat-card>
     <mat-card-content><div>
@@ -31,5 +88,5 @@
     <div calss="bodyMsg" [innerHTML]="html"></div>
 </div>
 
-</div>
+</div> -->
 

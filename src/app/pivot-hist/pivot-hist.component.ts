@@ -78,21 +78,21 @@ export class PivotHistComponent {
 
     constructor(public _sanitizer: DomSanitizer,public signalRService: SignalrService, public stocksService: StocksService, private http: HttpClient) {
       this.html = this._sanitizer.bypassSecurityTrustHtml("");
-      this.signalRService.connection
-      .invoke('GetPivotData',this.SelectedDate,this.selectedTop)
-      .catch((error: any) => {
-        console.log(`SGetAllStocks error: ${error}`);
-        alert('GetAllStocks error!, see console for details.');
-      });
+      // this.signalRService.connection
+      // .invoke('GetPivotData',this.SelectedDate,this.selectedTop)
+      // .catch((error: any) => {
+      //   console.log(`SGetAllStocks error: ${error}`);
+      //   alert('GetAllStocks error!, see console for details.');
+      // });
 
 
 
-        this.signalRService.connection.on("SendTopStocks",(val :[any]) => {
-         debugger;
-          this.gridData = Object.assign([], val);
-          this.gridData = this.sortData('stackname');
+      //   this.signalRService.connection.on("SendTopStocks",(val :[any]) => {
+      //    debugger;
+      //     this.gridData = Object.assign([], val);
+      //     this.gridData = this.sortData('stackname');
 
-              })
+      //         })
 
           //     interval(5000).subscribe(x => {
           //       this.signalRService.connection
@@ -104,37 +104,30 @@ export class PivotHistComponent {
           // })
     }
 
-    selected(event: MatSelectChange) {
-      debugger;
+    // selected(event: MatSelectChange) {
+    //   debugger;
 
-      this.selectedTop=event;
-      this.signalRService.connection
-                .invoke('GetPivotData',this.SelectedDate,this.selectedTop)
-                .catch((error: any) => {
-                  console.log(`SGetAllStocks error: ${error}`);
-                  alert('GetAllStocks error!, see console for details.');
-            });
+    //   this.selectedTop=event;
+    //   this.signalRService.connection
+    //             .invoke('GetPivotData',this.SelectedDate,this.selectedTop)
+    //             .catch((error: any) => {
+    //               console.log(`SGetAllStocks error: ${error}`);
+    //               alert('GetAllStocks error!, see console for details.');
+    //         });
 
-    }
+    // }
 
-     onDateChange(event: any ): void {
-      debugger;
-      this.SelectedDate = event.value.toUTCString();
-      this.signalRService.connection
-                .invoke('GetPivotData',this.SelectedDate,this.selectedTop)
-                .catch((error: any) => {
-                  console.log(`SGetAllStocks error: ${error}`);
-                  alert('GetAllStocks error!, see console for details.');
-            });
-    }
-    sortData(_case: string) {
-      switch(_case) {
-        case 'stackname':
-         return this.gridData.sort((a: { volume: number; }, b: { volume: number; }) => (b.volume - a.volume) )
-         //return this.gridData.sort((a: { volumeNumber: number; }, b: { volumeNumber: number; }) => (b.volumeNumber > a.volumeNumber) ? 1 : -1)
-
-      }
-    }
+    //  onDateChange(event: any ): void {
+    //   debugger;
+    //   this.SelectedDate = event.value.toUTCString();
+    //   this.signalRService.connection
+    //             .invoke('GetPivotData',this.SelectedDate,this.selectedTop)
+    //             .catch((error: any) => {
+    //               console.log(`SGetAllStocks error: ${error}`);
+    //               alert('GetAllStocks error!, see console for details.');
+    //         });
+    // }
+  
     ngOnInit() {
 
 

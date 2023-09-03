@@ -1,13 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ViewChild } from '@angular/core';
 import { SignalrService } from '../services/signalr.service';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { MatSelectChange } from '@angular/material/select';
+import { MatSelect, MatSelectChange } from '@angular/material/select';
 import { StocksService } from '../services/stocks.service';
 import { HttpClient } from '@angular/common/http';
+import { dropdownModel } from '../models/transaction.model';
+
+import { FormControl, FormGroup,ReactiveFormsModule,FormsModule } from '@angular/forms';
+import { MatOption } from '@angular/material/core';
 
 
 
-interface Food {
+interface ColumnList {
   value: string;
   viewValue: string;
 }
@@ -18,16 +22,48 @@ interface Food {
   templateUrl: './common-filters.component.html',
   styleUrls: ['./common-filters.component.css']
 })
+
 export class CommonFiltersComponent implements OnInit {
+
+  @ViewChild('selectSector') selectSector: MatSelect | any;
+
+  @ViewChild('selectindustry') selectindustry: MatSelect | any;
+
+  @ViewChild('selectgroup') selectgroup: MatSelect | any;
+
+  @ViewChild('selectSubgroup') selectSubgroup: MatSelect | any;
+
+
+  SectorallSelected=false;
+
+  industryallSelected=false;
+
+  groupallSelected=false;
+
+  subgroupallSelected=false;
+
   html: SafeHtml | any;
   selectedTop : number |any ;
   SelectedDate : string | any ;
-  constructor(public _sanitizer: DomSanitizer,public signalRService: SignalrService, public stocksService: StocksService, private http: HttpClient) { }
 
-  ngOnInit(): void {
-  }
+  sectorName = new FormControl();
+  sectorNameList :  dropdownModel[] = [];
+  selectedsectorName : any ;
 
-  foods: Food[] = [
+  industryNewName = new FormControl();
+  industryNewNameList :  dropdownModel[] = [];
+  selectedIndustryNewName : any ;
+
+  groupName = new FormControl();
+  groupNameList :  dropdownModel[] = [];
+  selectedgroupName : any ;
+
+
+  SubgroupName = new FormControl();
+  SubgroupNameList :  dropdownModel[] = [];
+  selectedSubgroupName : any ;
+
+  ColumnLists: ColumnList[] = [
     {value: 'last', viewValue: 'last'},
     {value: 'close', viewValue: 'close'},
     {value: 'change', viewValue: 'change'},
@@ -35,28 +71,173 @@ export class CommonFiltersComponent implements OnInit {
     {value: 'open', viewValue: 'open'},
 
   ];
+  // sectorNameform: FormGroup;
+  
 
-  selected(event: MatSelectChange) {
-    debugger;
 
-    this.selectedTop=event;
+  constructor(public _sanitizer: DomSanitizer,public signalRService: SignalrService, public stocksService: StocksService, private http: HttpClient) {
+
+    // this.sectorNameform = new FormGroup({
+    //   sector: new FormControl(this.sectorNameList)      
+    // });
     this.signalRService.connection
-              .invoke('GetPivotData',this.SelectedDate,this.selectedTop)
+              .invoke('GetSectorName')
               .catch((error: any) => {
-                console.log(`SGetAllStocks error: ${error}`);
-                alert('GetAllStocks error!, see console for details.');
+                console.log(`GetSectorName error: ${error}`);
+                alert('GetSectorName error!, see console for details.');
           });
 
+                this.signalRService.connection.on("SendSectorName",(val :[any]) => {
+                debugger;
+                this.sectorNameList = val;
+                })    
+
+
+                this.signalRService.connection.on("SendIndustryNewName",(val :[any]) => {
+                debugger;
+                this.industryNewNameList = val;
+                })    
+
+
+                this.signalRService.connection.on("SendGroupName",(val :[any]) => {
+                debugger;
+                this.groupNameList = val;
+                })    
+
+
+                this.signalRService.connection.on("SendSubgroupName",(val :[any]) => {
+                debugger;
+                this.SubgroupNameList = val;
+                })    
+
+   }
+
+  ngOnInit(): void {
+
+    
+  }
+  toggleAllSelection_selectSector() {
+    if (this.SectorallSelected) {
+      this.selectSector.options.forEach((item: MatOption) => item.select());
+    } else {
+      this.selectSector.options.forEach((item: MatOption) => item.deselect());
+    }
   }
 
+  toggleAllSelection_industry() {
+    if (this.industryallSelected) {
+      this.selectindustry.options.forEach((item: MatOption) => item.select());
+    } else {
+      this.selectindustry.options.forEach((item: MatOption) => item.deselect());
+    }
+  }
+
+
+  toggleAllSelection_selectgroup() {
+    if (this.groupallSelected) {
+      this.selectgroup.options.forEach((item: MatOption) => item.select());
+    } else {
+      this.selectgroup.options.forEach((item: MatOption) => item.deselect());
+    }
+  }
+
+
+  toggleAllSelection_selectSubgroup() {
+    if (this.subgroupallSelected) {
+      this.selectSubgroup.options.forEach((item: MatOption) => item.select());
+    } else {
+      this.selectSubgroup.options.forEach((item: MatOption) => item.deselect());
+    }
+  }
+   
+
+
+
+
+ 
+  selectedsectorNameChange(event: any) {
+    debugger;
+   
+    this.industryNewNameList = [];
+    this.groupNameList = [];
+    this.SubgroupNameList = [];
+    this.signalRService.connection
+              .invoke('GetIndustryNewName',event.join(','))
+              .catch((error: any) => {
+                console.log(`GetSectorName error: ${error}`);
+                alert('GetSectorName error!, see console for details.');
+          });
+    
+
+  }
+  selectedgroupNameNameChange(event: any) {
+    debugger;
+    
+    this.SubgroupNameList = [];
+    this.signalRService.connection
+              .invoke('GetSubgroupName',event.join(','))
+              .catch((error: any) => {
+                console.log(`GetSectorName error: ${error}`);
+                alert('GetSectorName error!, see console for details.');
+          });
+    
+         
+  }
+
+  selectedsubgroupNameNameChange(event: any) {
+    debugger;
+    
+    this.fetchpivotdata();
+    
+
+  }
+  
+
+  selectedIndustryNameChange(event: any) {
+    debugger;
+   
+    
+    this.groupNameList = [];
+    this.SubgroupNameList = [];
+    this.signalRService.connection
+              .invoke('GetGroupName',event.join(','))
+              .catch((error: any) => {
+                console.log(`GetSectorName error: ${error}`);
+                alert('GetSectorName error!, see console for details.');
+          });
+    
+
+  }
    onDateChange(event: any ): void {
     debugger;
     this.SelectedDate = event.value.toUTCString();
+    this.fetchpivotdata();
+    
+  }
+
+  selected(event: MatSelectChange) {
+    debugger;
+    this.selectedTop=event;
+    this.fetchpivotdata();
+  }
+
+  fetchpivotdata() :void {
+     
+    var cpy_selectedgroupName=this.selectedgroupName;
+   var  cpy_sselectedSubgroupName=this.selectedSubgroupName;
+  
+    if(this.groupallSelected) {
+      cpy_selectedgroupName=[];
+    }
+    if(this.subgroupallSelected) {
+      cpy_sselectedSubgroupName=[];
+    }
     this.signalRService.connection
-              .invoke('GetPivotData',this.SelectedDate,this.selectedTop)
+              .invoke('GetPivotData',this.SelectedDate,this.selectedTop,cpy_selectedgroupName.join(','),cpy_sselectedSubgroupName.join(','))
               .catch((error: any) => {
-                console.log(`SGetAllStocks error: ${error}`);
-                alert('GetAllStocks error!, see console for details.');
+                console.log(`GetPivotData error: ${error}`);
+                alert('GetPivotData error!, see console for details.');
           });
   }
 }
+

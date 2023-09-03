@@ -7,3 +7,8 @@ export interface Transactions {
     stamp: string,
     deduction: string | null,
 }
+
+export interface dropdownModel {
+  text : string ,
+  value : string
+}
