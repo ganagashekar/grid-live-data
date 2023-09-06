@@ -48,9 +48,10 @@ import { PivotHistComponent } from './pivot-hist/pivot-hist.component';
 import { CommonFiltersComponent } from './common-filters/common-filters.component';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import { FormControl, FormGroup,ReactiveFormsModule,FormsModule } from '@angular/forms';
-
+import { MatToolbarModule } from '@angular/material/toolbar';
 import {MatCheckboxModule} from '@angular/material/checkbox';
-import {MatSidenavModule} from '@angular/material/sidenav'
+import {MatSidenavModule} from '@angular/material/sidenav';
+import { MatIconModule } from '@angular/material/icon';
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'top', component: TopPerformerComponent },
@@ -103,7 +104,7 @@ const routes: Routes = [
         MatFormFieldModule,
         MatNativeDateModule,
         MatCardModule,
-        MatButtonModule, MatMenuModule,MatAutocompleteModule,ReactiveFormsModule,FormsModule,MatCheckboxModule,MatSidenavModule
+        MatButtonModule, MatMenuModule,MatAutocompleteModule,ReactiveFormsModule,FormsModule,MatCheckboxModule,MatSidenavModule,MatToolbarModule,MatIconModule
 
 
     ],

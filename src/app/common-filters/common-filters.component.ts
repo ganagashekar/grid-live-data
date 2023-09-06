@@ -69,16 +69,17 @@ export class CommonFiltersComponent implements OnInit {
     {value: 'change', viewValue: 'change'},
     {value: 'ttv', viewValue: 'ttv'},
     {value: 'open', viewValue: 'open'},
+    {value: 'high-Low', viewValue: 'high-Low'},
 
   ];
   // sectorNameform: FormGroup;
-  
+
 
 
   constructor(public _sanitizer: DomSanitizer,public signalRService: SignalrService, public stocksService: StocksService, private http: HttpClient) {
 
     // this.sectorNameform = new FormGroup({
-    //   sector: new FormControl(this.sectorNameList)      
+    //   sector: new FormControl(this.sectorNameList)
     // });
     this.signalRService.connection
               .invoke('GetSectorName')
@@ -90,31 +91,35 @@ export class CommonFiltersComponent implements OnInit {
                 this.signalRService.connection.on("SendSectorName",(val :[any]) => {
                 debugger;
                 this.sectorNameList = val;
-                })    
+                })
 
 
                 this.signalRService.connection.on("SendIndustryNewName",(val :[any]) => {
                 debugger;
                 this.industryNewNameList = val;
-                })    
+                })
 
 
                 this.signalRService.connection.on("SendGroupName",(val :[any]) => {
                 debugger;
                 this.groupNameList = val;
-                })    
+                })
 
 
                 this.signalRService.connection.on("SendSubgroupName",(val :[any]) => {
                 debugger;
                 this.SubgroupNameList = val;
-                })    
+                })
 
    }
 
   ngOnInit(): void {
 
-    
+
+  }
+
+  GetPivotData(text:any) {
+    this.fetchpivotdata();
   }
   toggleAllSelection_selectSector() {
     if (this.SectorallSelected) {
@@ -149,15 +154,15 @@ export class CommonFiltersComponent implements OnInit {
       this.selectSubgroup.options.forEach((item: MatOption) => item.deselect());
     }
   }
-   
 
 
 
 
- 
+
+
   selectedsectorNameChange(event: any) {
     debugger;
-   
+
     this.industryNewNameList = [];
     this.groupNameList = [];
     this.SubgroupNameList = [];
@@ -167,12 +172,12 @@ export class CommonFiltersComponent implements OnInit {
                 console.log(`GetSectorName error: ${error}`);
                 alert('GetSectorName error!, see console for details.');
           });
-    
+
 
   }
   selectedgroupNameNameChange(event: any) {
     debugger;
-    
+
     this.SubgroupNameList = [];
     this.signalRService.connection
               .invoke('GetSubgroupName',event.join(','))
@@ -180,23 +185,23 @@ export class CommonFiltersComponent implements OnInit {
                 console.log(`GetSectorName error: ${error}`);
                 alert('GetSectorName error!, see console for details.');
           });
-    
-         
+
+
   }
 
   selectedsubgroupNameNameChange(event: any) {
     debugger;
-    
-    this.fetchpivotdata();
-    
+
+    //this.fetchpivotdata();
+
 
   }
-  
+
 
   selectedIndustryNameChange(event: any) {
     debugger;
-   
-    
+
+
     this.groupNameList = [];
     this.SubgroupNameList = [];
     this.signalRService.connection
@@ -205,27 +210,27 @@ export class CommonFiltersComponent implements OnInit {
                 console.log(`GetSectorName error: ${error}`);
                 alert('GetSectorName error!, see console for details.');
           });
-    
+
 
   }
    onDateChange(event: any ): void {
     debugger;
     this.SelectedDate = event.value.toUTCString();
-    this.fetchpivotdata();
-    
+   // this.fetchpivotdata();
+
   }
 
   selected(event: MatSelectChange) {
     debugger;
     this.selectedTop=event;
-    this.fetchpivotdata();
+   // this.fetchpivotdata();
   }
 
   fetchpivotdata() :void {
-     
+
     var cpy_selectedgroupName=this.selectedgroupName;
    var  cpy_sselectedSubgroupName=this.selectedSubgroupName;
-  
+
     if(this.groupallSelected) {
       cpy_selectedgroupName=[];
     }
