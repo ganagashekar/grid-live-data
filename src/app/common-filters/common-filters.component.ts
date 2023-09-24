@@ -42,9 +42,16 @@ export class CommonFiltersComponent implements OnInit {
 
   subgroupallSelected=false;
 
+  CKTAllSelected=false;
+
+
   html: SafeHtml | any;
   selectedTop : number |any ;
   SelectedDate : string | any ;
+
+  CKTName = new FormControl();
+  CKTNameList :  dropdownModel[] =[{text :"",value :""},{text :"upperCktLm",value :"upperCktLm"},{text :"lowerCktLm",value :"lowerCktLm"}];
+  selectedCKTName : any ;
 
   sectorName = new FormControl();
   sectorNameList :  dropdownModel[] = [];
@@ -159,6 +166,14 @@ export class CommonFiltersComponent implements OnInit {
 
 
 
+  selectedCKTChange(event: any) {
+    debugger;
+
+    this.selectedCKTName=event;
+
+
+
+  }
 
   selectedsectorNameChange(event: any) {
     debugger;
@@ -238,7 +253,7 @@ export class CommonFiltersComponent implements OnInit {
       cpy_sselectedSubgroupName=[];
     }
     this.signalRService.connection
-              .invoke('GetPivotData',this.SelectedDate,this.selectedTop,cpy_selectedgroupName.join(','),cpy_sselectedSubgroupName.join(','))
+              .invoke('GetPivotData',this.SelectedDate,this.selectedTop,cpy_selectedgroupName.join(','),cpy_sselectedSubgroupName.join(','),this.selectedCKTName)
               .catch((error: any) => {
                 console.log(`GetPivotData error: ${error}`);
                 alert('GetPivotData error!, see console for details.');

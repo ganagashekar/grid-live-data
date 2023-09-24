@@ -52,10 +52,12 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
+import { UpperlowerCKTComponent } from './upperlower-ckt/upperlower-ckt.component';
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'top', component: TopPerformerComponent },
   { path: 'pivot', component: PivotHistComponent },
+  { path: 'CKT', component: UpperlowerCKTComponent },
   // { path: 'about', component: AboutComponent },
   // { path: 'products', component: ProductsComponent },
   // { path: '**', component: HomeComponent }, // If no matching route found, go back to home route
@@ -79,7 +81,8 @@ const routes: Routes = [
         HomeComponent,
         PivotHistComponent,
         CommonFiltersComponent,
-        
+        UpperlowerCKTComponent,
+
 
     ],
     imports: [

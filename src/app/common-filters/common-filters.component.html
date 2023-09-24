@@ -1,5 +1,13 @@
 
 <mat-form-field>
+  <mat-select  placeholder="CKT" (selectionChange)="selectedCKTChange($event.value)"[formControl]="CKTName"  [(value)]="selectedCKTName">
+
+
+
+    <mat-option *ngFor="let topping of CKTNameList" [value]="topping.text">{{topping.text}}</mat-option>
+  </mat-select>
+</mat-form-field>
+<mat-form-field>
   <mat-select  #selectSector placeholder="Sectors" (selectionChange)="selectedsectorNameChange($event.value)"[formControl]="sectorName"  [(value)]="selectedsectorName" multiple>
 
     <div class="select-all">

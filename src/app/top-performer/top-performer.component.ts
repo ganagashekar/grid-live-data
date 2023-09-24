@@ -13,6 +13,7 @@ import { animate, keyframes, style, transition, trigger } from '@angular/animati
 import { accountTransactions } from '../main-panel/transaction-data/transactions';
 import { MatSelectChange } from '@angular/material/select';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { formatDate } from '@angular/common';
 
 interface Food {
   value: string;
@@ -127,7 +128,8 @@ export class TopPerformerComponent {
 
     constructor(public signalRService: SignalrService, public stocksService: StocksService, private http: HttpClient)
     {
-
+      this.buy_SelectedDate = formatDate(new Date(), 'yyyy-MM-dd', 'en');
+      this.SelectedDate = formatDate(new Date(), 'yyyy-MM-dd', 'en');
       this.signalRService.connection
       .invoke('FecthTopStocks',this.SelectedDate,this.selectedTop)
       .catch((error: any) => {
@@ -153,9 +155,10 @@ export class TopPerformerComponent {
 
               interval(8000).subscribe(x => {
 
-
+               debugger;
+               var date=formatDate(this.buy_SelectedDate, 'yyyy-MM-dd', 'en');
             this.signalRService.connection
-            .invoke('GetSTockToBuy',this.buy_SelectedDate,this.buy_selectedTop)
+            .invoke('FetchSTockToBuy',date,this.buy_selectedTop)
             .catch((error: any) => {
               console.log(`GetSTockToBuy error: ${error}`);
               alert('GetSTockToBuy error!, see console for details.');
