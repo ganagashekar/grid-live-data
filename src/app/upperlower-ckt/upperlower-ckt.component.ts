@@ -62,7 +62,7 @@ export class UpperlowerCKTComponent implements OnInit {
     constructor(public signalRService: SignalrService, public stocksService: StocksService, private http: HttpClient)
     {
 
-      interval(8000).subscribe(x => {
+      interval(80000).subscribe(x => {
         console.log('SendAlertsUpperCKT');
         debugger;
 
