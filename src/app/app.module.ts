@@ -53,11 +53,14 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { UpperlowerCKTComponent } from './upperlower-ckt/upperlower-ckt.component';
+import { StockDaysComponent } from './stock-days/stock-days.component';
+import { DynmaicResultsComponent } from './dynmaic-results/dynmaic-results.component';
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'top', component: TopPerformerComponent },
   { path: 'pivot', component: PivotHistComponent },
   { path: 'CKT', component: UpperlowerCKTComponent },
+  { path: 'StockDAY', component: StockDaysComponent },
   // { path: 'about', component: AboutComponent },
   // { path: 'products', component: ProductsComponent },
   // { path: '**', component: HomeComponent }, // If no matching route found, go back to home route
@@ -82,6 +85,8 @@ const routes: Routes = [
         PivotHistComponent,
         CommonFiltersComponent,
         UpperlowerCKTComponent,
+        StockDaysComponent,
+        DynmaicResultsComponent,
 
 
     ],
