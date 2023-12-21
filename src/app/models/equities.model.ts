@@ -23,4 +23,41 @@ export interface Equities {
   close:      number;
   exchange:   string;
   stock_name: string;
+  data:any;
+  href:any;
+  min:number;
+  max:number;
+  recmdtn:string;
+  int_open :number;
+  int_last:number;
+
+  return1w :number;
+  return1m :number;
+  return3m : number;
+  noofrec : string;
+  beta :string ;
+
+  eps:string;
+  target:string;
+  stockdetailshref:string;
+  secId:string;
+  isfavorite:number;
+  volumeC:string;
+
+
+return6m:number;
+return1Year:number;
+returnYTD:number;
+priceChange_Day:number;
+priceChange_1w:number;
+priceChange_1m:number;
+priceChange_3m:number;
+priceChange_6m:number;
+priceChange_1year:number;
+priceChange_YTD:number;
+price52Weekslow:number;
+price52Weekshigh:number;
+isLowerCircuite:number;
+isUpperCircuite:number;
+
 }

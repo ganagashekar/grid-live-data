@@ -21,12 +21,18 @@ export class SliderComponeentComponent  {
 
 
   slidervalue: number =0;
-    formatLabel(val: number) {
-    if (val >= 1000) {
-    this.slidervalue = val;
-    return val;
-    }
-    return val;
+//     formatLabel(val: number) {
+//     if (val >= 1000) {
+//     this.slidervalue = val;
+//     return val;
+//     }
+//     return val;
+// }
+
+formatLabel(value: number): string {
+
+
+  return `${value}`;
 }
   options: Options = {
     floor: 0,

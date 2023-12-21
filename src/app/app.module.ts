@@ -55,12 +55,25 @@ import { MatIconModule } from '@angular/material/icon';
 import { UpperlowerCKTComponent } from './upperlower-ckt/upperlower-ckt.component';
 import { StockDaysComponent } from './stock-days/stock-days.component';
 import { DynmaicResultsComponent } from './dynmaic-results/dynmaic-results.component';
+import { StockdetailsComponent } from './stockdetails/stockdetails.component';
+import { StocklistComponent } from './stocklist/stocklist.component';
+import {MatChipsModule} from '@angular/material/chips';
+import {MatBadgeModule} from '@angular/material/badge';
+import { MAT_DATE_LOCALE } from '@angular/material/core'
+import { FavoriteButtonComponent } from './favoriteButton/favoriteButton.component';
+import { NgxSliderModule } from '@angular-slider/ngx-slider';
+import { ToastrModule } from 'ngx-toastr';
+import { CommonModule } from '@angular/common';
+import { SignalrBreezeService } from './services/signalr.serviceBreeze';
+
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'top', component: TopPerformerComponent },
   { path: 'pivot', component: PivotHistComponent },
   { path: 'CKT', component: UpperlowerCKTComponent },
   { path: 'StockDAY', component: StockDaysComponent },
+  { path: 'StockDetails', component: StockdetailsComponent },
+  { path: 'Stocks', component: StocklistComponent },
   // { path: 'about', component: AboutComponent },
   // { path: 'products', component: ProductsComponent },
   // { path: '**', component: HomeComponent }, // If no matching route found, go back to home route
@@ -87,10 +100,16 @@ const routes: Routes = [
         UpperlowerCKTComponent,
         StockDaysComponent,
         DynmaicResultsComponent,
-
-
-    ],
+      StockdetailsComponent,
+      StocklistComponent,
+      FavoriteButtonComponent
+   ],
     imports: [
+      ToastrModule.forRoot({
+        timeOut: 15000, // 15 seconds
+        closeButton: true,
+        progressBar: true,
+      }),
       MatSliderModule,
       RouterModule.forRoot(routes),
       ListViewModule,
@@ -99,6 +118,7 @@ const routes: Routes = [
         HttpClientModule,
         GridModule,
         BrowserAnimationsModule,
+
         NavigationModule,
         IndicatorsModule,
         IconsModule,
@@ -112,18 +132,34 @@ const routes: Routes = [
         MatFormFieldModule,
         MatNativeDateModule,
         MatCardModule,
-        MatButtonModule, MatMenuModule,MatAutocompleteModule,ReactiveFormsModule,FormsModule,MatCheckboxModule,MatSidenavModule,MatToolbarModule,MatIconModule
+        NgxSliderModule,
+        MatButtonModule, MatMenuModule,MatAutocompleteModule,ReactiveFormsModule,FormsModule,MatCheckboxModule,MatSidenavModule,MatToolbarModule,MatIconModule,MatChipsModule,MatBadgeModule
 
 
     ],
     providers: [
+      { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
       SignalrService,
+      SignalrBreezeService,
     {
       provide: APP_INITIALIZER,
       useFactory: (signalrService: SignalrService) => () => signalrService.initiateSignalrConnection(),
       deps: [SignalrService],
       multi: true,
     },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: (signalrBreezeService: SignalrBreezeService) => () => signalrBreezeService.initiateSignalrConnection(),
+      deps: [SignalrBreezeService],
+      multi: true
+  },
+    // ,SignalrBreezeService,
+    // {
+    //   provide: APP_INITIALIZER,
+    //   useFactory: (signalrBreezeService: SignalrBreezeService) => () => signalrBreezeService.initiateSignalrConnection(),
+    //   deps: [SignalrBreezeService],
+    //   multi: true,
+    // }
     ],
     bootstrap: [AppComponent]
 })

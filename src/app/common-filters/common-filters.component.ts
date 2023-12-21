@@ -44,6 +44,10 @@ export class CommonFiltersComponent implements OnInit {
 
   CKTAllSelected=false;
 
+  valuemin=0;
+  valuemax=0;
+  selected_Operator:any;
+
 
   html: SafeHtml | any;
   selectedTop : number |any ;
@@ -77,6 +81,16 @@ export class CommonFiltersComponent implements OnInit {
     {value: 'ttv', viewValue: 'ttv'},
     {value: 'open', viewValue: 'open'},
     {value: 'high-Low', viewValue: 'high-Low'},
+    {value: 'Symbol', viewValue: 'Symbol'},
+
+  ];
+
+  OperatorList: ColumnList[] = [
+    {value: '>', viewValue: '>'},
+    {value: '<', viewValue: '<'},
+    {value: 'Range', viewValue: 'Range'},
+    {value: '=', viewValue: '='},
+
 
   ];
   // sectorNameform: FormGroup;
@@ -128,6 +142,12 @@ export class CommonFiltersComponent implements OnInit {
   GetPivotData(text:any) {
     this.fetchpivotdata();
   }
+
+  GetPivotDataWatchList(text:any) {
+    this.fetchpivotdataWatchList();
+  }
+
+
   toggleAllSelection_selectSector() {
     if (this.SectorallSelected) {
       this.selectSector.options.forEach((item: MatOption) => item.select());
@@ -169,7 +189,7 @@ export class CommonFiltersComponent implements OnInit {
   selectedCKTChange(event: any) {
     debugger;
 
-    this.selectedCKTName=event;
+    this.selected_Operator=event;
 
 
 
@@ -235,14 +255,35 @@ export class CommonFiltersComponent implements OnInit {
 
   }
 
+  onvalueminChange(event: any ): void {
+    debugger;
+    this.valuemin = event.value;
+   // this.fetchpivotdata();
+
+  }
+
+  onvaluemaxChange(event: any ): void {
+    debugger;
+    this.valuemax = event.value;
+   // this.fetchpivotdata();
+
+  }
+
   selected(event: MatSelectChange) {
     debugger;
     this.selectedTop=event;
    // this.fetchpivotdata();
   }
 
-  fetchpivotdata() :void {
 
+  selectedOperator(event: MatSelectChange) {
+    debugger;
+    this.selected_Operator=event;
+   // this.fetchpivotdata();
+  }
+
+  fetchpivotdata() :void {
+   debugger;
     var cpy_selectedgroupName=this.selectedgroupName;
    var  cpy_sselectedSubgroupName=this.selectedSubgroupName;
 
@@ -253,11 +294,35 @@ export class CommonFiltersComponent implements OnInit {
       cpy_sselectedSubgroupName=[];
     }
     this.signalRService.connection
-              .invoke('GetPivotData',this.SelectedDate,this.selectedTop,cpy_selectedgroupName.join(','),cpy_sselectedSubgroupName.join(','),this.selectedCKTName)
+              .invoke('GetPivotData',this.SelectedDate,this.selectedTop,cpy_selectedgroupName.join(','),cpy_sselectedSubgroupName.join(','),this.selectedCKTName
+              ,this.selected_Operator,this.valuemin,this.valuemax,0
+              )
               .catch((error: any) => {
                 console.log(`GetPivotData error: ${error}`);
                 alert('GetPivotData error!, see console for details.');
           });
   }
+
+
+  fetchpivotdataWatchList() :void {
+    debugger;
+     var cpy_selectedgroupName=this.selectedgroupName;
+    var  cpy_sselectedSubgroupName=this.selectedSubgroupName;
+
+     if(this.groupallSelected) {
+       cpy_selectedgroupName=[];
+     }
+     if(this.subgroupallSelected) {
+       cpy_sselectedSubgroupName=[];
+     }
+     this.signalRService.connection
+               .invoke('GetPivotData',this.SelectedDate,this.selectedTop,cpy_selectedgroupName.join(','),cpy_sselectedSubgroupName.join(','),this.selectedCKTName
+               ,this.selected_Operator,this.valuemin,this.valuemax,1
+               )
+               .catch((error: any) => {
+                 console.log(`GetPivotData error: ${error}`);
+                 alert('GetPivotData error!, see console for details.');
+           });
+   }
 }
 

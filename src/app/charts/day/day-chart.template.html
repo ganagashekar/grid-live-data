@@ -21,14 +21,45 @@
 <!-- <kendo-sparkline chartdata="data" [data]="data"></kendo-sparkline> -->
 <!-- <kendo-sparkline [data]="data"></kendo-sparkline> -->
 
-<kendo-chart [style.height.px]="50"  [transitions]="false"  >
-  <kendo-chart-tooltip format="{0}"> </kendo-chart-tooltip>
+<!-- <kendo-chart (render)="onRender($event)" [style.height.px]="60"  [transitions]="false"  > -->
+
+  <!-- <div #container>
+  </div> -->
+
+
+  <!-- <kendo-chart [popupSettings]="{ appendTo: popupContainer }"  [style.height.px]="80"  [transitions]="false"  > -->
+    <kendo-chart  [style.height.px]="80"  [transitions]="false"  >
+
+  <kendo-chart-tooltip  [shared]="true" class="top" position="top">
+
+    <ng-template style="height: 10px;width: 10px; margin-top: 50px;" kendoChartSeriesTooltipTemplate let-value="value">
+
+
+       <a (click)="setpoint(symbol,value)">
+        <!-- <mat-icon >
+          alarm_on
+        </mat-icon> -->
+        {{ value }}
+      </a>
+
+
+
+    </ng-template>
+  </kendo-chart-tooltip>
   <kendo-chart-category-axis>
-    <kendo-chart-category-axis-item [visible]="false" [majorGridLines]="{ visible: false }">
+    <kendo-chart-category-axis-item name="categoryAxis" [visible]="false" [majorGridLines]="{ visible: false }">
     </kendo-chart-category-axis-item>
 </kendo-chart-category-axis>
 <kendo-chart-value-axis>
-  <kendo-chart-value-axis-item   [visible]="false" [majorGridLines]="{ visible: false }">
+  <kendo-chart-value-axis-item [min]="min" [max]="max"  [visible]="false" [majorGridLines]="{ visible: false }">
+  </kendo-chart-value-axis-item>
+</kendo-chart-value-axis>
+<kendo-chart-value-axis>
+  <kendo-chart-value-axis-item name="valueAxis" [min]="min" [max]="max"  [visible]="false" [majorGridLines]="{ visible: false }">
+  </kendo-chart-value-axis-item>
+</kendo-chart-value-axis>
+<kendo-chart-value-axis>
+  <kendo-chart-value-axis-item [min]="min" [max]="max" [visible]="false" [plotBands]="[{from:open,to :last , color: 'darkblack',opacity: 100}]"  [majorGridLines]="{ visible: false }">
   </kendo-chart-value-axis-item>
 </kendo-chart-value-axis>
 
@@ -44,8 +75,10 @@
           [line]="lineStyle"
 
       >
+      <!-- <div #container>
+      </div> -->
       </kendo-chart-series-item>
-      <kendo-chart-series-item
+      <!-- <kendo-chart-series-item
       type="line"
           [stack]="true"
           color="darkblue"
@@ -53,7 +86,7 @@
       [markers]="{ visible: false }"
        [data]="dataopen">
       </kendo-chart-series-item>
-      <!-- <kendo-chart-series-item
+      <kendo-chart-series-item
       type="line"
 
           color="skyblue"
@@ -62,5 +95,6 @@
        [data]="dataavgPrice">
       </kendo-chart-series-item> -->
   </kendo-chart-series>
+
 </kendo-chart>
 
