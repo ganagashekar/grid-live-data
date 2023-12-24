@@ -65,6 +65,11 @@ import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { ToastrModule } from 'ngx-toastr';
 import { CommonModule } from '@angular/common';
 import { SignalrBreezeService } from './services/signalr.serviceBreeze';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import {MatRadioModule} from '@angular/material/radio';
+import { CustometoggleComponent } from './custometoggle/custometoggle.component';
+import { NotificationToggleComponent } from './notification-toggle/notification-toggle.component';
+import { MinmaxToggleComponent } from './minmax-toggle/minmax-toggle.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -102,7 +107,10 @@ const routes: Routes = [
         DynmaicResultsComponent,
       StockdetailsComponent,
       StocklistComponent,
-      FavoriteButtonComponent
+      FavoriteButtonComponent,
+      CustometoggleComponent,
+      NotificationToggleComponent,
+      MinmaxToggleComponent
    ],
     imports: [
       ToastrModule.forRoot({
@@ -118,8 +126,9 @@ const routes: Routes = [
         HttpClientModule,
         GridModule,
         BrowserAnimationsModule,
-
+        MatSlideToggleModule,
         NavigationModule,
+        MatRadioModule,
         IndicatorsModule,
         IconsModule,
         LayoutModule,

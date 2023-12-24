@@ -7,9 +7,10 @@
 </div> -->
 
 
-<span style="font-size: 9px">{{min_len}}</span>
+
 
 <span>
+  <span style="font-size: 9px">{{min_len | number : '1.0-0'}}</span>
   <mat-slider
   thumbLabel="true"
   [displayWith]="formatLabel"
@@ -22,7 +23,7 @@
 
   name ="slidervalue" [(value)] ="currentPrice"></mat-slider>
 
-  <span style="font-size: 9px">{{max_len}}</span>
+  <span style="font-size: 9px">{{max_len | number : '1.0-0'}}</span>
   <!-- <span>value is ** {{currentPrice}}</span> -->
   <!-- <app-slider-Componeent [currentPrice]="dataItem.last" [open]="dataItem.open" [min_len]="dataItem.low" [max_len]="dataItem.high">
 

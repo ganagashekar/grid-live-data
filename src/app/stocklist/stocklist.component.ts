@@ -1,3 +1,4 @@
+import { isNumber } from '@progress/kendo-angular-grid/dist/es2015/utils';
 import { Component, OnInit } from '@angular/core';
 import { StocksService } from '../services/stocks.service';
 import { SignalrService } from '../services/signalr.service';
@@ -9,9 +10,10 @@ import { RowClassArgs } from '@progress/kendo-angular-grid';
 import {MatChipsModule} from '@angular/material/chips';
 import { ThemePalette } from '@angular/material/core';
 import { ProgressBarMode } from '@angular/material/progress-bar';
-import { Options } from '@angular-slider/ngx-slider';
+import { LabelType, Options } from '@angular-slider/ngx-slider';
 import { ToastrService } from 'ngx-toastr';
 import { SignalrBreezeService } from '../services/signalr.serviceBreeze';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 
 
 @Component({
@@ -40,11 +42,22 @@ export class StocklistComponent implements OnInit {
   mode: ProgressBarMode = 'determinate';
   value = 0;
   bufferValue = 0;
+  Favoriteselected: boolean = false;
+  EnabledAutoTradeSelected: boolean = false;
+  ShowNotification :boolean=false;
+  minPriceValue:number=0;
+  maxPriceValue:number=5000;
 
+  optionsRange: Options = {
+    floor: 0,
+    ceil: 5000,
+    step:2
+
+  };
   constructor(private toastrService: ToastrService,public signalRService: SignalrService, public signalRBreezeService: SignalrBreezeService,public stocksService: StocksService, private http: HttpClient) {
 
     this.signalRService.connection
-    .invoke('GetStocksList',false,false,false)
+    .invoke('GetStocksList',false,false,false,false,false,this.minPriceValue,this.maxPriceValue)
     .catch((error: any) => {
       console.log(`SGetAllStocks error: ${error}`);
       this.showError(`SGetAllStocks error: ${error}`, "StockList")
@@ -54,11 +67,46 @@ export class StocklistComponent implements OnInit {
   }
 
 
+
+  GetShowNotification() {
+
+    this.ShowNotification = !this.ShowNotification;
+    this.signalRService.connection
+    .invoke('GetStocksList',this.Favoriteselected,false,false,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue)
+    .catch((error: any) => {
+      console.log(`SGetAllStocks error: ${error}`);
+      alert('GetAllStocks error!, see console for details.');
+    });
+  }
+
+  sliderEvent(value: any) {
+
+
+    this.EnabledAutoTradeSelected = !this.EnabledAutoTradeSelected;
+    this.signalRService.connection
+    .invoke('GetStocksList',this.Favoriteselected,false,false,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue)
+    .catch((error: any) => {
+      console.log(`SGetAllStocks error: ${error}`);
+      alert('GetAllStocks error!, see console for details.');
+    });
+  }
+  getAutoTrade(){
+
+    this.EnabledAutoTradeSelected = !this.EnabledAutoTradeSelected;
+    this.signalRService.connection
+    .invoke('GetStocksList',this.Favoriteselected,false,false,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue)
+    .catch((error: any) => {
+      console.log(`SGetAllStocks error: ${error}`);
+      alert('GetAllStocks error!, see console for details.');
+    });
+
+  }
+
   getupperCircuit(){
 
     debugger;
     this.signalRService.connection
-    .invoke('GetStocksList',false,true,false)
+    .invoke('GetStocksList',this.Favoriteselected,true,false,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue)
     .catch((error: any) => {
       console.log(`SGetAllStocks error: ${error}`);
       alert('GetAllStocks error!, see console for details.');
@@ -68,7 +116,7 @@ export class StocklistComponent implements OnInit {
   getlowerCircuit(){
     debugger;
     this.signalRService.connection
-    .invoke('GetStocksList',false,false,true)
+    .invoke('GetStocksList',this.Favoriteselected,false,true,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue)
     .catch((error: any) => {
       console.log(`SGetAllStocks error: ${error}`);
       alert('GetAllStocks error!, see console for details.');
@@ -76,8 +124,9 @@ export class StocklistComponent implements OnInit {
   }
   getonlyfavorites(){
     debugger;
+    this.Favoriteselected = !this.Favoriteselected;
     this.signalRService.connection
-    .invoke('GetStocksList',true,false,false)
+    .invoke('GetStocksList',this.Favoriteselected,false,false,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue)
     .catch((error: any) => {
       console.log(`SGetAllStocks error: ${error}`);
       alert('GetAllStocks error!, see console for details.');
@@ -214,6 +263,23 @@ this.signalRService.connection
 });
 }
 
+addormidifyIsAutoBuy(p :any) {
+  debugger;
+
+  this.signalRService.connection
+  .invoke('AddOrModifyAutoTrade',p.msnid,p.selected==true?1 :0)
+  .catch((error: any) => {
+    console.log(`SGetAllStocks error: ${error}`);
+    alert('GetAllStocks error!, see console for details.');
+  });
+  }
+
+// toggle(event: MatSlideToggleChange) {
+//   console.log('Toggle fired');
+//   this.useDefault = event.checked;
+// }
+
+
 addormidifypoint(p :any) {
   debugger;
   //alert({p.symbol,p.value});
@@ -256,6 +322,12 @@ carDateCalculator(value :string ){
     this.signalRService.connection.on("SendAddOrModifyFavorite",(data :any) => {
 
       this.showSuccess(data, "Favorite")
+     // alert(data)
+    })
+
+    this.signalRService.connection.on("SendAddOrModifyAutoTrade",(data :any) => {
+
+      this.showSuccess(data, "Auto Trade")
      // alert(data)
     })
 
@@ -340,7 +412,8 @@ this.showInfo("Data Loading", "Stock List")
           price52Weekslow:val.price52Weekslow,
           price52Weekshigh:val.price52Weekshigh,
           isLowerCircuite:val.isLowerCircuite,
-          isUpperCircuite:val.isUpperCircuite
+          isUpperCircuite:val.isUpperCircuite,
+          isenabledforautoTrade:val.isenabledforautoTrade
           // calc_ma:this.getma(+[val.last],null),
           // calc_wma:this.getwma([val.last],null)
 

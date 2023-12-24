@@ -1,16 +1,88 @@
 <!-- [resizable]="true" [sortable]="true" [sort]="sort" -->
+<div>
+  <table>
+    <tr>
+      <td>
+        <button (click)="getonlyfavorites()"  mat-stroked-button color="accent">
 
-<button (click)="getonlyfavorites()" mat-stroked-button color="accent">Favorites</button>
-<button (click)="getupperCircuit()" mat-stroked-button color="accent"><mat-icon
-  *ngIf="true"
-  aria-label="UP_CKT">
-  trending_up
-</mat-icon></button>
-<button (click)="getlowerCircuit()" mat-stroked-button color="accent"><mat-icon
-  *ngIf="true"
-  aria-label="LW_CKT">
-  trending_down
-</mat-icon></button>
+
+
+          <mat-icon
+          *ngIf="Favoriteselected">
+          favorite
+          </mat-icon>
+          <mat-icon
+          *ngIf="!Favoriteselected">
+          favorite_border
+          </mat-icon>
+          </button>
+      </td>
+      <td>
+        <button (click)="getAutoTrade()"  mat-stroked-button color="accent">
+          <mat-icon
+          *ngIf="EnabledAutoTradeSelected"
+          >
+          done_all
+          </mat-icon>
+
+          <mat-icon
+          *ngIf="!EnabledAutoTradeSelected">
+          cancel
+          </mat-icon>
+          </button>
+      </td>
+      <td>
+        <button (click)="GetShowNotification()"  mat-stroked-button color="accent">
+          <mat-icon
+          *ngIf="ShowNotification"
+          >
+          notifications_active
+          </mat-icon>
+
+          <mat-icon
+          *ngIf="!ShowNotification">
+          notifications_none
+          </mat-icon>
+          </button>
+      </td>
+
+      <td>
+
+        <button (click)="getupperCircuit()" mat-stroked-button color="accent"><mat-icon
+          *ngIf="true"
+          aria-label="UP_CKT">
+          trending_up
+        </mat-icon></button>
+
+      </td>
+      <td>
+        <button (click)="getlowerCircuit()" mat-stroked-button color="accent"><mat-icon
+          *ngIf="true"
+          aria-label="LW_CKT">
+          trending_down
+        </mat-icon>
+
+        </button>
+      </td>
+      <td style="width: 1200px;">
+
+          <div style="margin-top: -1.2%;" >
+          <ngx-slider style="height: 10px;" class="custom-slider" (userChangeEnd)="sliderEvent($event)"  [(value)]="minPriceValue" [(highValue)]="maxPriceValue" [options]="optionsRange"></ngx-slider>
+        </div>
+
+      </td>
+    </tr>
+  </table>
+
+
+
+
+
+
+
+
+
+</div>
 
 <kendo-grid id="my-grid"  [pageable]="true" [rowClass]="rowCallback"
 [pageSize]="500" [sortable]="true" [kendoGridBinding]="(gridDataEquties | async)!"
@@ -26,7 +98,7 @@
              <a  matBadgeColor="accent" target="_blank" href="{{dataItem.href }}" >
             {{ dataItem.stockName  }}
 
-            &nbsp;
+
             <span style="color:  rgb(12, 11, 11); background-color: #F0FFFF; border-radius: 4px; font-size: 12px;margin:  0.5px;display: inline-block;">
              Open :  {{dataItem.open}}
              </span>
@@ -35,10 +107,15 @@
              Last : {{dataItem.last}}
              </span>
 
-             &nbsp;
+            &nbsp;
              <span style="color: #ffffff; border-radius: 4px; font-size: 12px;margin:  0.5px;display: inline-block;" [ngStyle]="{'background-color': dataItem.change > 0 ? '#BFBFBF' : 'red'}">
              CHG : {{dataItem.change}} %
              </span>
+
+             <span style="border-radius: 4px; font-size: 10px;display: inline-block;">
+              <app-custometoggle (selectedChange)="addormidifyIsAutoBuy($event)" [msnid]="dataItem.secId" [selected]="dataItem.isenabledforautoTrade"></app-custometoggle>
+              </span>
+
 
 
              <button color="primary" mat-icon-button [ngStyle]="{'display': dataItem.isUpperCircuite  ? '' : 'none'}" >
@@ -91,18 +168,22 @@
               <span style="color: rgb(9, 9, 9); border-radius: 4px; font-size: 12px;margin: 0.5px;display: inline-block;" [ngStyle]="{'background-color': carDateCalculator(dataItem.recmdtn) ? '#affbb5' : '#ffe8e7'}">
                 <a target="_blank" href="{{dataItem.stockdetailshref }}" >
                   NS </a>
-
-                  <!-- <span matBadge="{{dataItem.noofrec}}" matBadgeSize="small" matBadgePosition="above"></span> -->
               </span>
-              <span style="border-radius: 4px; font-size: 12px;margin:  0.5px;display: inline-block;">
-                <app-favoriteButton (selectedChange)="addormidifyfavorite($event)" [msnid]="dataItem.secId" [selected]="dataItem.isfavorite" ></app-favoriteButton></span>
 
 
 
 
-              <app-slider-Componeent [currentPrice]="dataItem.last" [open]="dataItem.open" [min_len]="dataItem.price52Weekslow" [max_len]="dataItem.price52Weekshigh">
+              <span style="border-radius: 4px; font-size: 10px;display: inline-block;">
+                <app-favoriteButton (selectedChange)="addormidifyfavorite($event)" [msnid]="dataItem.secId" [selected]="dataItem.isfavorite" ></app-favoriteButton>
 
-              </app-slider-Componeent>
+                <app-slider-Componeent [currentPrice]="dataItem.last" [open]="dataItem.open" [min_len]="dataItem.price52Weekslow" [max_len]="dataItem.price52Weekshigh">
+                </app-slider-Componeent>
+              </span>
+
+
+
+
+
 
 
             </div>
@@ -254,7 +335,7 @@
 
 
 
-<kendo-grid-column   title="Chart" class="grid-one-day-chart"
+<kendo-grid-column [width]="320"  title="Chart" class="grid-one-day-chart"
 [sortable]="false">
 <ng-template kendoGridCellTemplate let-dataItem>
     <day-chart (selectedpoint)="addormidifypoint($event)"   [data]="dataItem.intraday" [symbol]="dataItem.symbol" [min]="dataItem.min" [open]="dataItem.int_open" [last]="dataItem.int_last" [max]="dataItem.max" [CurrentData]="dataItem" >

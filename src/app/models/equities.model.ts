@@ -42,6 +42,7 @@ export interface Equities {
   stockdetailshref:string;
   secId:string;
   isfavorite:number;
+  isenabledforautoTrade:boolean
   volumeC:string;
 
 
