@@ -24,6 +24,7 @@ export interface Equities {
   exchange:   string;
   stock_name: string;
   data:any;
+  dataPoint:any;
   href:any;
   min:number;
   max:number;
@@ -60,5 +61,9 @@ price52Weekslow:number;
 price52Weekshigh:number;
 isLowerCircuite:number;
 isUpperCircuite:number;
+securityId:string;
+buyatChange:string;
+tdays:string;
+wacthList:string;
 
 }

@@ -1,3 +1,16 @@
+<div>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header style="height: 30px;">
+
+
+    </mat-expansion-panel-header>
+
+    <div style="margin-top: -1.2%;" >
+      <ngx-slider style="height: 10px;" class="custom-slider" (userChangeEnd)="sliderEvent($event)"  [(value)]="minPriceValue" [(highValue)]="maxPriceValue" [options]="optionsRange"></ngx-slider>
+    </div>
+  </mat-expansion-panel>
+</div>
+
 <!-- [resizable]="true" [sortable]="true" [sort]="sort" -->
 <div>
   <table>
@@ -64,11 +77,55 @@
 
         </button>
       </td>
-      <td style="width: 1200px;">
 
-          <div style="margin-top: -1.2%;" >
-          <ngx-slider style="height: 10px;" class="custom-slider" (userChangeEnd)="sliderEvent($event)"  [(value)]="minPriceValue" [(highValue)]="maxPriceValue" [options]="optionsRange"></ngx-slider>
-        </div>
+      <td>
+
+
+        <button (click)="toggleSelectedTday1('t1')" mat-stroked-button color="accent">
+      T+1</button>
+      </td>
+
+      <td>
+        <button (click)="toggleSelectedTday2('t2')" mat-stroked-button color="accent">
+        T +2</button>
+      </td>
+
+      <td>
+        <button (click)="toggleSelectedTday3('t3')"  mat-stroked-button color="accent"> T+3</button>
+
+        <!-- <a  (click)="toggleSelectedTday('t1')"     style="color:  rgb(246, 246, 246); background-color: #1B4242; border-radius: 2px; font-size: 10px;margin:  0.2px;display: inline-block;">
+          &nbsp;T+1 &nbsp;
+          </a>
+        </td>
+
+        <td>
+          <a  (click)="toggleSelectedTday('t2')"     style="color:  rgb(237, 227, 227); background-color: #5C8374; border-radius: 2px; font-size: 10px;margin:  0.2px;display: inline-block;">
+            &nbsp;T+2  &nbsp;
+            </a>
+          </td>
+
+          <td>
+            <a  (click)="toggleSelectedTday('t3')"     style="color:  rgb(242, 234, 234); background-color: #9EC8B9; border-radius: 2px; font-size: 10px;margin:  0.2px;display: inline-block;">
+              &nbsp;T+3 &nbsp;
+              </a> -->
+
+      </td>
+      <td style="float: right;">
+<div style="float: right;">
+  <button (click)="toggleSelectedWatch_1('W1')" mat-stroked-button color="accent">
+   <mat-icon>looks_one</mat-icon>
+
+  </button>
+
+
+      <button (click)="toggleSelectedWatch_2('W2')" mat-stroked-button color="accent">
+        <mat-icon>looks_two</mat-icon></button>
+
+      <button (click)="toggleSelectedWatch_3('W3')"  mat-stroked-button color="accent">
+        <mat-icon>looks_3</mat-icon>
+      </button>
+
+</div>
 
       </td>
     </tr>
@@ -84,10 +141,24 @@
 
 </div>
 
-<kendo-grid id="my-grid"  [pageable]="true" [rowClass]="rowCallback"
-[pageSize]="500" [sortable]="true" [kendoGridBinding]="(gridDataEquties | async)!"
+<kendo-grid id="my-grid"    [rowClass]="rowCallback"
+[pageSize]="500"  [filterable]="true" [pageable]="true"
+[sortable]="true"
+
+ [kendoGridBinding]="(gridDataEquties | async)!"
 >
-    <kendo-grid-column title="Stock">
+<!-- <ng-template kendoGridToolbarTemplate>
+  <kendo-textbox
+    placeholder="Search in all columns..."
+    (valueChange)="onFilter($event)"
+    [style.width.px]="180"
+  ></kendo-textbox>
+  <kendo-grid-spacer></kendo-grid-spacer>
+
+</ng-template> -->
+
+
+    <kendo-grid-column [sortable]="false" field="securityId" title="" >
         <ng-template kendoGridCellTemplate let-dataItem>
 
          <div>
@@ -95,41 +166,51 @@
           <div style="float: left;">
 
 
-             <a  matBadgeColor="accent" target="_blank" href="{{dataItem.href }}" >
-            {{ dataItem.stockName  }}
+             <a   matBadgeColor="accent" target="_blank" href="{{dataItem.href }}"  >
 
+            {{ dataItem.securityId  }}
+             </a>
 
-            <span style="color:  rgb(12, 11, 11); background-color: #F0FFFF; border-radius: 4px; font-size: 12px;margin:  0.5px;display: inline-block;">
+            <span   style="color:  rgb(12, 11, 11); background-color: #F0FFFF; border-radius: 4px; font-size: 12px;display: inline-block;">
              Open :  {{dataItem.open}}
              </span>
-             &nbsp;
-             <span style="color: rgb(12, 11, 11);background-color: #FFF8DC; border-radius: 4px; font-size: 12px;margin:  0.5px;display: inline-block;">
+
+             <span style="color: rgb(12, 11, 11);background-color: #FFF8DC; border-radius: 4px; font-size: 12px;display: inline-block;">
              Last : {{dataItem.last}}
              </span>
 
-            &nbsp;
-             <span style="color: #ffffff; border-radius: 4px; font-size: 12px;margin:  0.5px;display: inline-block;" [ngStyle]="{'background-color': dataItem.change > 0 ? '#BFBFBF' : 'red'}">
-             CHG : {{dataItem.change}} %
+
+             <span style="color: #ffffff; border-radius: 4px; font-size: 12px;display: inline-block;" [ngStyle]="{'background-color': dataItem.change > 0 ? '#BFBFBF' : 'red'}">
+              <a target="_blank" href="{{dataItem.stockdetailshref }}" >
+             CHG : {{dataItem.change}} % </a>
              </span>
 
+
+              <span style="border-radius: 4px; font-size: 10px;display: inline-block;">
+                <app-favoriteButton  matTooltip="{{dataItem.stock_name}}" (selectedChange)="addormidifyfavorite($event)" [msnid]="dataItem.secId" [selected]="dataItem.isfavorite" ></app-favoriteButton>
+
+              </span>
              <span style="border-radius: 4px; font-size: 10px;display: inline-block;">
               <app-custometoggle (selectedChange)="addormidifyIsAutoBuy($event)" [msnid]="dataItem.secId" [selected]="dataItem.isenabledforautoTrade"></app-custometoggle>
               </span>
 
+             <span style="text-align: right;">
+              <app-notification-toggle [bgcolor]="'#1B4242'" (selectedChange)="addormidifyTdays($event)" [displaytext]="'T+1'" [valuetext]="dataItem.tdays" [savedtext]="'t1'" [symbol]="dataItem.symbol" ></app-notification-toggle>
+              <app-notification-toggle [bgcolor]="'#5C8374'" (selectedChange)="addormidifyTdays($event)" [displaytext]="'T+2'" [valuetext]="dataItem.tdays" [savedtext]="'t2'" [symbol]="dataItem.symbol" ></app-notification-toggle>
+              <app-notification-toggle [bgcolor]="'#9EC8B9'" (selectedChange)="addormidifyTdays($event)" [displaytext]="'T+3'" [valuetext]="dataItem.tdays" [savedtext]="'t3'"  [symbol]="dataItem.symbol" ></app-notification-toggle>
+
+            </span>
 
 
-             <button color="primary" mat-icon-button [ngStyle]="{'display': dataItem.isUpperCircuite  ? '' : 'none'}" >
+
+             <button color="primary"  mat-icon-button [ngStyle]="{'display': dataItem.isUpperCircuite  ? '' : 'none'}" >
 
               <mat-icon
                 *ngIf="dataItem.isUpperCircuite"
                 aria-label="UP_CKT">
                 trending_up
               </mat-icon>
-              <mat-icon
-              *ngIf="dataItem.isUpperCircuite"
-              aria-label="UP_CKT">
-              trending_up
-            </mat-icon>
+
             </button>
             <button color="warn" mat-icon-button mat-icon-button [ngStyle]="{'display': dataItem.isLowerCircuite  ? '' : 'none'}"  >
               <mat-icon
@@ -138,44 +219,39 @@
                 trending_down
               </mat-icon>
 
-              <mat-icon
-                *ngIf="dataItem.isLowerCircuite"
-                aria-label="Lower_CKT">
-                trending_down
-              </mat-icon>
+
             </button>
 
 
 
-            </a>
+
             <div>
 
               <span style="color: rgb(12, 11, 11); border-radius: 4px; font-size: 12px;margin: 0.5px;display: inline-block;" [ngStyle]="{'background-color': carDateCalculator(dataItem.recmdtn) ? '#affbb5' : '#ffe8e7'}">
                 {{dataItem.recmdtn}}
               </span>
-              <span style="color: rgb(13, 12, 12); border-radius: 4px; font-size: 12px;margin:  0.5px;display: inline-block;" [ngStyle]="{'background-color': carDateCalculator(dataItem.recmdtn) ? '#affbb5' : '#ffe8e7'}">
+              <span style="color: rgb(13, 12, 12); border-radius: 4px; font-size: 12px;display: inline-block;" [ngStyle]="{'background-color': carDateCalculator(dataItem.recmdtn) ? '#affbb5' : '#ffe8e7'}">
                Beta : {{dataItem.beta | number : '1.2-2'}}
               </span>
-              <span style="color: rgb(7, 7, 7); border-radius: 4px; font-size: 12px;margin:  0.5px;display: inline-block;" [ngStyle]="{'background-color': carDateCalculator(dataItem.recmdtn) ? '#affbb5' : '#ffe8e7'}">
+              <span style="color: rgb(7, 7, 7); border-radius: 4px; font-size: 12px;display: inline-block;" [ngStyle]="{'background-color': carDateCalculator(dataItem.recmdtn) ? '#affbb5' : '#ffe8e7'}">
                eps :  {{dataItem.eps | currency :'INR'}}
               </span>
-              <span style="color: rgb(10, 10, 10); border-radius: 4px; font-size: 12px;margin:  0.5px;display: inline-block;" [ngStyle]="{'background-color': carDateCalculator(dataItem.recmdtn) ? '#affbb5' : '#ffe8e7'}">
+              <span style="color: rgb(10, 10, 10); border-radius: 4px; font-size: 12px;display: inline-block;" [ngStyle]="{'background-color': carDateCalculator(dataItem.recmdtn) ? '#affbb5' : '#ffe8e7'}">
                 Target : {{dataItem.target | currency :'INR'}}
               </span>
-              <span style="color: rgb(10, 10, 10); border-radius: 4px; font-size: 12px;margin:  0.5px;display: inline-block;" [ngStyle]="{'background-color': carDateCalculator(dataItem.recmdtn) ? '#affbb5' : '#ffe8e7'}">
+              <span style="color: rgb(10, 10, 10); border-radius: 4px; font-size: 12px;display: inline-block;" [ngStyle]="{'background-color': carDateCalculator(dataItem.recmdtn) ? '#affbb5' : '#ffe8e7'}">
                 Vol : {{dataItem.volumeC }}
               </span>
-              <span style="color: rgb(9, 9, 9); border-radius: 4px; font-size: 12px;margin: 0.5px;display: inline-block;" [ngStyle]="{'background-color': carDateCalculator(dataItem.recmdtn) ? '#affbb5' : '#ffe8e7'}">
-                <a target="_blank" href="{{dataItem.stockdetailshref }}" >
-                  NS </a>
-              </span>
 
 
 
 
-              <span style="border-radius: 4px; font-size: 10px;display: inline-block;">
-                <app-favoriteButton (selectedChange)="addormidifyfavorite($event)" [msnid]="dataItem.secId" [selected]="dataItem.isfavorite" ></app-favoriteButton>
 
+              <span style="border-radius: 4px; font-size: 10px;display: inline-block;text-align: right;">
+
+                <!-- <span style="color: rgb(10, 10, 10); border-radius: 4px; font-size: 12px;background-color:  '#affbb5';display: inline-block;" [ngStyle]="{'background-color':  '#affbb5' }">
+                   {{dataItem.buyatChange }}
+                </span> -->
                 <app-slider-Componeent [currentPrice]="dataItem.last" [open]="dataItem.open" [min_len]="dataItem.price52Weekslow" [max_len]="dataItem.price52Weekshigh">
                 </app-slider-Componeent>
               </span>
@@ -196,40 +272,77 @@
 
               <table style="border-spacing: 10px;">
                 <tr>
+                  <td colspan="4" style="text-align: left;">
+                    <app-notification-toggle [bgcolor]="'#8ACDD7'" (selectedChange)="addormidifyWacthList($event)"  [savedtext]="'W1'" [displaytext]="'W1'" [valuetext]="dataItem.wacthList" [symbol]="dataItem.symbol" ></app-notification-toggle>
+                    <app-notification-toggle [bgcolor]="'#FF90BC'"  (selectedChange)="addormidifyWacthList($event)" [savedtext]="'W2'" [displaytext]="'W2'" [valuetext]="dataItem.wacthList" [symbol]="dataItem.symbol" ></app-notification-toggle>
+                    <app-notification-toggle [bgcolor]="'#DC8686'"  (selectedChange)="addormidifyWacthList($event)" [savedtext]="'W3'"  [displaytext]="'W3'" [valuetext]="dataItem.wacthList" [symbol]="dataItem.symbol" ></app-notification-toggle>
+
+                  </td>
+                  <td colspan="3" style="text-align: right;">
+
+
+                    <app-notification-toggle [bgcolor]="'#2E0249'" (selectedChange)="addormidifyChange($event)"  [savedtext]="'-0.70'" [displaytext]="'-0.7'" [valuetext]="dataItem.buyatChange" [symbol]="dataItem.symbol" ></app-notification-toggle>
+                    <app-notification-toggle [bgcolor]="'#4c0478'"  (selectedChange)="addormidifyChange($event)" [savedtext]="'-1.40'" [displaytext]="'-1.4'" [valuetext]="dataItem.buyatChange" [symbol]="dataItem.symbol" ></app-notification-toggle>
+                    <app-notification-toggle [bgcolor]="'#3f1eae'"  (selectedChange)="addormidifyChange($event)" [savedtext]="'-2.40'"  [displaytext]="'-2.4'" [valuetext]="dataItem.buyatChange" [symbol]="dataItem.symbol" ></app-notification-toggle>
+                    <app-notification-toggle [bgcolor]="'#7a06c2'" (selectedChange)="addormidifyChange($event)" [savedtext]="'-3.40'"  [displaytext]="'-3.4'" [valuetext]="dataItem.buyatChange" [symbol]="dataItem.symbol" ></app-notification-toggle>
+                    <app-notification-toggle [bgcolor]="'#A91079'"  (selectedChange)="addormidifyChange($event)" [savedtext]="'-4.40'" [displaytext]="'-4.4'" [valuetext]="dataItem.buyatChange" [symbol]="dataItem.symbol" ></app-notification-toggle>
+                    <app-notification-toggle [bgcolor]="'#F806CC'" (selectedChange)="addormidifyChange($event)" [savedtext]="'-5.40'" [displaytext]="'-5.4'" [valuetext]="dataItem.buyatChange" [symbol]="dataItem.symbol" ></app-notification-toggle>
+
+
+                    <!-- <a  (click)="onclickChangeby(dataItem.symbol,-2.4)" matTooltip="{{dataItem.stock_name}}"  [ngStyle]="{'background-color': dataItem.buyatChange > -3  ? (buyatChangeColor(dataItem.buyatChange,-2.4) ? '#affbb5' : '#1B4242'):'#1B4242'}"   style="color:  whitesmoke;  border-radius: 2px; font-size: 10px;display: inline-block;">
+                      &nbsp; T + 1 &nbsp;
+                      </a>
+                      &nbsp;
+                      <a  (click)="onclickChangeby(dataItem.symbol,-3.4)" matTooltip="{{dataItem.stock_name}}" [ngStyle]="{'background-color': dataItem.buyatChange > -4  ? (buyatChangeColor(dataItem.buyatChange,-3.4) ? '#affbb5' : '#5C8374'):'#5C8374'}"  style="color:  whitesmoke; border-radius: 2px; font-size: 10px;display: inline-block;">
+                        &nbsp; T + 2 &nbsp;
+                      </a>
+                      &nbsp;
+                      <a   (click)="onclickChangeby(dataItem.symbol,-4.4)" matTooltip="{{dataItem.stock_name}}" [ngStyle]="{'background-color': dataItem.buyatChange > -5  ? (buyatChangeColor(dataItem.buyatChange,-4.4) ? '#affbb5' : '#9EC8B9'):'#9EC8B9'}"  style="color:  whitesmoke; border-radius: 2px; font-size: 10px;display: inline-block;">
+                        &nbsp; T + 3 &nbsp;
+                      </a> -->
+
+                      <!-- <a   (click)="onclickChangeby(dataItem.symbol,-5.4)" matTooltip="{{dataItem.stock_name}}"  [ngStyle]="{'background-color': dataItem.buyatChange > -6  ? (buyatChangeColor(dataItem.buyatChange,-5.4) ? '#affbb5' : '#9EC8B9'):'#9EC8B9'}"   style="color:  whitesmoke;  border-radius: 2px; font-size: 10px;display: inline-block;">
+                      &nbsp; -5.4  &nbsp;
+                      </a> -->
+                  </td>
+
+
+                </tr>
+                <tr>
                   <td>
-                  <span style="color: rgb(12, 11, 11); border-radius: 4px; font-size: 12px;margin:  0.5px;display: inline-block;">
+                  <span style="color: rgb(12, 11, 11); border-radius: 4px; font-size: 8px;display: inline-block;">
                     1 Day
                    </span>
                   </td>
                   <td>
-                   <span style="color: rgb(13, 12, 12); border-radius: 4px; font-size: 12px;margin:  0.5px;display: inline-block;" >
+                   <span style="color: rgb(13, 12, 12); border-radius: 4px; font-size: 8px;display: inline-block;" >
                      1 Week
                    </span>
                   </td>
                   <td>
-                   <span style="color: rgb(7, 7, 7); border-radius: 4px; font-size: 12px;margin:  0.5px;display: inline-block;" >
+                   <span style="color: rgb(7, 7, 7); border-radius: 4px; font-size: 8px;display: inline-block;" >
                      1 Month
                    </span>
                   </td>
                   <td>
-                   <span style="color: rgb(10, 10, 10); border-radius: 4px; font-size: 12px;margin:  0.5px;display: inline-block;" >
+                   <span style="color: rgb(10, 10, 10); border-radius: 4px; font-size: 8px;display: inline-block;" >
                     3 Months
                    </span>
                   </td>
                   <td>
-                   <span style="color: rgb(10, 10, 10); border-radius: 4px; font-size: 12px;margin:  0.5px;display: inline-block;" >
+                   <span style="color: rgb(10, 10, 10); border-radius: 4px; font-size: 8px;display: inline-block;" >
                      6 Months
                    </span>
                   </td>
 
                   <td>
-                    <span style="color: rgb(10, 10, 10); border-radius: 4px; font-size: 12px;margin:  0.5px;display: inline-block;" >
+                    <span style="color: rgb(10, 10, 10); border-radius: 4px; font-size: 8px;display: inline-block;" >
                       1 Year
                     </span>
                    </td>
 
                    <td>
-                    <span style="color: rgb(10, 10, 10); border-radius: 4px; font-size: 12px;margin:  0.5px;display: inline-block;" >
+                    <span style="color: rgb(10, 10, 10); border-radius: 4px; font-size: 8px;display: inline-block;" >
                       YTD
                     </span>
                    </td>
@@ -237,84 +350,85 @@
                 <tr>
 
                   <td>
-                  <span style="color: rgb(12, 11, 11); border-radius: 4px; font-size: 12px;margin:  0.5px;display: inline-block;" [ngStyle]="{'background-color': carDateCalculator(dataItem.recmdtn) ? '#affbb5' : '#ffe8e7'}">
+                  <span style="color: rgb(12, 11, 11); border-radius: 4px; font-size: 12px;display: inline-block;" [ngStyle]="{'background-color': carDateCalculator(dataItem.recmdtn) ? '#affbb5' : '#ffe8e7'}">
                     {{ dataItem.change | number : '1.2-2'  }} %
                    </span>
                   </td>
                   <td>
-                   <span style="color: rgb(13, 12, 12); border-radius: 4px; font-size: 12px;margin:  0.5px;display: inline-block;" [ngStyle]="{'background-color': carDateCalculator(dataItem.recmdtn) ? '#affbb5' : '#ffe8e7'}">
+                   <span style="color: rgb(13, 12, 12); border-radius: 4px; font-size: 12px;display: inline-block;" [ngStyle]="{'background-color': carDateCalculator(dataItem.recmdtn) ? '#affbb5' : '#ffe8e7'}">
                     {{ dataItem.return1w | number : '1.2-2' }} %
                    </span>
                   </td>
                   <td>
-                   <span style="color: rgb(7, 7, 7); border-radius: 4px; font-size: 12px;margin:  0.5px;display: inline-block;" [ngStyle]="{'background-color': carDateCalculator(dataItem.recmdtn) ? '#affbb5' : '#ffe8e7'}" >
+                   <span style="color: rgb(7, 7, 7); border-radius: 4px; font-size: 12px;display: inline-block;" [ngStyle]="{'background-color': carDateCalculator(dataItem.recmdtn) ? '#affbb5' : '#ffe8e7'}" >
                     {{ dataItem.return1m | number : '1.2-2'  }} %
                    </span>
                   </td>
                   <td>
-                   <span style="color: rgb(10, 10, 10); border-radius: 4px; font-size: 12px;margin:  0.5px;display: inline-block;" [ngStyle]="{'background-color': carDateCalculator(dataItem.recmdtn) ? '#affbb5' : '#ffe8e7'}" >
+                   <span style="color: rgb(10, 10, 10); border-radius: 4px; font-size: 12px;display: inline-block;" [ngStyle]="{'background-color': carDateCalculator(dataItem.recmdtn) ? '#affbb5' : '#ffe8e7'}" >
                     {{ dataItem.return3m | number : '1.2-2'  }} %
                    </span>
                   </td>
                   <td>
-                   <span style="color: rgb(10, 10, 10); border-radius: 4px; font-size: 12px;margin:  0.5px;display: inline-block;" [ngStyle]="{'background-color': carDateCalculator(dataItem.recmdtn) ? '#affbb5' : '#ffe8e7'}" >
+                   <span style="color: rgb(10, 10, 10); border-radius: 4px; font-size: 12px;display: inline-block;" [ngStyle]="{'background-color': carDateCalculator(dataItem.recmdtn) ? '#affbb5' : '#ffe8e7'}" >
                     {{ dataItem.return6m | number : '1.2-2'  }} %
                    </span>
                   </td>
                   <td>
-                    <span style="color: rgb(10, 10, 10); border-radius: 4px; font-size: 12px;margin:  0.5px;display: inline-block;" [ngStyle]="{'background-color': carDateCalculator(dataItem.recmdtn) ? '#affbb5' : '#ffe8e7'}" >
+                    <span style="color: rgb(10, 10, 10); border-radius: 4px; font-size: 12px;display: inline-block;" [ngStyle]="{'background-color': carDateCalculator(dataItem.recmdtn) ? '#affbb5' : '#ffe8e7'}" >
                      {{ dataItem.return1Year | number : '1.2-2'  }} %
                     </span>
                    </td>
                    <td>
-                    <span style="color: rgb(10, 10, 10); border-radius: 4px; font-size: 12px;margin:  0.5px;display: inline-block;" [ngStyle]="{'background-color': carDateCalculator(dataItem.recmdtn) ? '#affbb5' : '#ffe8e7'}" >
+                    <span style="color: rgb(10, 10, 10); border-radius: 4px; font-size: 12px;display: inline-block;" [ngStyle]="{'background-color': carDateCalculator(dataItem.recmdtn) ? '#affbb5' : '#ffe8e7'}" >
                      {{ dataItem.returnYTD | number : '1.2-2'  }} %
                     </span>
                    </td>
                 </tr>
                 <tr>
                   <td>
-                  <span style="color: rgb(12, 11, 11); border-radius: 4px; font-size: 12px;margin:  0.5px;display: inline-block;" [ngStyle]="{'background-color': carDateCalculator(dataItem.recmdtn) ? '#affbb5' : '#ffe8e7'}">
+                  <span style="color: rgb(12, 11, 11); border-radius: 4px; font-size: 12px;display: inline-block;" [ngStyle]="{'background-color': carDateCalculator(dataItem.recmdtn) ? '#affbb5' : '#ffe8e7'}">
                     <span> {{ dataItem.priceChange_Day > 0 ? '+':'' }}</span> {{ dataItem.priceChange_Day | number : '1.2-2'  }}
 
                    </span>
                   </td>
                   <td>
-                   <span style="color: rgb(13, 12, 12); border-radius: 4px; font-size: 12px;margin:  0.5px;display: inline-block;" [ngStyle]="{'background-color': dataItem.return1w > dataItem.return1m ? '#affbb5' : '#ffe8e7'}">
+                   <span style="color: rgb(13, 12, 12); border-radius: 4px; font-size: 12px;display: inline-block;" [ngStyle]="{'background-color': dataItem.return1w > dataItem.return1m ? '#affbb5' : '#ffe8e7'}">
                     <span> {{ dataItem.priceChange_1w > 0 ? '+':'' }}</span> {{ dataItem.priceChange_1w | number : '1.2-2'  }}
                    </span>
                   </td>
                   <td>
-                   <span style="color: rgb(7, 7, 7); border-radius: 4px; font-size: 12px;margin:  0.5px;display: inline-block;" [ngStyle]="{'background-color': dataItem.return1m > dataItem.return3m  ? '#affbb5' : '#ffe8e7'}" >
+                   <span style="color: rgb(7, 7, 7); border-radius: 4px; font-size: 12px;display: inline-block;" [ngStyle]="{'background-color': dataItem.return1m > dataItem.return3m  ? '#affbb5' : '#ffe8e7'}" >
                     <span> {{ dataItem.priceChange_1m > 0 ? '+':'' }}</span>
 
                     {{ dataItem.priceChange_1m | number : '1.2-2'  }}
                    </span>
                   </td>
                   <td>
-                   <span style="color: rgb(10, 10, 10); border-radius: 4px; font-size: 12px;margin:  0.5px;display: inline-block;" [ngStyle]="{'background-color': dataItem.return3m > 0  ? '#affbb5' : '#ffe8e7'}" >
+                   <span style="color: rgb(10, 10, 10); border-radius: 4px; font-size: 12px;display: inline-block;" [ngStyle]="{'background-color': dataItem.return3m > 0  ? '#affbb5' : '#ffe8e7'}" >
                    <span> {{ dataItem.priceChange_3m > 0 ? '+':'' }}</span>
                     {{ dataItem.priceChange_3m | number : '1.2-2'  }}
                    </span>
                   </td>
                   <td>
-                   <span style="color: rgb(10, 10, 10); border-radius: 4px; font-size: 12px;margin:  0.5px;display: inline-block;" [ngStyle]="{'background-color': carDateCalculator(dataItem.recmdtn) ? '#affbb5' : '#ffe8e7'}" >
+                   <span style="color: rgb(10, 10, 10); border-radius: 4px; font-size: 12px;display: inline-block;" [ngStyle]="{'background-color': carDateCalculator(dataItem.recmdtn) ? '#affbb5' : '#ffe8e7'}" >
                     <span> {{ dataItem.priceChange_6m > 0 ? '+':'' }}</span>  {{ dataItem.priceChange_6m | number : '1.2-2'  }}
                    </span>
                   </td>
 
                   <td>
-                    <span style="color: rgb(10, 10, 10); border-radius: 4px; font-size: 12px;margin:  0.5px;display: inline-block;" [ngStyle]="{'background-color': carDateCalculator(dataItem.recmdtn) ? '#affbb5' : '#ffe8e7'}" >
+                    <span style="color: rgb(10, 10, 10); border-radius: 4px; font-size: 12px;display: inline-block;" [ngStyle]="{'background-color': carDateCalculator(dataItem.recmdtn) ? '#affbb5' : '#ffe8e7'}" >
                      <span> {{ dataItem.priceChange_1year > 0 ? '+':'' }}</span>  {{ dataItem.priceChange_1year | number : '1.2-2'  }}
                     </span>
                    </td>
 
                    <td>
-                    <span style="color: rgb(10, 10, 10); border-radius: 4px; font-size: 12px;margin:  0.5px;display: inline-block;" [ngStyle]="{'background-color': carDateCalculator(dataItem.recmdtn) ? '#affbb5' : '#ffe8e7'}" >
+                    <span style="color: rgb(10, 10, 10); border-radius: 4px; font-size: 12px;display: inline-block;" [ngStyle]="{'background-color': carDateCalculator(dataItem.recmdtn) ? '#affbb5' : '#ffe8e7'}" >
                      <span> {{ dataItem.priceChange_YTD > 0 ? '+':'' }}</span>  {{ dataItem.priceChange_YTD | number : '1.2-2'  }}
                     </span>
                    </td>
                 </tr>
+
               </table>
               <div>
               </div>
@@ -335,7 +449,7 @@
 
 
 
-<kendo-grid-column [width]="320"  title="Chart" class="grid-one-day-chart"
+<kendo-grid-column [width]="350"  class="grid-one-day-chart"
 [sortable]="false">
 <ng-template kendoGridCellTemplate let-dataItem>
     <day-chart (selectedpoint)="addormidifypoint($event)"   [data]="dataItem.intraday" [symbol]="dataItem.symbol" [min]="dataItem.min" [open]="dataItem.int_open" [last]="dataItem.int_last" [max]="dataItem.max" [CurrentData]="dataItem" >

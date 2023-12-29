@@ -1,12 +1,12 @@
 import { isNumber } from '@progress/kendo-angular-grid/dist/es2015/utils';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { StocksService } from '../services/stocks.service';
 import { SignalrService } from '../services/signalr.service';
 import { Observable, Subscription, of } from 'rxjs';
 import { Equities } from '../models/equities.model';
 import { HttpClient } from '@angular/common/http';
 import { SortDescriptor } from '@progress/kendo-data-query';
-import { RowClassArgs } from '@progress/kendo-angular-grid';
+import { DataBindingDirective, RowClassArgs } from '@progress/kendo-angular-grid';
 import {MatChipsModule} from '@angular/material/chips';
 import { ThemePalette } from '@angular/material/core';
 import { ProgressBarMode } from '@angular/material/progress-bar';
@@ -14,7 +14,7 @@ import { LabelType, Options } from '@angular-slider/ngx-slider';
 import { ToastrService } from 'ngx-toastr';
 import { SignalrBreezeService } from '../services/signalr.serviceBreeze';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
-
+import { process } from "@progress/kendo-data-query";
 
 @Component({
 
@@ -45,19 +45,36 @@ export class StocklistComponent implements OnInit {
   Favoriteselected: boolean = false;
   EnabledAutoTradeSelected: boolean = false;
   ShowNotification :boolean=false;
+  upperckt:boolean=false;
+  lowerckt:boolean=false;
+  tday:string='';
+  WatchList:string='';
   minPriceValue:number=0;
   maxPriceValue:number=5000;
+  public gridView: any[];
+  tday_1 :boolean=false;
+  tday_2 :boolean=false;
+  tday_3 :boolean=false;
+
+  w1:boolean=false;
+  w2:boolean=false;
+  w3:boolean=false;
+
+  gridloading:boolean=false;
+
 
   optionsRange: Options = {
     floor: 0,
     ceil: 5000,
-    step:2
+    step:50,
+
 
   };
+  @ViewChild(DataBindingDirective) dataBinding: DataBindingDirective;
   constructor(private toastrService: ToastrService,public signalRService: SignalrService, public signalRBreezeService: SignalrBreezeService,public stocksService: StocksService, private http: HttpClient) {
-
+ this.gridloading=true;
     this.signalRService.connection
-    .invoke('GetStocksList',false,false,false,false,false,this.minPriceValue,this.maxPriceValue)
+    .invoke('GetStocksList',false,false,false,false,false,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList)
     .catch((error: any) => {
       console.log(`SGetAllStocks error: ${error}`);
       this.showError(`SGetAllStocks error: ${error}`, "StockList")
@@ -67,12 +84,130 @@ export class StocklistComponent implements OnInit {
   }
 
 
+  public onFilter(inputValue: string): void {
+    debugger;
+    this.gridView = process(this.gridDataEquties, {
+      filter: {
+        logic: "or",
+        filters: [
+          {
+            field: "securityId",
+            operator: "contains",
+            value: inputValue,
+          },
+          {
+            field: "job_title",
+            operator: "contains",
+            value: inputValue,
+          },
+          {
+            field: "budget",
+            operator: "contains",
+            value: inputValue,
+          },
+          {
+            field: "phone",
+            operator: "contains",
+            value: inputValue,
+          },
+          {
+            field: "address",
+            operator: "contains",
+            value: inputValue,
+          },
+        ],
+      },
+    }).data;
 
+    this.dataBinding.skip = 0;
+  }
+
+  toggleSelectedWatch_1(val:string){
+    debugger;
+    this.WatchList=val;
+    this.w1=!this.w1;
+    if(!this.w1)
+       this.WatchList=''
+    this.signalRService.connection
+    .invoke('GetStocksList',this.Favoriteselected,this.upperckt,this.lowerckt,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList)
+    .catch((error: any) => {
+      console.log(`SGetAllStocks error: ${error}`);
+      alert('GetAllStocks error!, see console for details.');
+    });
+  }
+
+  toggleSelectedWatch_2(val:string){
+    debugger;
+    this.WatchList=val;
+    this.w2=!this.w2;
+    if(!this.w2)
+       this.WatchList=''
+    this.signalRService.connection
+    .invoke('GetStocksList',this.Favoriteselected,this.upperckt,this.lowerckt,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList)
+    .catch((error: any) => {
+      console.log(`SGetAllStocks error: ${error}`);
+      alert('GetAllStocks error!, see console for details.');
+    });
+  }
+
+      toggleSelectedWatch_3(val:string){
+        debugger;
+        this.WatchList=val;
+    this.w3=!this.w3;
+    if(!this.w3)
+       this.WatchList=''
+    this.signalRService.connection
+    .invoke('GetStocksList',this.Favoriteselected,this.upperckt,this.lowerckt,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList)
+    .catch((error: any) => {
+      console.log(`SGetAllStocks error: ${error}`);
+      alert('GetAllStocks error!, see console for details.');
+    });
+  }
+
+  toggleSelectedTday1(val:string){
+    this.tday=val;
+    this.tday_1=!this.tday_1;
+    if(!this.tday_1)
+       this.tday=''
+    this.signalRService.connection
+    .invoke('GetStocksList',this.Favoriteselected,this.upperckt,this.lowerckt,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList)
+    .catch((error: any) => {
+      console.log(`SGetAllStocks error: ${error}`);
+      alert('GetAllStocks error!, see console for details.');
+    });
+  }
+
+  toggleSelectedTday2(val:string){
+    this.tday=val;
+    this.tday_2=!this.tday_2;
+    if(!this.tday_2)
+       this.tday=''
+    this.signalRService.connection
+    .invoke('GetStocksList',this.Favoriteselected,this.upperckt,this.lowerckt,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList)
+    .catch((error: any) => {
+      console.log(`SGetAllStocks error: ${error}`);
+      alert('GetAllStocks error!, see console for details.');
+    });
+  }
+
+  toggleSelectedTday3(val:string){
+    this.tday=val;
+    this.tday_3=!this.tday_3;
+    if(!this.tday_3)
+       this.tday=''
+
+    this.signalRService.connection
+    .invoke('GetStocksList',this.Favoriteselected,this.upperckt,this.lowerckt,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList)
+    .catch((error: any) => {
+      console.log(`SGetAllStocks error: ${error}`);
+      alert('GetAllStocks error!, see console for details.');
+    });
+  }
   GetShowNotification() {
 
     this.ShowNotification = !this.ShowNotification;
     this.signalRService.connection
-    .invoke('GetStocksList',this.Favoriteselected,false,false,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue)
+    .invoke('GetStocksList',this.Favoriteselected,this.upperckt,this.lowerckt,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList)
     .catch((error: any) => {
       console.log(`SGetAllStocks error: ${error}`);
       alert('GetAllStocks error!, see console for details.');
@@ -82,9 +217,9 @@ export class StocklistComponent implements OnInit {
   sliderEvent(value: any) {
 
 
-    this.EnabledAutoTradeSelected = !this.EnabledAutoTradeSelected;
+
     this.signalRService.connection
-    .invoke('GetStocksList',this.Favoriteselected,false,false,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue)
+    .invoke('GetStocksList',this.Favoriteselected,this.upperckt,this.lowerckt,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList)
     .catch((error: any) => {
       console.log(`SGetAllStocks error: ${error}`);
       alert('GetAllStocks error!, see console for details.');
@@ -94,7 +229,7 @@ export class StocklistComponent implements OnInit {
 
     this.EnabledAutoTradeSelected = !this.EnabledAutoTradeSelected;
     this.signalRService.connection
-    .invoke('GetStocksList',this.Favoriteselected,false,false,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue)
+    .invoke('GetStocksList',this.Favoriteselected,this.upperckt,this.lowerckt,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList)
     .catch((error: any) => {
       console.log(`SGetAllStocks error: ${error}`);
       alert('GetAllStocks error!, see console for details.');
@@ -105,8 +240,9 @@ export class StocklistComponent implements OnInit {
   getupperCircuit(){
 
     debugger;
+    this.upperckt = !this.upperckt;
     this.signalRService.connection
-    .invoke('GetStocksList',this.Favoriteselected,true,false,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue)
+    .invoke('GetStocksList',this.Favoriteselected,this.upperckt,this.lowerckt,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList)
     .catch((error: any) => {
       console.log(`SGetAllStocks error: ${error}`);
       alert('GetAllStocks error!, see console for details.');
@@ -115,8 +251,9 @@ export class StocklistComponent implements OnInit {
 
   getlowerCircuit(){
     debugger;
+    this.lowerckt = !this.lowerckt;
     this.signalRService.connection
-    .invoke('GetStocksList',this.Favoriteselected,false,true,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue)
+    .invoke('GetStocksList',this.Favoriteselected,this.upperckt,this.lowerckt ,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList)
     .catch((error: any) => {
       console.log(`SGetAllStocks error: ${error}`);
       alert('GetAllStocks error!, see console for details.');
@@ -126,7 +263,7 @@ export class StocklistComponent implements OnInit {
     debugger;
     this.Favoriteselected = !this.Favoriteselected;
     this.signalRService.connection
-    .invoke('GetStocksList',this.Favoriteselected,false,false,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue)
+    .invoke('GetStocksList',this.Favoriteselected,this.upperckt,this.lowerckt,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList)
     .catch((error: any) => {
       console.log(`SGetAllStocks error: ${error}`);
       alert('GetAllStocks error!, see console for details.');
@@ -263,6 +400,38 @@ this.signalRService.connection
 });
 }
 
+addormidifyChange(p :any) {
+  debugger;
+
+  this.signalRBreezeService.connection
+  .invoke('SetBuyChangeAlter',p.symbol,p.value)
+  .catch((error: any) => {
+    console.log(`SetBuyChangeAlter error: ${error}`);
+    alert('SetBuyChangeAlter error!, see console for details.');
+  });
+  }
+
+  addormidifyTdays(p :any) {
+    debugger;
+
+    this.signalRBreezeService.connection
+  .invoke('SetForT3',p.symbol,p.value)
+  .catch((error: any) => {
+    console.log(`SetBuyChangeAlter error: ${error}`);
+    alert('SetBuyChangeAlter error!, see console for details.');
+  });
+    }
+
+    addormidifyWacthList(p :any) {
+      debugger;
+
+      this.signalRBreezeService.connection
+    .invoke('SetForWacthList',p.symbol,p.value)
+    .catch((error: any) => {
+      console.log(`SetForWacthList error: ${error}`);
+      alert('SetForWacthList error!, see console for details.');
+    });
+      }
 addormidifyIsAutoBuy(p :any) {
   debugger;
 
@@ -274,10 +443,6 @@ addormidifyIsAutoBuy(p :any) {
   });
   }
 
-// toggle(event: MatSlideToggleChange) {
-//   console.log('Toggle fired');
-//   this.useDefault = event.checked;
-// }
 
 
 addormidifypoint(p :any) {
@@ -316,6 +481,9 @@ carDateCalculator(value :string ){
   return value === 'strongBuy' ? true :  (value === 'buy')  ? true: false
  }
 
+ buyatChangeColor(value:number,savedvalue :number) {
+  return value == savedvalue ? true :false
+ }
 
   ngOnInit() {
 
@@ -325,21 +493,42 @@ carDateCalculator(value :string ){
      // alert(data)
     })
 
+    this.signalRBreezeService.connection.on("SendSetBuyChangeAlterNew",(data :any) => {
+
+      this.showSuccess(data, "Chart Change")
+     // alert(data)
+    })
+
+
+
     this.signalRService.connection.on("SendAddOrModifyAutoTrade",(data :any) => {
 
-      this.showSuccess(data, "Auto Trade")
+      this.showSuccess(data, "Auto Trade Price")
      // alert(data)
     })
 
     this.signalRBreezeService.connection.on("SendSetBuyPriceAlter",(data :any) => {
 
-      this.showSuccess(data, "Point Saved")
+      this.showSuccess(data, "Chart price")
+     // alert(data)
+    })
+
+
+    this.signalRBreezeService.connection.on("SendSetForT3",(data :any) => {
+
+      this.showSuccess(data, "T Added")
+     // alert(data)
+    })
+
+    this.signalRBreezeService.connection.on("SetForWacthList",(data :any) => {
+
+      this.showSuccess(data, "WatchList")
      // alert(data)
     })
 
      this.signalRService.connection.on("SendStocksList",(data :any) => {
 debugger;
-this.showInfo("Data Loading", "Stock List")
+this.gridloading=false;
       var  i=0;
       let res = data.map((val: Equities) => {
         var from =(val.last).toFixed(2);
@@ -367,7 +556,7 @@ this.showInfo("Data Loading", "Stock List")
           netQtry : val.bQty-val.sQty,
           avgPrice:val.avgPrice,
           //intraday: Observable<number[]>;
-          intraday: val.data,
+          intraday: val.dataPoint, //val.data,
           dataopen:[val.open],
           dataavgPrice:[val.avgPrice],
           mostnumber:val.last,
@@ -396,6 +585,7 @@ this.showInfo("Data Loading", "Stock List")
           isfavorite : val.isfavorite,
 
           volumeC:val.volumeC,
+          securityId:val.securityId,
 
 
 
@@ -413,7 +603,11 @@ this.showInfo("Data Loading", "Stock List")
           price52Weekshigh:val.price52Weekshigh,
           isLowerCircuite:val.isLowerCircuite,
           isUpperCircuite:val.isUpperCircuite,
-          isenabledforautoTrade:val.isenabledforautoTrade
+          isenabledforautoTrade:val.isenabledforautoTrade,
+          buyatChange:val.buyatChange,
+          tdays :val.tdays,
+          wacthList:val.wacthList,
+
           // calc_ma:this.getma(+[val.last],null),
           // calc_wma:this.getwma([val.last],null)
 

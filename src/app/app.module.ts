@@ -70,7 +70,9 @@ import {MatRadioModule} from '@angular/material/radio';
 import { CustometoggleComponent } from './custometoggle/custometoggle.component';
 import { NotificationToggleComponent } from './notification-toggle/notification-toggle.component';
 import { MinmaxToggleComponent } from './minmax-toggle/minmax-toggle.component';
-
+import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatExpansionModule} from '@angular/material/expansion';
+import { InputsModule } from '@progress/kendo-angular-inputs';
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'top', component: TopPerformerComponent },
@@ -119,8 +121,10 @@ const routes: Routes = [
         progressBar: true,
       }),
       MatSliderModule,
+
       RouterModule.forRoot(routes),
       ListViewModule,
+      MatTooltipModule,
       MatSelectModule,
         BrowserModule,
         HttpClientModule,
@@ -142,7 +146,8 @@ const routes: Routes = [
         MatNativeDateModule,
         MatCardModule,
         NgxSliderModule,
-        MatButtonModule, MatMenuModule,MatAutocompleteModule,ReactiveFormsModule,FormsModule,MatCheckboxModule,MatSidenavModule,MatToolbarModule,MatIconModule,MatChipsModule,MatBadgeModule
+        MatButtonModule,
+         MatMenuModule,MatAutocompleteModule,ReactiveFormsModule,FormsModule,MatCheckboxModule,MatSidenavModule,MatToolbarModule,MatIconModule,MatChipsModule,MatBadgeModule, MatExpansionModule,InputsModule
 
 
     ],

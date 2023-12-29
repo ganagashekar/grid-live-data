@@ -1,17 +1,21 @@
-<!-- <button  mat-icon-button (click)="toggleSelected()">
 
-  <mat-icon
-    *ngIf="selected"
-    color="primary"
-    aria-label="Example icon-button with a heart icon">
-    alarm_on
-  </mat-icon>
+<a  (click)="toggleSelected()"   [ngStyle]="{'background-color':selected  ? '#affbb5' : bgcolor}"   style="color:  whitesmoke;  border-radius: 2px; font-size: 10px;margin:  0.2px;display: inline-block;">
+  &nbsp;{{displaytext}} &nbsp;
+  </a>
 
-  <mat-icon
-    *ngIf="!selected"
-    color="warn"
-    aria-label="Example icon-button with a heart icon">
-    alarm_off
-  </mat-icon>
+<!--
+<a  (click)="toggleSelected()"  [ngStyle]="{'background-color':selected  ? '#affbb5' : '#2E0249'):'#2E0249'}"   style="color:  whitesmoke;  border-radius: 2px; font-size: 10px;margin:  0.2px;display: inline-block;">
+  &nbsp;-2.4 &nbsp;
+  </a> -->
 
-</button> -->
+  <!-- <a  (click)="onclickChangeby(dataItem.symbol,-3.4)" matTooltip="{{dataItem.stock_name}}" [ngStyle]="{'background-color': dataItem.buyatChange > -4  ? (buyatChangeColor(dataItem.buyatChange,-3.4) ? '#affbb5' : '#570A57'):'#570A57'}"  style="color:  whitesmoke; border-radius: 2px; font-size: 10px;margin:  0.2px;display: inline-block;">
+  &nbsp;-3.4  &nbsp;
+  </a>
+
+  <a   (click)="onclickChangeby(dataItem.symbol,-4.4)" matTooltip="{{dataItem.stock_name}}" [ngStyle]="{'background-color': dataItem.buyatChange > -5  ? (buyatChangeColor(dataItem.buyatChange,-4.4) ? '#affbb5' : '#A91079'):'#A91079'}"  style="color:  whitesmoke; border-radius: 2px; font-size: 10px;margin:  0.2px;display: inline-block;">
+  &nbsp;-4.4  &nbsp;
+  </a>
+
+  <a   (click)="onclickChangeby(dataItem.symbol,-5.4)" matTooltip="{{dataItem.stock_name}}"  [ngStyle]="{'background-color': dataItem.buyatChange > -6  ? (buyatChangeColor(dataItem.buyatChange,-5.4) ? '#affbb5' : '#F806CC'):'#F806CC'}"   style="color:  whitesmoke;  border-radius: 2px; font-size: 10px;margin:  0.2px;display: inline-block;">
+  &nbsp; -5.4  &nbsp;
+  </a> -->
