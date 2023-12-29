@@ -66,4 +66,14 @@ buyatChange:string;
 tdays:string;
 wacthList:string;
 
+pr_change :string
+pr_close:string
+pr_open:string
+pr_volume:string;
+pr_date:string;
+
+
+
+
+
 }

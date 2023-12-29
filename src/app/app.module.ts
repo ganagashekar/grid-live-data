@@ -73,6 +73,8 @@ import { MinmaxToggleComponent } from './minmax-toggle/minmax-toggle.component';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatExpansionModule} from '@angular/material/expansion';
 import { InputsModule } from '@progress/kendo-angular-inputs';
+import { PopupModule } from '@progress/kendo-angular-popup';
+
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'top', component: TopPerformerComponent },
@@ -147,7 +149,8 @@ const routes: Routes = [
         MatCardModule,
         NgxSliderModule,
         MatButtonModule,
-         MatMenuModule,MatAutocompleteModule,ReactiveFormsModule,FormsModule,MatCheckboxModule,MatSidenavModule,MatToolbarModule,MatIconModule,MatChipsModule,MatBadgeModule, MatExpansionModule,InputsModule
+         MatMenuModule,MatAutocompleteModule,ReactiveFormsModule,FormsModule,MatCheckboxModule,MatSidenavModule,MatToolbarModule,MatIconModule,MatChipsModule,MatBadgeModule, MatExpansionModule,
+         InputsModule,PopupModule
 
 
     ],

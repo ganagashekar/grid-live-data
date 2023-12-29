@@ -1,1 +1,54 @@
-<!-- <ngx-slider (userChangeEnd)="sliderEvent($event)"  [(value)]="valuemin" [(highValue)]="valuemax" [options]="options"></ngx-slider> -->
+
+<a #anchor style="height: 1px;" (click)="onToggle(anchor)">
+ ....
+  </a>
+<!-- <span #anchor><mat-icon >more_horiz</mat-icon></span> -->
+<!-- <button mat-button > Basic</button> -->
+<kendo-popup [anchor]="anchor" (anchorViewportLeave)="show = false" *ngIf="show">
+	<div style="width: 900px; height: 100px;">
+		<!-- User-defined content -->
+    <mat-card>
+      <mat-card-content>
+        <table>
+          <tr>
+            <td>Date</td>
+            <td  *ngFor="let subCategory of pr_date?.split(',')">
+              {{ subCategory }}
+              </td>
+
+          </tr>
+          <tr>
+            <td>Change</td>
+            <td [ngStyle]="{'background-color': carDateCalculator(subCategory)  ? '#affbb5' : '#ffe8e7'}"  *ngFor="let subCategory of pr_change?.split(',')">
+             {{ subCategory }}
+           </td>
+
+          </tr>
+          <tr>
+            <td>Volume</td>
+            <td  *ngFor="let subCategory of pr_volume?.split(',')">
+              {{ subCategory }}
+              </td>
+
+          </tr>
+          <tr>
+            <td>Open</td>
+            <td  *ngFor="let subCategory of pr_open?.split(',')">
+              {{ subCategory }}
+              </td>
+
+          </tr>
+          <tr>
+            <td>Close</td>
+            <td  *ngFor="let subCategory of pr_close?.split(',')">
+              {{ subCategory }}
+              </td>
+
+          </tr>
+
+
+        </table>
+      </mat-card-content>
+    </mat-card>
+	</div>
+</kendo-popup>

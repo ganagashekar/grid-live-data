@@ -608,6 +608,12 @@ this.gridloading=false;
           tdays :val.tdays,
           wacthList:val.wacthList,
 
+pr_change :val.pr_change,
+pr_close:val.pr_close,
+pr_open:val.pr_open,
+pr_volume:val.pr_volume,
+pr_date:val.pr_date
+
           // calc_ma:this.getma(+[val.last],null),
           // calc_wma:this.getwma([val.last],null)
 

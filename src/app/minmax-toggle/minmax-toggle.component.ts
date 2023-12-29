@@ -1,35 +1,40 @@
-import { Component, OnInit } from '@angular/core';
+import { async } from '@angular/core/testing';
+import { Component, Input, OnInit } from '@angular/core';
+import {
+  MatDialog,
+  MatDialogActions,
+  MatDialogClose,
+  MatDialogContent,
+} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-minmax-toggle',
   templateUrl: './minmax-toggle.component.html',
-  styleUrls: ['./minmax-toggle.component.css']
+  styleUrls: ['./minmax-toggle.component.css'],
 })
 export class MinmaxToggleComponent implements OnInit {
 
-  valuemin=0;
-  valuemax=0;
+  @Input() pr_change :string;
+  @Input() pr_close  :string;
+  @Input() pr_open  :string;
+  @Input() pr_volume  :string;
+  @Input() pr_date :string;
 
-  // options: Options = {
-  //   floor: 0,
-  //   ceil: 5000,
-  //   translate: (value: number, label: LabelType): string => {
-  //     switch (label) {
-  //       case LabelType.Low:
-  //         return "<b>Min:</b>" + value;
-  //       case LabelType.High:
-  //         return "<b>Max:</b>" + value;
-  //       default:
-  //         return  value;
-  //     }
-  //   }
-  // };
-  constructor() { }
+  @Input() anchor: any;
+   toggleText: string = "Hide";
+   show: boolean = false;
 
-  ngOnInit(): void {
+  public onToggle(el:any): void {debugger;
+    this.anchor = el;
+    this.show = !this.show;
+    this.toggleText = this.show ? "Hidе" : "Show";
   }
+  constructor() {}
 
-  // sliderEvent(value: any) {
-  //   alert(this.minValue);
-  // }
+  ngOnInit() {}
+
+  carDateCalculator(val :any){
+    return parseInt(val) > 0 ? true:false;
+
+  }
 }

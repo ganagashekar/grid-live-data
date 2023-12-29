@@ -143,7 +143,7 @@
 
 <kendo-grid id="my-grid"    [rowClass]="rowCallback"
 [pageSize]="500"  [filterable]="true" [pageable]="true"
-[sortable]="true"
+[sortable]="true" [columnMenu]="true"
 
  [kendoGridBinding]="(gridDataEquties | async)!"
 >
@@ -272,11 +272,20 @@
 
               <table style="border-spacing: 10px;">
                 <tr>
-                  <td colspan="4" style="text-align: left;">
+                  <td colspan="3" style="text-align: left;">
                     <app-notification-toggle [bgcolor]="'#8ACDD7'" (selectedChange)="addormidifyWacthList($event)"  [savedtext]="'W1'" [displaytext]="'W1'" [valuetext]="dataItem.wacthList" [symbol]="dataItem.symbol" ></app-notification-toggle>
                     <app-notification-toggle [bgcolor]="'#FF90BC'"  (selectedChange)="addormidifyWacthList($event)" [savedtext]="'W2'" [displaytext]="'W2'" [valuetext]="dataItem.wacthList" [symbol]="dataItem.symbol" ></app-notification-toggle>
                     <app-notification-toggle [bgcolor]="'#DC8686'"  (selectedChange)="addormidifyWacthList($event)" [savedtext]="'W3'"  [displaytext]="'W3'" [valuetext]="dataItem.wacthList" [symbol]="dataItem.symbol" ></app-notification-toggle>
 
+
+
+                  </td>
+                  <td>
+                    <span #anchor>
+
+                      <app-minmax-toggle [pr_change]="dataItem.pr_change" [pr_date]="dataItem.pr_date" [pr_open]="dataItem.pr_open" [pr_close]="dataItem.pr_close" [pr_volume]="dataItem.pr_volume"   [anchor]="anchor"></app-minmax-toggle>
+
+                                    </span>
                   </td>
                   <td colspan="3" style="text-align: right;">
 
@@ -446,9 +455,13 @@
 
     </kendo-grid-column>
 
+    <!-- <kendo-grid-column  title="popup">
+    <ng-template kendoGridCellTemplate let-dataItem>
+			<div #anchor></div>
+      <app-minmax-toggle [pr_change]="dataItem.pr_change" [pr_date]="dataItem.pr_date" [pr_open]="dataItem.pr_open" [pr_close]="dataItem.pr_close" [pr_volume]="dataItem.pr_volume"   [anchor]="anchor"></app-minmax-toggle>
 
-
-
+		</ng-template>
+  </kendo-grid-column> -->
 <kendo-grid-column [width]="350"  class="grid-one-day-chart"
 [sortable]="false">
 <ng-template kendoGridCellTemplate let-dataItem>

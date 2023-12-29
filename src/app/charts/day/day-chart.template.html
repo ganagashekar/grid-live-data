@@ -50,18 +50,18 @@
     <kendo-chart-category-axis-item name="categoryAxis" [visible]="false" [majorGridLines]="{ visible: false }">
     </kendo-chart-category-axis-item>
 </kendo-chart-category-axis>
-<kendo-chart-value-axis>
+<!-- <kendo-chart-value-axis>
   <kendo-chart-value-axis-item [min]="min" [max]="max"  [visible]="false" [majorGridLines]="{ visible: false }">
   </kendo-chart-value-axis-item>
-</kendo-chart-value-axis>
+</kendo-chart-value-axis> -->
 <kendo-chart-value-axis>
-  <kendo-chart-value-axis-item name="valueAxis" [min]="min" [max]="max"  [visible]="false" [majorGridLines]="{ visible: false }">
+  <kendo-chart-value-axis-item name="valueAxis"  [min]="min" [max]="max" [plotBands]="[{from:open,to :last , color: 'darkblack',opacity: 100}]"  [visible]="false" [majorGridLines]="{ visible: false }">
   </kendo-chart-value-axis-item>
 </kendo-chart-value-axis>
-<kendo-chart-value-axis>
-  <kendo-chart-value-axis-item [min]="min" [max]="max" [visible]="false" [plotBands]="[{from:open,to :last , color: 'darkblack',opacity: 100}]"  [majorGridLines]="{ visible: false }">
+<!-- <kendo-chart-value-axis>
+  <kendo-chart-value-axis-item [min]="min"c categoryField="date"  [max]="max" [visible]="false" [plotBands]="[{from:open,to :last , color: 'darkblack',opacity: 100}]"  [majorGridLines]="{ visible: false }">
   </kendo-chart-value-axis-item>
-</kendo-chart-value-axis>
+</kendo-chart-value-axis> -->
 
   <kendo-chart-series>
       <kendo-chart-series-item
