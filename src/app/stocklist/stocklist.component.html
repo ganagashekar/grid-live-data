@@ -79,6 +79,58 @@
       </td>
 
       <td>
+        <button (click)="getTargetprices()" mat-stroked-button color="accent">
+
+          <mat-icon
+          *ngIf="targetPrice"
+          >
+          star
+          </mat-icon>
+
+          <mat-icon
+          *ngIf="!targetPrice">
+          star_border
+          </mat-icon>
+          </button>
+
+      </td>
+
+
+      <td>
+        <button (click)="getbullish()" mat-stroked-button color="accent">
+
+          <mat-icon
+          *ngIf="bullish"
+          >
+          vertical_align_top
+          </mat-icon>
+
+          <mat-icon
+          *ngIf="!bullish">
+          keyboard_arrow_up
+          </mat-icon>
+          </button>
+
+      </td>
+
+      <td>
+        <button (click)="getbearish()" mat-stroked-button color="accent">
+
+          <mat-icon
+          *ngIf="bearish"
+          >
+          vertical_align_bottom
+          </mat-icon>
+
+          <mat-icon
+          *ngIf="!bearish">
+          keyboard_arrow_down
+          </mat-icon>
+          </button>
+
+      </td>
+
+      <td>
 
 
         <button (click)="toggleSelectedTday1('t1')" mat-stroked-button color="accent">
@@ -165,6 +217,17 @@
 
           <div style="float: left;">
 
+            <div style="margin-top: -2%;">
+              <span style="color: rgb(13, 12, 12); border-radius: 4px; font-size: 10px;display: inline-block;" [ngStyle]="{'background-color': (dataItem.bullishCount) > dataItem.bearishCount  ? '#affbb5' : '#ffe8e7'}">
+                Bullish Count : {{dataItem.bullishCount }}  &nbsp;&nbsp;&nbsp;
+               </span>
+               <span>
+                {{dataItem.match }}   &nbsp;&nbsp;&nbsp;
+               </span>
+               <span style="color: rgb(7, 7, 7); border-radius: 4px; font-size: 10px;display: inline-block;" [ngStyle]="{'background-color':  (dataItem.bullishCount) < dataItem.bearishCount ? '#affbb5' : '#ffe8e7'}">
+                &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;  Bearish Count :  {{dataItem.bearishCount }}
+               </span>
+            </div>
 
              <a   matBadgeColor="accent" target="_blank" href="{{dataItem.href }}"  >
 
@@ -225,21 +288,22 @@
 
 
 
-            <div>
+
+            <div style="margin-top: -2%;">
 
               <span style="color: rgb(12, 11, 11); border-radius: 4px; font-size: 12px;margin: 0.5px;display: inline-block;" [ngStyle]="{'background-color': carDateCalculator(dataItem.recmdtn) ? '#affbb5' : '#ffe8e7'}">
                 {{dataItem.recmdtn}}
               </span>
-              <span style="color: rgb(13, 12, 12); border-radius: 4px; font-size: 12px;display: inline-block;" [ngStyle]="{'background-color': carDateCalculator(dataItem.recmdtn) ? '#affbb5' : '#ffe8e7'}">
+              <span style="color: rgb(13, 12, 12); border-radius: 4px; font-size: 12px;margin: 0.5px;display: inline-block;" [ngStyle]="{'background-color': carDateCalculator(dataItem.recmdtn) ? '#affbb5' : '#ffe8e7'}">
                Beta : {{dataItem.beta | number : '1.2-2'}}
               </span>
-              <span style="color: rgb(7, 7, 7); border-radius: 4px; font-size: 12px;display: inline-block;" [ngStyle]="{'background-color': carDateCalculator(dataItem.recmdtn) ? '#affbb5' : '#ffe8e7'}">
+              <span style="color: rgb(7, 7, 7); border-radius: 4px; font-size: 12px;margin: 0.5px;display: inline-block;" [ngStyle]="{'background-color': carDateCalculator(dataItem.recmdtn) ? '#affbb5' : '#ffe8e7'}">
                eps :  {{dataItem.eps | currency :'INR'}}
               </span>
-              <span style="color: rgb(10, 10, 10); border-radius: 4px; font-size: 12px;display: inline-block;" [ngStyle]="{'background-color': carDateCalculator(dataItem.recmdtn) ? '#affbb5' : '#ffe8e7'}">
+              <span style="color: rgb(10, 10, 10); border-radius: 4px; font-size: 13px;margin: 0.5px;display: inline-block;" [ngStyle]="{'background-color': carDateCalculator(dataItem.recmdtn) ? '#affbb5' : '#ffe8e7'}">
                 Target : {{dataItem.target | currency :'INR'}}
               </span>
-              <span style="color: rgb(10, 10, 10); border-radius: 4px; font-size: 12px;display: inline-block;" [ngStyle]="{'background-color': carDateCalculator(dataItem.recmdtn) ? '#affbb5' : '#ffe8e7'}">
+              <span style="color: rgb(10, 10, 10); border-radius: 4px; font-size: 12px;margin: 0.5px;display: inline-block;" [ngStyle]="{'background-color': carDateCalculator(dataItem.recmdtn) ? '#affbb5' : '#ffe8e7'}">
                 Vol : {{dataItem.volumeC }}
               </span>
 
@@ -247,7 +311,7 @@
 
 
 
-              <span style="border-radius: 4px; font-size: 10px;display: inline-block;text-align: right;">
+              <span style="border-radius: 4px;margin-top: -1%; font-size: 10px;display: inline-block;text-align: right;">
 
                 <!-- <span style="color: rgb(10, 10, 10); border-radius: 4px; font-size: 12px;background-color:  '#affbb5';display: inline-block;" [ngStyle]="{'background-color':  '#affbb5' }">
                    {{dataItem.buyatChange }}

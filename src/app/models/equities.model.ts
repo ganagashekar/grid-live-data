@@ -72,8 +72,9 @@ pr_open:string
 pr_volume:string;
 pr_date:string;
 
-
-
+bullishCount:number;
+bearishCount:number;
+match:string;
 
 
 }
