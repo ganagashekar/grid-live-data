@@ -24,8 +24,11 @@ export const environment = {
 // signalrHubUrl: 'http://localhost:90/livefeedhub',
 // signalrBreezeHubUrl: 'http://localhost:90/BreezeOperation',
 
-signalrHubUrl: 'https://localhost:7189/livefeedhub',
-signalrBreezeHubUrl: 'https://localhost:7189/BreezeOperation',
+signalrHubUrl:  document.location.protocol + "//" + document.location.hostname + ":" + 90 +"/livefeedhub",
+signalrBreezeHubUrl: document.location.protocol + "//" + document.location.hostname + ":" + 90 +"/BreezeOperation",
+
+// signalrHubUrl: 'https://localhost:7189/livefeedhub',
+// signalrBreezeHubUrl: 'https://localhost:7189/BreezeOperation',
 //signalrHubUrl: 'https://localhost:7189/livefeedhub',
 // signalrHubUrl: 'http://127.0.0.1:5000/livefeedhub',
 SignalrAPISaveJson:"//st",
