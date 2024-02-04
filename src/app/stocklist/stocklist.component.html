@@ -180,6 +180,27 @@
 </div>
 
       </td>
+
+    <td>
+
+      <button (click)="SortOrderbyVolumne()" mat-stroked-button color="accent">
+
+        <mat-icon
+        *ngIf="IsOrderbyVolumne"
+        >arrow_downward
+
+        </mat-icon>
+
+        <mat-icon
+        *ngIf="!IsOrderbyVolumne">
+        arrow_upward
+        </mat-icon>
+        </button>
+
+
+
+
+    </td>
     </tr>
   </table>
 
@@ -531,7 +552,7 @@
 
 		</ng-template>
   </kendo-grid-column> -->
-<kendo-grid-column [width]="350"  class="grid-one-day-chart"
+<kendo-grid-column [width]="420"  class="grid-one-day-chart"
 [sortable]="false">
 <ng-template kendoGridCellTemplate let-dataItem>
     <day-chart (selectedpoint)="addormidifypoint($event)"   [data]="dataItem.intraday" [symbol]="dataItem.symbol" [min]="dataItem.min" [open]="dataItem.int_open" [last]="dataItem.int_last" [max]="dataItem.max" [CurrentData]="dataItem" >

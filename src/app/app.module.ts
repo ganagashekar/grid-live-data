@@ -74,6 +74,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatExpansionModule} from '@angular/material/expansion';
 import { InputsModule } from '@progress/kendo-angular-inputs';
 import { PopupModule } from '@progress/kendo-angular-popup';
+import { StockpredictionsComponent } from './stockpredictions/stockpredictions.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -83,6 +84,7 @@ const routes: Routes = [
   { path: 'StockDAY', component: StockDaysComponent },
   { path: 'StockDetails', component: StockdetailsComponent },
   { path: 'Stocks', component: StocklistComponent },
+  { path: 'pred', component: StockpredictionsComponent },
   // { path: 'about', component: AboutComponent },
   // { path: 'products', component: ProductsComponent },
   // { path: '**', component: HomeComponent }, // If no matching route found, go back to home route
@@ -114,7 +116,8 @@ const routes: Routes = [
       FavoriteButtonComponent,
       CustometoggleComponent,
       NotificationToggleComponent,
-      MinmaxToggleComponent
+      MinmaxToggleComponent,
+      StockpredictionsComponent
    ],
     imports: [
       ToastrModule.forRoot({

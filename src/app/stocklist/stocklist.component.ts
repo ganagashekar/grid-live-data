@@ -67,6 +67,9 @@ export class StocklistComponent implements OnInit {
   bullish:boolean=false;
   bearish:boolean=false;
 
+  IsOrderbyVolumne:boolean=false;
+
+
   optionsRange: Options = {
     floor: 0,
     ceil: 5000,
@@ -78,7 +81,7 @@ export class StocklistComponent implements OnInit {
   constructor(private toastrService: ToastrService,public signalRService: SignalrService, public signalRBreezeService: SignalrBreezeService,public stocksService: StocksService, private http: HttpClient) {
  this.gridloading=true;
     this.signalRService.connection
-    .invoke('GetStocksList',false,false,false,false,false,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,false,false,false)
+    .invoke('GetStocksList',false,false,false,false,false,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,false,false,false,false)
     .catch((error: any) => {
       console.log(`SGetAllStocks error: ${error}`);
       this.showError(`SGetAllStocks error: ${error}`, "StockList")
@@ -133,7 +136,7 @@ export class StocklistComponent implements OnInit {
     if(!this.w1)
        this.WatchList=''
     this.signalRService.connection
-    .invoke('GetStocksList',this.Favoriteselected,this.upperckt,this.lowerckt,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,this.targetPrice,this.bullish,this.bearish)
+    .invoke('GetStocksList',this.Favoriteselected,this.upperckt,this.lowerckt,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,this.targetPrice,this.bullish,this.bearish, this.IsOrderbyVolumne)
     .catch((error: any) => {
       console.log(`SGetAllStocks error: ${error}`);
       alert('GetAllStocks error!, see console for details.');
@@ -147,7 +150,7 @@ export class StocklistComponent implements OnInit {
     if(!this.w2)
        this.WatchList=''
     this.signalRService.connection
-    .invoke('GetStocksList',this.Favoriteselected,this.upperckt,this.lowerckt,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,this.targetPrice,this.bullish,this.bearish)
+    .invoke('GetStocksList',this.Favoriteselected,this.upperckt,this.lowerckt,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,this.targetPrice,this.bullish,this.bearish, this.IsOrderbyVolumne)
     .catch((error: any) => {
       console.log(`SGetAllStocks error: ${error}`);
       alert('GetAllStocks error!, see console for details.');
@@ -161,7 +164,7 @@ export class StocklistComponent implements OnInit {
     if(!this.w3)
        this.WatchList=''
     this.signalRService.connection
-    .invoke('GetStocksList',this.Favoriteselected,this.upperckt,this.lowerckt,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,this.targetPrice,this.bullish,this.bearish)
+    .invoke('GetStocksList',this.Favoriteselected,this.upperckt,this.lowerckt,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,this.targetPrice,this.bullish,this.bearish, this.IsOrderbyVolumne)
     .catch((error: any) => {
       console.log(`SGetAllStocks error: ${error}`);
       alert('GetAllStocks error!, see console for details.');
@@ -174,7 +177,7 @@ export class StocklistComponent implements OnInit {
     if(!this.tday_1)
        this.tday=''
     this.signalRService.connection
-    .invoke('GetStocksList',this.Favoriteselected,this.upperckt,this.lowerckt,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,this.targetPrice,this.bullish,this.bearish)
+    .invoke('GetStocksList',this.Favoriteselected,this.upperckt,this.lowerckt,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,this.targetPrice,this.bullish,this.bearish, this.IsOrderbyVolumne)
     .catch((error: any) => {
       console.log(`SGetAllStocks error: ${error}`);
       alert('GetAllStocks error!, see console for details.');
@@ -187,7 +190,7 @@ export class StocklistComponent implements OnInit {
     if(!this.tday_2)
        this.tday=''
     this.signalRService.connection
-    .invoke('GetStocksList',this.Favoriteselected,this.upperckt,this.lowerckt,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,this.targetPrice,this.bullish,this.bearish)
+    .invoke('GetStocksList',this.Favoriteselected,this.upperckt,this.lowerckt,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,this.targetPrice,this.bullish,this.bearish, this.IsOrderbyVolumne)
     .catch((error: any) => {
       console.log(`SGetAllStocks error: ${error}`);
       alert('GetAllStocks error!, see console for details.');
@@ -201,7 +204,7 @@ export class StocklistComponent implements OnInit {
        this.tday=''
 
     this.signalRService.connection
-    .invoke('GetStocksList',this.Favoriteselected,this.upperckt,this.lowerckt,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,this.targetPrice,this.bullish,this.bearish)
+    .invoke('GetStocksList',this.Favoriteselected,this.upperckt,this.lowerckt,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,this.targetPrice,this.bullish,this.bearish, this.IsOrderbyVolumne)
     .catch((error: any) => {
       console.log(`SGetAllStocks error: ${error}`);
       alert('GetAllStocks error!, see console for details.');
@@ -211,7 +214,7 @@ export class StocklistComponent implements OnInit {
 
     this.ShowNotification = !this.ShowNotification;
     this.signalRService.connection
-    .invoke('GetStocksList',this.Favoriteselected,this.upperckt,this.lowerckt,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,this.targetPrice,this.bullish,this.bearish)
+    .invoke('GetStocksList',this.Favoriteselected,this.upperckt,this.lowerckt,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,this.targetPrice,this.bullish,this.bearish, this.IsOrderbyVolumne)
     .catch((error: any) => {
       console.log(`SGetAllStocks error: ${error}`);
       alert('GetAllStocks error!, see console for details.');
@@ -223,7 +226,7 @@ export class StocklistComponent implements OnInit {
 
 
     this.signalRService.connection
-    .invoke('GetStocksList',this.Favoriteselected,this.upperckt,this.lowerckt,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,this.targetPrice,this.bullish,this.bearish)
+    .invoke('GetStocksList',this.Favoriteselected,this.upperckt,this.lowerckt,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,this.targetPrice,this.bullish,this.bearish, this.IsOrderbyVolumne)
     .catch((error: any) => {
       console.log(`SGetAllStocks error: ${error}`);
       alert('GetAllStocks error!, see console for details.');
@@ -233,7 +236,7 @@ export class StocklistComponent implements OnInit {
 
     this.EnabledAutoTradeSelected = !this.EnabledAutoTradeSelected;
     this.signalRService.connection
-    .invoke('GetStocksList',this.Favoriteselected,this.upperckt,this.lowerckt,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,this.targetPrice,this.bullish,this.bearish)
+    .invoke('GetStocksList',this.Favoriteselected,this.upperckt,this.lowerckt,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,this.targetPrice,this.bullish,this.bearish, this.IsOrderbyVolumne)
     .catch((error: any) => {
       console.log(`SGetAllStocks error: ${error}`);
       alert('GetAllStocks error!, see console for details.');
@@ -241,13 +244,22 @@ export class StocklistComponent implements OnInit {
 
   }
 
+  SortOrderbyVolumne() {
+    this.IsOrderbyVolumne = !this.IsOrderbyVolumne;
+    this.signalRService.connection
+    .invoke('GetStocksList',this.Favoriteselected,this.upperckt,this.lowerckt,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,this.targetPrice,this.bullish,this.bearish, this.IsOrderbyVolumne)
+    .catch((error: any) => {
+      console.log(`SGetAllStocks error: ${error}`);
+      alert('GetAllStocks error!, see console for details.');
+    });
+  }
 
   getbullish(){
 
     debugger;
     this.bullish = !this.bullish;
     this.signalRService.connection
-    .invoke('GetStocksList',this.Favoriteselected,this.upperckt,this.lowerckt,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,this.targetPrice,this.bullish,this.bearish)
+    .invoke('GetStocksList',this.Favoriteselected,this.upperckt,this.lowerckt,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,this.targetPrice,this.bullish,this.bearish, this.IsOrderbyVolumne)
     .catch((error: any) => {
       console.log(`SGetAllStocks error: ${error}`);
       alert('GetAllStocks error!, see console for details.');
@@ -258,7 +270,7 @@ export class StocklistComponent implements OnInit {
     debugger;
     this.bearish = !this.bearish;
     this.signalRService.connection
-    .invoke('GetStocksList',this.Favoriteselected,this.upperckt,this.lowerckt ,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,this.targetPrice,this.bullish,this.bearish)
+    .invoke('GetStocksList',this.Favoriteselected,this.upperckt,this.lowerckt ,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,this.targetPrice,this.bullish,this.bearish, this.IsOrderbyVolumne)
     .catch((error: any) => {
       console.log(`SGetAllStocks error: ${error}`);
       alert('GetAllStocks error!, see console for details.');
@@ -270,7 +282,7 @@ export class StocklistComponent implements OnInit {
     debugger;
     this.upperckt = !this.upperckt;
     this.signalRService.connection
-    .invoke('GetStocksList',this.Favoriteselected,this.upperckt,this.lowerckt,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,this.targetPrice,this.bullish,this.bearish)
+    .invoke('GetStocksList',this.Favoriteselected,this.upperckt,this.lowerckt,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,this.targetPrice,this.bullish,this.bearish, this.IsOrderbyVolumne)
     .catch((error: any) => {
       console.log(`SGetAllStocks error: ${error}`);
       alert('GetAllStocks error!, see console for details.');
@@ -281,7 +293,7 @@ export class StocklistComponent implements OnInit {
     debugger;
     this.lowerckt = !this.lowerckt;
     this.signalRService.connection
-    .invoke('GetStocksList',this.Favoriteselected,this.upperckt,this.lowerckt ,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,this.targetPrice,this.bullish,this.bearish)
+    .invoke('GetStocksList',this.Favoriteselected,this.upperckt,this.lowerckt ,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,this.targetPrice,this.bullish,this.bearish, this.IsOrderbyVolumne)
     .catch((error: any) => {
       console.log(`SGetAllStocks error: ${error}`);
       alert('GetAllStocks error!, see console for details.');
@@ -291,7 +303,7 @@ export class StocklistComponent implements OnInit {
     debugger;
     this.Favoriteselected = !this.Favoriteselected;
     this.signalRService.connection
-    .invoke('GetStocksList',this.Favoriteselected,this.upperckt,this.lowerckt,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,this.targetPrice,this.bullish,this.bearish)
+    .invoke('GetStocksList',this.Favoriteselected,this.upperckt,this.lowerckt,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,this.targetPrice,this.bullish,this.bearish, this.IsOrderbyVolumne)
     .catch((error: any) => {
       console.log(`SGetAllStocks error: ${error}`);
       alert('GetAllStocks error!, see console for details.');
@@ -302,7 +314,7 @@ export class StocklistComponent implements OnInit {
     debugger;
     this.targetPrice = !this.targetPrice;
     this.signalRService.connection
-    .invoke('GetStocksList',this.Favoriteselected,this.upperckt,this.lowerckt,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,this.targetPrice,this.bullish,this.bearish)
+    .invoke('GetStocksList',this.Favoriteselected,this.upperckt,this.lowerckt,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,this.targetPrice,this.bullish,this.bearish, this.IsOrderbyVolumne)
     .catch((error: any) => {
       console.log(`SGetAllStocks error: ${error}`);
       alert('GetAllStocks error!, see console for details.');
