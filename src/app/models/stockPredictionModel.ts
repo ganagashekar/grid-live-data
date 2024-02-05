@@ -46,4 +46,6 @@ export interface StockPredicitonModel {
           volatilityresults_LowerBand :number;
 
           volatilityresults_IsStop :string;
+          stock_Name :string;
+          stockCode:string;
 }

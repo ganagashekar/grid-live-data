@@ -201,6 +201,26 @@
 
 
     </td>
+    <td>
+
+      <button (click)="SortOrderbyOrder()" mat-stroked-button color="accent">
+
+        <mat-icon
+        *ngIf="IsOrderbyaward"
+        >brightness_auto
+
+        </mat-icon>
+
+        <mat-icon
+        *ngIf="!IsOrderbyaward">
+        brightness_low
+        </mat-icon>
+        </button>
+
+
+
+
+    </td>
     </tr>
   </table>
 
@@ -263,7 +283,15 @@
                 <app-notification-toggle [bgcolor]="'#5C8374'" (selectedChange)="addormidifyTdays($event)" [displaytext]="'T+2'" [valuetext]="dataItem.tdays" [savedtext]="'t2'" [symbol]="dataItem.symbol" ></app-notification-toggle>
                 <app-notification-toggle [bgcolor]="'#9EC8B9'" (selectedChange)="addormidifyTdays($event)" [displaytext]="'T+3'" [valuetext]="dataItem.tdays" [savedtext]="'t3'"  [symbol]="dataItem.symbol" ></app-notification-toggle>
                 &nbsp;
+                <span style="background-color: '#7a06c2'; border-radius: 3px; color: #ffffff; font-size: 10px;"  [ngStyle]="{'display': dataItem.awardCount > 5 ? '' : 'none'}"  > &nbsp; {{dataItem.awardCount}} &nbsp;
+                 </span>
               </span>
+
+
+
+              <!-- <span style="background-color: cadetblue; border-radius: 2px; font-size: 16px;">
+                {{dataItem.awardCount}}
+              </span> -->
 
 
 
@@ -280,7 +308,7 @@
 
             <div style="margin-top: -6%;">
              <a matBadgeColor="accent" target="_blank" href="{{dataItem.href }}"  >
-             <i>  {{ dataItem.securityId  }} </i> &nbsp;
+             <i >  {{ dataItem.securityId  }} </i> &nbsp;
 
              </a>
 

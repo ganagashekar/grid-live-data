@@ -43,6 +43,7 @@
   <table>
 <tr>
 <th> Symbol </th>
+<th> Stock Name </th>
 <th> Bulish</th>
 <th> Bearish </th>
 <th> Ltt </th>
@@ -71,26 +72,27 @@
 
         <table>
 <tr>
+
   <td>
-    {{dataItem.symbol}}
-    <!-- {{ (dataItem.symbol - dataItem.bPrice).toFixed(2) }} -->
+    {{dataItem.stock_Name}}
+
   </td>
   <td>
     {{dataItem.bulishCount}}
-    <!-- {{ (dataItem.symbol - dataItem.bPrice).toFixed(2) }} -->
+
   </td>
   <td>
     {{dataItem.bearishCount}}
-    <!-- {{ (dataItem.symbol - dataItem.bPrice).toFixed(2) }} -->
+
   </td>
 
   <td>
     {{dataItem.ltt | date :'H:mm:ss'}}
-    <!-- {{ (dataItem.symbol - dataItem.bPrice).toFixed(2) }} -->
+
   </td>
   <td>
     {{dataItem.candleResult_Price.toFixed(2)}}
-    <!-- {{ (dataItem.symbol - dataItem.bPrice).toFixed(2) }} -->
+
   </td>
   <td>
     {{dataItem.candleResult_Match}}

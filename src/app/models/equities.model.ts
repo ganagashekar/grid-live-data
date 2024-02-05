@@ -75,6 +75,7 @@ pr_date:string;
 bullishCount:number;
 bearishCount:number;
 match:string;
+awardCount:number
 
 
 }

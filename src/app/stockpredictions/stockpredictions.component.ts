@@ -100,6 +100,7 @@ export class StockpredictionsComponent implements OnInit {
 
             volatilityresults_UpperBand:val.volatilityresults_UpperBand,
             volatilityresults_LowerBand:val.volatilityresults_LowerBand,
+            stock_Name :val.stock_Name
 
 
 
