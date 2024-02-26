@@ -6,7 +6,7 @@ import { ThemePalette } from '@angular/material/core';
 import { Equities } from '../models/equities.model';
 import { Transactions } from '../models/transaction.model';
 import { SignalrService } from '../services/signalr.service';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { SortDescriptor } from '@progress/kendo-data-query';
 import { HttpClient } from '@angular/common/http';
 import { StockPredicitonModel } from '../models/stockPredictionModel';
@@ -18,9 +18,10 @@ import { SignalrBreezeService } from '../services/signalr.serviceBreeze';
   styleUrls: ['./stockpredictions.component.css']
 })
 export class StockpredictionsComponent implements OnInit {
-
+  displayedColumns = ['stock_Name', 'symbol'];
   public transactionCards: Transactions[] = accountTransactions;
-    public gridData: StockPredicitonModel[] |any;
+   // public gridData: StockPredicitonModel[] |any;
+    public gridData: Observable<StockPredicitonModel[]> |any;
     color: ThemePalette = 'primary';
     mode: ProgressBarMode = 'determinate';
     value = 0;
@@ -58,7 +59,7 @@ export class StockpredictionsComponent implements OnInit {
   this.signalRBreezeService.connection.invoke('GetTopStockforBuyAutomation',this.orderbySize)
       .catch((error: any) => {
         console.log(`SGetAllStocks error: ${error}`);
-        alert('GetAllStocks error!, see console for details.');
+
       });
  }
 
@@ -68,7 +69,7 @@ export class StockpredictionsComponent implements OnInit {
      this.getdata()
 
       setInterval(()=> {
-        this.getdata()
+       this.getdata()
       }, 2 * 1000);
        this.signalRBreezeService.connection.on("SendExportBuyStockAlterFromAPP_IND",(data :any) => {
         debugger;

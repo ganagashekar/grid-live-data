@@ -43,6 +43,8 @@ import {MatNativeDateModule} from '@angular/material/core';
 import {MatSelectModule} from '@angular/material/select';
 import {MatCardModule} from '@angular/material/card';
 import {MatMenuModule} from '@angular/material/menu';
+
+import {MatTableModule} from '@angular/material/table';
 import {MatButtonModule} from '@angular/material/button';
 import { PivotHistComponent } from './pivot-hist/pivot-hist.component';
 import { CommonFiltersComponent } from './common-filters/common-filters.component';
@@ -153,7 +155,7 @@ const routes: Routes = [
         NgxSliderModule,
         MatButtonModule,
          MatMenuModule,MatAutocompleteModule,ReactiveFormsModule,FormsModule,MatCheckboxModule,MatSidenavModule,MatToolbarModule,MatIconModule,MatChipsModule,MatBadgeModule, MatExpansionModule,
-         InputsModule,PopupModule
+         InputsModule,PopupModule,MatTableModule
 
 
     ],

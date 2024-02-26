@@ -72,10 +72,25 @@ pr_open:string
 pr_volume:string;
 pr_date:string;
 
+
+pr_Match:string,
+pr_Macresult:string,
+pr_RSI:string,
+
 bullishCount:number;
 bearishCount:number;
 match:string;
 awardCount:number
+last7DaysChange :string;
 
+
+ fn_eps :number
+ oPM_Percentage :number
+ nPM_Percentage :number
+ profit_Increase :number
+ revenueIncrease :number
+ profitDifference :number
+ revenueDifference :number
+quarterEnd :Date
 
 }

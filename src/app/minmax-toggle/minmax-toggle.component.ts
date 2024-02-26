@@ -20,6 +20,9 @@ export class MinmaxToggleComponent implements OnInit {
   @Input() pr_volume  :string;
   @Input() pr_date :string;
 
+  @Input() pr_Macresult :string;
+  @Input() pr_RSI :string;
+  @Input() pr_Match :string;
   @Input() anchor: any;
    toggleText: string = "Hide";
    show: boolean = false;
@@ -36,5 +39,11 @@ export class MinmaxToggleComponent implements OnInit {
   carDateCalculator(val :any){
     return parseInt(val) > 0 ? true:false;
 
+  }
+
+
+
+  public close(): void {
+    this.show = false;
   }
 }

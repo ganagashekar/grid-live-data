@@ -131,6 +131,35 @@
       </td>
 
       <td>
+        <mat-form-field>
+          <mat-select  placeholder="CKT" (selectionChange)="selectedCKTChange($event.value)"[formControl]="CKTName"  [(value)]="selectedCKTName">
+
+
+
+            <mat-option *ngFor="let topping of CKTNameList" [value]="topping.text">{{topping.text}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+      </td>
+      <td>
+        <mat-form-field>
+          <mat-select  placeholder="CKT" (selectionChange)="selectedorderChange($event.value)"[formControl]="orderName"  [(value)]="selectedorder">
+
+
+
+            <mat-option *ngFor="let topping of orderNameList" [value]="topping.text">{{topping.text}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+      </td>
+</tr>
+
+
+
+</table>
+<table>
+<tr>
+      <td>
 
 
         <button (click)="toggleSelectedTday1('t1')" mat-stroked-button color="accent">
@@ -144,23 +173,6 @@
 
       <td>
         <button (click)="toggleSelectedTday3('t3')"  mat-stroked-button color="accent"> T+3</button>
-
-        <!-- <a  (click)="toggleSelectedTday('t1')"     style="color:  rgb(246, 246, 246); background-color: #1B4242; border-radius: 2px; font-size: 10px;margin:  0.2px;display: inline-block;">
-          &nbsp;T+1 &nbsp;
-          </a>
-        </td>
-
-        <td>
-          <a  (click)="toggleSelectedTday('t2')"     style="color:  rgb(237, 227, 227); background-color: #5C8374; border-radius: 2px; font-size: 10px;margin:  0.2px;display: inline-block;">
-            &nbsp;T+2  &nbsp;
-            </a>
-          </td>
-
-          <td>
-            <a  (click)="toggleSelectedTday('t3')"     style="color:  rgb(242, 234, 234); background-color: #9EC8B9; border-radius: 2px; font-size: 10px;margin:  0.2px;display: inline-block;">
-              &nbsp;T+3 &nbsp;
-              </a> -->
-
       </td>
       <td style="float: right;">
 <div style="float: right;">
@@ -221,7 +233,11 @@
 
 
     </td>
+
+
     </tr>
+
+
   </table>
 
 
@@ -278,14 +294,8 @@
                 Vol : {{dataItem.volumeC }}
               </span>
               &nbsp;
-              <span style="text-align: right;">
-                <app-notification-toggle [bgcolor]="'#1B4242'" (selectedChange)="addormidifyTdays($event)" [displaytext]="'T+1'" [valuetext]="dataItem.tdays" [savedtext]="'t1'" [symbol]="dataItem.symbol" ></app-notification-toggle>
-                <app-notification-toggle [bgcolor]="'#5C8374'" (selectedChange)="addormidifyTdays($event)" [displaytext]="'T+2'" [valuetext]="dataItem.tdays" [savedtext]="'t2'" [symbol]="dataItem.symbol" ></app-notification-toggle>
-                <app-notification-toggle [bgcolor]="'#9EC8B9'" (selectedChange)="addormidifyTdays($event)" [displaytext]="'T+3'" [valuetext]="dataItem.tdays" [savedtext]="'t3'"  [symbol]="dataItem.symbol" ></app-notification-toggle>
-                &nbsp;
-                <span style="background-color: '#7a06c2'; border-radius: 3px; color: #ffffff; font-size: 10px;"  [ngStyle]="{'display': dataItem.awardCount > 5 ? '' : 'none'}"  > &nbsp; {{dataItem.awardCount}} &nbsp;
-                 </span>
-              </span>
+              <span style="background-color: '#7a06c2'; border-radius: 3px; color: #ffffff; font-size: 10px;"  [ngStyle]="{'display': dataItem.awardCount > 5 ? '' : 'none'}"  > &nbsp; {{dataItem.awardCount}} &nbsp;
+              </span>+
 
 
 
@@ -380,6 +390,49 @@
                 </app-slider-Componeent>
               </span>
             </div>
+            <div style="margin-top: -4%;">
+              <span style="color: rgb(13, 12, 12); border-radius: 4px; font-size: 10px;display: inline-block;" [ngStyle]="{'background-color': (dataItem.fn_eps) > 0  ? '#affbb5' : '#ffe8e7'}">
+                &nbsp; EPS: {{dataItem.fn_eps }}  &nbsp;
+               </span>
+               <span style="color: rgb(13, 12, 12); border-radius: 4px; font-size: 10px;display: inline-block;" [ngStyle]="{'background-color': (dataItem.oPM_Percentage) > 0 ? '#affbb5' : '#ffe8e7'}">
+                &nbsp;OPM: {{dataItem.oPM_Percentage }} %   &nbsp;
+                </span>
+
+               <span style="color: rgb(7, 7, 7); border-radius: 4px; font-size: 10px;display: inline-block;" [ngStyle]="{'background-color': (dataItem.oPM_Percentage) > 0 ? '#affbb5' : '#ffe8e7'}">
+                &nbsp; NPM {{dataItem.nPM_Percentage }} % &nbsp;
+               </span>
+
+               <span style="border-radius: 4px;margin-top: -1%; font-size: 10px;display: inline-block;text-align: right;" [ngStyle]="{'background-color': (dataItem.oPM_Percentage) > 0 ? '#affbb5' : '#ffe8e7'}">
+
+                &nbsp;  Profit Incre.  {{dataItem.profit_Increase}} % &nbsp;
+
+              </span>
+              <span style="border-radius: 4px;margin-top: -1%; font-size: 10px;display: inline-block;text-align: right;" [ngStyle]="{'background-color': (dataItem.oPM_Percentage) > 0 ? '#affbb5' : '#ffe8e7'}">
+
+                &nbsp; Rev. Incre.  {{dataItem.revenueIncrease}} % &nbsp;
+
+               </span>
+
+            </div>
+            <div style="margin-top: -1%;">
+              <span style="border-radius: 4px;margin-top: -1%; font-size: 10px;display: inline-block;text-align: right;" [ngStyle]="{'background-color': (dataItem.oPM_Percentage) > 0 ? '#affbb5' : '#ffe8e7'}">
+
+                &nbsp; Profit Diff.  {{dataItem.profitDifference}} &nbsp;
+
+             </span>
+
+             <span style="border-radius: 4px;margin-top: -1%; font-size: 10px;display: inline-block;text-align: right;" [ngStyle]="{'background-color': (dataItem.oPM_Percentage) > 0 ? '#affbb5' : '#ffe8e7'}">
+
+              &nbsp; Rev. Diff.  {{dataItem.revenueDifference}} &nbsp;
+
+             </span>
+
+             <span style="border-radius: 4px;margin-top: -1%; font-size: 10px;display: inline-block;text-align: right;" >
+
+              &nbsp; Quater : {{dataItem.quarterEnd | date: 'MMM-YY' }} &nbsp;
+
+             </span>
+            </div>
             </div>
 
           </div>
@@ -390,51 +443,34 @@
 
               <table style="border-spacing: 10px;">
                 <tr>
-                  <td colspan="3" style="text-align: left;">
+                  <td colspan="2" style="text-align: left;">
                     <app-notification-toggle [bgcolor]="'#8ACDD7'" (selectedChange)="addormidifyWacthList($event)"  [savedtext]="'W1'" [displaytext]="'W1'" [valuetext]="dataItem.wacthList" [symbol]="dataItem.symbol" ></app-notification-toggle>
                     <app-notification-toggle [bgcolor]="'#FF90BC'"  (selectedChange)="addormidifyWacthList($event)" [savedtext]="'W2'" [displaytext]="'W2'" [valuetext]="dataItem.wacthList" [symbol]="dataItem.symbol" ></app-notification-toggle>
                     <app-notification-toggle [bgcolor]="'#DC8686'"  (selectedChange)="addormidifyWacthList($event)" [savedtext]="'W3'"  [displaytext]="'W3'" [valuetext]="dataItem.wacthList" [symbol]="dataItem.symbol" ></app-notification-toggle>
 
 
-
                   </td>
-                  <td>
-                    <span #anchor>
 
-                      <app-minmax-toggle [pr_change]="dataItem.pr_change" [pr_date]="dataItem.pr_date" [pr_open]="dataItem.pr_open" [pr_close]="dataItem.pr_close" [pr_volume]="dataItem.pr_volume"   [anchor]="anchor"></app-minmax-toggle>
+                  <span style="text-align: right;">
+                    <app-notification-toggle [bgcolor]="'#1B4242'" (selectedChange)="addormidifyTdays($event)" [displaytext]="'T+1'" [valuetext]="dataItem.tdays" [savedtext]="'t1'" [symbol]="dataItem.symbol" ></app-notification-toggle>
+                    <app-notification-toggle [bgcolor]="'#5C8374'" (selectedChange)="addormidifyTdays($event)" [displaytext]="'T+2'" [valuetext]="dataItem.tdays" [savedtext]="'t2'" [symbol]="dataItem.symbol" ></app-notification-toggle>
+                    <app-notification-toggle [bgcolor]="'#9EC8B9'" (selectedChange)="addormidifyTdays($event)" [displaytext]="'T+3'" [valuetext]="dataItem.tdays" [savedtext]="'t3'"  [symbol]="dataItem.symbol" ></app-notification-toggle>
+                    &nbsp;
+
+
+                     <span #anchor>
+                      <app-minmax-toggle [pr_change]="dataItem.pr_change" [pr_Macresult]="dataItem.pr_Macresult"
+
+                      [pr_Match]="dataItem.pr_Match"
+                      [pr_RSI]="dataItem.pr_RSI"
+                      [pr_date]="dataItem.pr_date" [pr_open]="dataItem.pr_open" [pr_close]="dataItem.pr_close" [pr_volume]="dataItem.pr_volume"   [anchor]="anchor"></app-minmax-toggle>
 
                                     </span>
-                  </td>
-                  <td colspan="3" style="text-align: right;">
-
-
-                    <app-notification-toggle [bgcolor]="'#2E0249'" (selectedChange)="addormidifyChange($event)"  [savedtext]="'-0.70'" [displaytext]="'-0.7'" [valuetext]="dataItem.buyatChange" [symbol]="dataItem.symbol" ></app-notification-toggle>
-                    <app-notification-toggle [bgcolor]="'#4c0478'"  (selectedChange)="addormidifyChange($event)" [savedtext]="'-1.40'" [displaytext]="'-1.4'" [valuetext]="dataItem.buyatChange" [symbol]="dataItem.symbol" ></app-notification-toggle>
-                    <app-notification-toggle [bgcolor]="'#3f1eae'"  (selectedChange)="addormidifyChange($event)" [savedtext]="'-2.40'"  [displaytext]="'-2.4'" [valuetext]="dataItem.buyatChange" [symbol]="dataItem.symbol" ></app-notification-toggle>
-                    <app-notification-toggle [bgcolor]="'#7a06c2'" (selectedChange)="addormidifyChange($event)" [savedtext]="'-3.40'"  [displaytext]="'-3.4'" [valuetext]="dataItem.buyatChange" [symbol]="dataItem.symbol" ></app-notification-toggle>
-                    <app-notification-toggle [bgcolor]="'#A91079'"  (selectedChange)="addormidifyChange($event)" [savedtext]="'-4.40'" [displaytext]="'-4.4'" [valuetext]="dataItem.buyatChange" [symbol]="dataItem.symbol" ></app-notification-toggle>
-                    <app-notification-toggle [bgcolor]="'#F806CC'" (selectedChange)="addormidifyChange($event)" [savedtext]="'-5.40'" [displaytext]="'-5.4'" [valuetext]="dataItem.buyatChange" [symbol]="dataItem.symbol" ></app-notification-toggle>
-
-
-                    <!-- <a  (click)="onclickChangeby(dataItem.symbol,-2.4)" matTooltip="{{dataItem.stock_name}}"  [ngStyle]="{'background-color': dataItem.buyatChange > -3  ? (buyatChangeColor(dataItem.buyatChange,-2.4) ? '#affbb5' : '#1B4242'):'#1B4242'}"   style="color:  whitesmoke;  border-radius: 2px; font-size: 10px;display: inline-block;">
-                      &nbsp; T + 1 &nbsp;
-                      </a>
-                      &nbsp;
-                      <a  (click)="onclickChangeby(dataItem.symbol,-3.4)" matTooltip="{{dataItem.stock_name}}" [ngStyle]="{'background-color': dataItem.buyatChange > -4  ? (buyatChangeColor(dataItem.buyatChange,-3.4) ? '#affbb5' : '#5C8374'):'#5C8374'}"  style="color:  whitesmoke; border-radius: 2px; font-size: 10px;display: inline-block;">
-                        &nbsp; T + 2 &nbsp;
-                      </a>
-                      &nbsp;
-                      <a   (click)="onclickChangeby(dataItem.symbol,-4.4)" matTooltip="{{dataItem.stock_name}}" [ngStyle]="{'background-color': dataItem.buyatChange > -5  ? (buyatChangeColor(dataItem.buyatChange,-4.4) ? '#affbb5' : '#9EC8B9'):'#9EC8B9'}"  style="color:  whitesmoke; border-radius: 2px; font-size: 10px;display: inline-block;">
-                        &nbsp; T + 3 &nbsp;
-                      </a> -->
-
-                      <!-- <a   (click)="onclickChangeby(dataItem.symbol,-5.4)" matTooltip="{{dataItem.stock_name}}"  [ngStyle]="{'background-color': dataItem.buyatChange > -6  ? (buyatChangeColor(dataItem.buyatChange,-5.4) ? '#affbb5' : '#9EC8B9'):'#9EC8B9'}"   style="color:  whitesmoke;  border-radius: 2px; font-size: 10px;display: inline-block;">
-                      &nbsp; -5.4  &nbsp;
-                      </a> -->
-                  </td>
-
-
+                  </span>
                 </tr>
+              </table>
+            <table>
+
                 <tr>
                   <td>
                   <span style="color: rgb(12, 11, 11); border-radius: 4px; font-size: 8px;display: inline-block;">
@@ -554,8 +590,25 @@
                      <span> {{ dataItem.priceChange_YTD > 0 ? '+':'' }}</span>  {{ dataItem.priceChange_YTD | number : '1.2-2'  }}
                     </span>
                    </td>
-                </tr>
 
+              </tr>
+            </table>
+
+        <table style="float: right;">
+
+                <tr>
+
+                  <td  colspan="5" style="text-align: right;">
+
+
+                    <span style="text-align: right;" *ngFor="let subCategory of dataItem.last7DaysChange.split(',')"    >
+                     <span  style="color:  whitesmoke;  border-radius: 2px; font-size: 10px;margin:  0.2px;display: inline-block;" [ngStyle]="{'background-color':  subCategory  > 0 ? '#008000' : '#FF0000'}" > {{subCategory}}</span>&nbsp;
+                      </span>
+
+
+
+                                      </td>
+                </tr>
               </table>
               <div>
               </div>
@@ -573,13 +626,7 @@
 
     </kendo-grid-column>
 
-    <!-- <kendo-grid-column  title="popup">
-    <ng-template kendoGridCellTemplate let-dataItem>
-			<div #anchor></div>
-      <app-minmax-toggle [pr_change]="dataItem.pr_change" [pr_date]="dataItem.pr_date" [pr_open]="dataItem.pr_open" [pr_close]="dataItem.pr_close" [pr_volume]="dataItem.pr_volume"   [anchor]="anchor"></app-minmax-toggle>
 
-		</ng-template>
-  </kendo-grid-column> -->
 <kendo-grid-column [width]="420"  class="grid-one-day-chart"
 [sortable]="false">
 <ng-template kendoGridCellTemplate let-dataItem>
@@ -593,21 +640,6 @@
 
 </kendo-grid>
 
-<!-- <kendo-grid-column  [width]="70" title="Last">
-    <ng-template kendoGridCellTemplate let-dataItem>
-     <span> {{ dataItem.last | currency :'INR'  }} </span>
-
-
-  </ng-template>
-</kendo-grid-column>
-
-
-
-
-
-
-
-
 
 <kendo-grid-column [width]="70"  title="Change">
   <ng-template kendoGridCellTemplate let-dataItem>
@@ -616,11 +648,6 @@
 
   </ng-template>
 </kendo-grid-column>
-
-
-
-
-
 
 
 <kendo-grid-column [width]="70"   title="1Wk" >
@@ -638,6 +665,6 @@
   <ng-template kendoGridCellTemplate let-dataItem>
     {{ dataItem.return3m | currency :'INR'  }}
 </ng-template>
-</kendo-grid-column> -->
+</kendo-grid-column>
 
 

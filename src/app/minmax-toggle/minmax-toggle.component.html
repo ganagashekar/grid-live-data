@@ -2,17 +2,16 @@
 <a #anchor style="height: 1px;" (click)="onToggle(anchor)">
  ....
   </a>
-<!-- <span #anchor><mat-icon >more_horiz</mat-icon></span> -->
+<!-- <span #anchor><mat-icon >(anchorViewportLeave)="show = false"more_horiz</mat-icon></span> -->
 <!-- <button mat-button > Basic</button> -->
-<kendo-popup [anchor]="anchor" (anchorViewportLeave)="show = false" *ngIf="show">
-	<div  style="width: 1100px; height: 100px;font-size: 6px;">
+<kendo-popup [anchor]="anchor" style="overflow: scroll;"   (anchorViewportLeave)="close()"  *ngIf="show">
+	<div  style="overflow: scroll;font-size: 10px;width: auto;">
 		<!-- User-defined content -->
-    <mat-card>
-      <mat-card-content>
+
         <table>
           <tr>
             <td>Date</td>
-            <td  *ngFor="let subCategory of pr_date?.split(',')">
+            <td style="font-size: 10px;" *ngFor="let subCategory of pr_date?.split(',')">
               {{ subCategory }}
               </td>
 
@@ -45,10 +44,34 @@
               </td>
 
           </tr>
+          <tr>
 
+          </tr>
+
+          <tr>
+            <td>MACD</td>
+            <td  *ngFor="let subCategory of pr_Macresult.split(',')">
+              {{ subCategory }}
+              </td>
+
+          </tr>
+
+          <tr>
+            <td>RSI</td>
+            <td  *ngFor="let subCategory of pr_RSI.split(',')">
+              {{ subCategory }}
+              </td>
+
+          </tr>
+          <tr>
+            <td>Match</td>
+            <td  *ngFor="let subCategory of pr_Match.split(',')">
+              {{ subCategory }}
+              </td>
+
+          </tr>
 
         </table>
-      </mat-card-content>
-    </mat-card>
+
 	</div>
 </kendo-popup>
