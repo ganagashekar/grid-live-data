@@ -64,3 +64,10 @@ td {
   }
 
 
+ .mat-progress-bar-buffer {
+    background-color: red !important;
+  }
+
+  .mat-progress-bar-background {
+    fill:  red !important;
+  }

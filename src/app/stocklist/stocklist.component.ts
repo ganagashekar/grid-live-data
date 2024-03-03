@@ -59,7 +59,10 @@ export class StocklistComponent implements OnInit {
     {text :"revenueDifference",value :"revenueDifference"},
 
     {text :"quarterEnd",value :"quarterEnd"},
-    {text :"fn_eps",value :"fn_eps"}
+    {text :"recmdtn",value :"recmdtn"},
+    {text :"fn_eps",value :"fn_eps"},
+    {text :"FnUpdatedon",value :"FnUpdatedon"}
+
 
 
   ];
