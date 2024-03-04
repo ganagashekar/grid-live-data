@@ -78,120 +78,6 @@
         </button>
       </td>
 
-      <td>
-        <button (click)="getTargetprices()" mat-stroked-button color="accent">
-
-          <mat-icon
-          *ngIf="targetPrice"
-          >
-          star
-          </mat-icon>
-
-          <mat-icon
-          *ngIf="!targetPrice">
-          star_border
-          </mat-icon>
-          </button>
-
-      </td>
-
-
-      <td>
-        <button (click)="getbullish()" mat-stroked-button color="accent">
-
-          <mat-icon
-          *ngIf="bullish"
-          >
-          vertical_align_top
-          </mat-icon>
-
-          <mat-icon
-          *ngIf="!bullish">
-          keyboard_arrow_up
-          </mat-icon>
-          </button>
-
-      </td>
-
-      <td>
-        <button (click)="getbearish()" mat-stroked-button color="accent">
-
-          <mat-icon
-          *ngIf="bearish"
-          >
-          vertical_align_bottom
-          </mat-icon>
-
-          <mat-icon
-          *ngIf="!bearish">
-          keyboard_arrow_down
-          </mat-icon>
-          </button>
-
-      </td>
-
-      <td>
-        <mat-form-field>
-          <mat-select  placeholder="CKT" (selectionChange)="selectedCKTChange($event.value)"[formControl]="CKTName"  [(value)]="selectedCKTName">
-
-
-
-            <mat-option *ngFor="let topping of CKTNameList" [value]="topping.text">{{topping.text}}</mat-option>
-          </mat-select>
-        </mat-form-field>
-
-      </td>
-      <td>
-        <mat-form-field>
-          <mat-select  placeholder="CKT" (selectionChange)="selectedorderChange($event.value)"[formControl]="orderName"  [(value)]="selectedorder">
-
-
-
-            <mat-option *ngFor="let topping of orderNameList" [value]="topping.text">{{topping.text}}</mat-option>
-          </mat-select>
-        </mat-form-field>
-
-      </td>
-</tr>
-
-
-
-</table>
-<table>
-<tr>
-      <td>
-
-
-        <button (click)="toggleSelectedTday1('t1')" mat-stroked-button color="accent">
-      T+1</button>
-      </td>
-
-      <td>
-        <button (click)="toggleSelectedTday2('t2')" mat-stroked-button color="accent">
-        T +2</button>
-      </td>
-
-      <td>
-        <button (click)="toggleSelectedTday3('t3')"  mat-stroked-button color="accent"> T+3</button>
-      </td>
-      <td style="float: right;">
-<div style="float: right;">
-  <button (click)="toggleSelectedWatch_1('W1')" mat-stroked-button color="accent">
-   <mat-icon>looks_one</mat-icon>
-
-  </button>
-
-
-      <button (click)="toggleSelectedWatch_2('W2')" mat-stroked-button color="accent">
-        <mat-icon>looks_two</mat-icon></button>
-
-      <button (click)="toggleSelectedWatch_3('W3')"  mat-stroked-button color="accent">
-        <mat-icon>looks_3</mat-icon>
-      </button>
-
-</div>
-
-      </td>
 
     <td>
 
@@ -233,12 +119,73 @@
 
 
     </td>
+      <td>
+        <mat-form-field>
+          <mat-select  placeholder="CKT" (selectionChange)="selectedCKTChange($event.value)"[formControl]="CKTName"  [(value)]="selectedCKTName">
 
 
-    </tr>
+
+            <mat-option *ngFor="let topping of CKTNameList" [value]="topping.text">{{topping.text}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+      </td>
+      <td>
+        <mat-form-field>
+          <mat-select  placeholder="CKT" (selectionChange)="selectedorderChange($event.value)"[formControl]="orderName"  [(value)]="selectedorder">
 
 
-  </table>
+
+            <mat-option *ngFor="let topping of orderNameList" [value]="topping.text">{{topping.text}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+      </td>
+
+      <td>
+        <button (click)="GetData()" mat-raised-button color="primary">Fetch</button>
+      </td>
+</tr>
+
+
+
+</table><table>
+  <tr>
+    <td>
+
+
+      <button (click)="toggleSelectedTday1('t1')" mat-stroked-button color="accent">
+    T+1</button>
+    </td>
+
+    <td>
+      <button (click)="toggleSelectedTday2('t2')" mat-stroked-button color="accent">
+      T +2</button>
+    </td>
+
+    <td>
+      <button (click)="toggleSelectedTday3('t3')"  mat-stroked-button color="accent"> T+3</button>
+    </td>
+    <td>
+<div style="float: right;">
+<button (click)="toggleSelectedWatch_1('W1')" mat-stroked-button color="accent">
+ <mat-icon>looks_one</mat-icon>
+
+</button>
+
+
+    <button (click)="toggleSelectedWatch_2('W2')" mat-stroked-button color="accent">
+      <mat-icon>looks_two</mat-icon></button>
+
+    <button (click)="toggleSelectedWatch_3('W3')"  mat-stroked-button color="accent">
+      <mat-icon>looks_3</mat-icon>
+    </button>
+
+</div>
+
+    </td>
+  </tr>
+</table>
 
 
 
@@ -250,12 +197,16 @@
 
 </div>
 
-<kendo-grid id="my-grid"    [rowClass]="rowCallback"
-[pageSize]="250"  [filterable]="true" [pageable]="true"
-[sortable]="true" [columnMenu]="true"
-
- [kendoGridBinding]="(gridDataEquties | async)!"
->
+<kendo-grid id="my-grid"
+[rowClass]="rowCallback"
+[pageSize]="statepg.take!"
+[skip]="statepg.skip!"
+[filterable]="true"
+[pageable]="true"
+[sortable]="true"
+ [columnMenu]="true"
+ (dataStateChange)="dataStateChange($event)"
+ [data]="(gridDataEquties | async)!">
 <!-- <ng-template kendoGridToolbarTemplate>
   <kendo-textbox
     placeholder="Search in all columns..."
@@ -370,15 +321,15 @@
 
 
 
-            <div style="margin-top: -2%;">
+            <div style="margin-top: -4%;">
               <span style="color: rgb(13, 12, 12); border-radius: 4px; font-size: 10px;display: inline-block;" [ngStyle]="{'background-color': (dataItem.bullishCount) > dataItem.bearishCount  ? '#affbb5' : '#ffe8e7'}">
-                Bullish Count : {{dataItem.bullishCount }}  &nbsp;&nbsp;&nbsp;
+                Bullish : {{dataItem.bullishCount }}  &nbsp;&nbsp;
                </span>
                <span>
-                {{dataItem.match }}   &nbsp;&nbsp;&nbsp;
+                {{dataItem.match }}
                </span>
                <span style="color: rgb(7, 7, 7); border-radius: 4px; font-size: 10px;display: inline-block;" [ngStyle]="{'background-color':  (dataItem.bullishCount) < dataItem.bearishCount ? '#affbb5' : '#ffe8e7'}">
-                &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;  Bearish Count :  {{dataItem.bearishCount }}
+                 &nbsp;Bearish : {{dataItem.bearishCount }} &nbsp;&nbsp;
                </span>
 
                <span style="border-radius: 4px;margin-top: -1%; font-size: 10px;display: inline-block;text-align: right;">
@@ -627,7 +578,7 @@
     </kendo-grid-column>
 
 
-<kendo-grid-column [width]="420"  class="grid-one-day-chart"
+<kendo-grid-column [width]="400"  class="grid-one-day-chart"
 [sortable]="false">
 <ng-template kendoGridCellTemplate let-dataItem>
     <day-chart (selectedpoint)="addormidifypoint($event)"   [data]="dataItem.intraday" [symbol]="dataItem.symbol" [min]="dataItem.min" [open]="dataItem.int_open" [last]="dataItem.int_last" [max]="dataItem.max" [CurrentData]="dataItem" >

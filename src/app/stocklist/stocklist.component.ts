@@ -2,11 +2,11 @@ import { isNumber } from '@progress/kendo-angular-grid/dist/es2015/utils';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { StocksService } from '../services/stocks.service';
 import { SignalrService } from '../services/signalr.service';
-import { Observable, Subscription, of } from 'rxjs';
+import { Observable, Subscription, map, of } from 'rxjs';
 import { Equities } from '../models/equities.model';
 import { HttpClient } from '@angular/common/http';
-import { SortDescriptor } from '@progress/kendo-data-query';
-import { DataBindingDirective, RowClassArgs } from '@progress/kendo-angular-grid';
+import { SortDescriptor, State } from '@progress/kendo-data-query';
+import { DataBindingDirective, DataStateChangeEvent, GridDataResult, RowClassArgs } from '@progress/kendo-angular-grid';
 import {MatChipsModule} from '@angular/material/chips';
 import { ThemePalette } from '@angular/material/core';
 import { ProgressBarMode } from '@angular/material/progress-bar';
@@ -30,13 +30,18 @@ import { dropdownModel } from '../models/transaction.model';
 })
 export class StocklistComponent implements OnInit {
 
+  public statepg: State = {
+    skip: 0,
+    take: 200
+
+};
 
   @ViewChild('selectSector') selectSector: MatSelect | any;
 
   @ViewChild('selectindustry') selectindustry: MatSelect | any;
-
+  public view: Observable<GridDataResult>;
   public gridData: Observable<Stock[]> |any;
-  public gridDataEquties: Observable<Equities[]> | any;
+  public gridDataEquties:  Observable<Equities[]> | any;
   public prevDataItem!: Stock;
   private stocksUrl: string = 'assets/data.json';
   private immutableData!: any[];
@@ -55,13 +60,18 @@ export class StocklistComponent implements OnInit {
     {text :"profit_Increase",value :"profit_Increase"},
     {text :"revenueIncrease",value :"revenueIncrease"},
 
-    {text :"profitDifference",value :"profitDifference"},
+    {text :"profitDifference",value :"profitDifferencp0o-eeru0-wruip['excbmn,sqrtuioohce"},
     {text :"revenueDifference",value :"revenueDifference"},
 
     {text :"quarterEnd",value :"quarterEnd"},
-    {text :"recmdtn",value :"recmdtn"},
+    {text :"estimate_recommendation",value :"estimate_recommendation"},
+    {text :"BearishCount",value :"BearishCount"},
+    {text :"BulishCount",value :"BulishCount"},
     {text :"fn_eps",value :"fn_eps"},
-    {text :"FnUpdatedon",value :"FnUpdatedon"}
+    {text :"FnUpdatedon",value :"FnUpdatedon"},
+    {text :"estimate_meanPriceTarget",value :"estimate_meanPriceTarget"}
+
+
 
 
 
@@ -127,7 +137,7 @@ export class StocklistComponent implements OnInit {
   constructor(private toastrService: ToastrService,public signalRService: SignalrService, public signalRBreezeService: SignalrBreezeService,public stocksService: StocksService, private http: HttpClient) {
  this.gridloading=true;
     this.signalRService.connection
-    .invoke('GetStocksList',false,false,false,false,false,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,false,false,false,false,false,"","")
+    .invoke('GetStocksList',false,false,false,false,false,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,false,false,false,false,false,"","",0,250)
     .catch((error: any) => {
       console.log(`SGetAllStocks error: ${error}`);
       this.showError(`SGetAllStocks error: ${error}`, "StockList")
@@ -185,16 +195,31 @@ export class StocklistComponent implements OnInit {
 
   }
 
-  selectedorderChange(event: any) {
+  public dataStateChange(state: DataStateChangeEvent): void {
     debugger;
-    this.selectedorder=event;
-
+    this.statepg = state;
     this.signalRService.connection
-    .invoke('GetStocksList',this.Favoriteselected,this.upperckt,this.lowerckt,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,this.targetPrice,this.bullish,this.bearish, this.IsOrderbyVolumne,this.IsOrderbyaward,this.selectedCKTName,this.selectedorder)
+    .invoke('GetStocksList',this.Favoriteselected,this.upperckt,this.lowerckt,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,this.targetPrice,this.bullish,this.bearish, this.IsOrderbyVolumne,this.IsOrderbyaward,this.selectedCKTName,this.selectedorder,this.statepg.skip,this.statepg.take)
     .catch((error: any) => {
       console.log(`SGetAllStocks error: ${error}`);
       alert('GetAllStocks error!, see console for details.');
     });
+}
+
+GetData(){
+  this.signalRService.connection
+  .invoke('GetStocksList',this.Favoriteselected,this.upperckt,this.lowerckt,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,this.targetPrice,this.bullish,this.bearish, this.IsOrderbyVolumne,this.IsOrderbyaward,this.selectedCKTName,this.selectedorder,this.statepg.skip,this.statepg.take)
+  .catch((error: any) => {
+    console.log(`SGetAllStocks error: ${error}`);
+    alert('GetAllStocks error!, see console for details.');
+  });
+}
+
+  selectedorderChange(event: any) {
+    debugger;
+    this.selectedorder=event;
+
+
 
 
 
@@ -205,12 +230,7 @@ export class StocklistComponent implements OnInit {
     this.w1=!this.w1;
     if(!this.w1)
        this.WatchList=''
-    this.signalRService.connection
-    .invoke('GetStocksList',this.Favoriteselected,this.upperckt,this.lowerckt,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,this.targetPrice,this.bullish,this.bearish, this.IsOrderbyVolumne,this.IsOrderbyaward,this.selectedCKTName,this.selectedorder)
-    .catch((error: any) => {
-      console.log(`SGetAllStocks error: ${error}`);
-      alert('GetAllStocks error!, see console for details.');
-    });
+       this.GetData();
   }
 
   toggleSelectedWatch_2(val:string){
@@ -219,12 +239,7 @@ export class StocklistComponent implements OnInit {
     this.w2=!this.w2;
     if(!this.w2)
        this.WatchList=''
-    this.signalRService.connection
-    .invoke('GetStocksList',this.Favoriteselected,this.upperckt,this.lowerckt,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,this.targetPrice,this.bullish,this.bearish, this.IsOrderbyVolumne,this.IsOrderbyaward,this.selectedCKTName,this.selectedorder)
-    .catch((error: any) => {
-      console.log(`SGetAllStocks error: ${error}`);
-      alert('GetAllStocks error!, see console for details.');
-    });
+       this.GetData();
   }
 
       toggleSelectedWatch_3(val:string){
@@ -233,12 +248,7 @@ export class StocklistComponent implements OnInit {
     this.w3=!this.w3;
     if(!this.w3)
        this.WatchList=''
-    this.signalRService.connection
-    .invoke('GetStocksList',this.Favoriteselected,this.upperckt,this.lowerckt,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,this.targetPrice,this.bullish,this.bearish, this.IsOrderbyVolumne,this.IsOrderbyaward,this.selectedCKTName,this.selectedorder)
-    .catch((error: any) => {
-      console.log(`SGetAllStocks error: ${error}`);
-      alert('GetAllStocks error!, see console for details.');
-    });
+       this.GetData();
   }
 
   toggleSelectedTday1(val:string){
@@ -246,12 +256,7 @@ export class StocklistComponent implements OnInit {
     this.tday_1=!this.tday_1;
     if(!this.tday_1)
        this.tday=''
-    this.signalRService.connection
-    .invoke('GetStocksList',this.Favoriteselected,this.upperckt,this.lowerckt,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,this.targetPrice,this.bullish,this.bearish, this.IsOrderbyVolumne,this.IsOrderbyaward,this.selectedCKTName,this.selectedorder)
-    .catch((error: any) => {
-      console.log(`SGetAllStocks error: ${error}`);
-      alert('GetAllStocks error!, see console for details.');
-    });
+       this.GetData();
   }
 
   toggleSelectedTday2(val:string){
@@ -259,12 +264,7 @@ export class StocklistComponent implements OnInit {
     this.tday_2=!this.tday_2;
     if(!this.tday_2)
        this.tday=''
-    this.signalRService.connection
-    .invoke('GetStocksList',this.Favoriteselected,this.upperckt,this.lowerckt,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,this.targetPrice,this.bullish,this.bearish, this.IsOrderbyVolumne,this.IsOrderbyaward,this.selectedCKTName,this.selectedorder)
-    .catch((error: any) => {
-      console.log(`SGetAllStocks error: ${error}`);
-      alert('GetAllStocks error!, see console for details.');
-    });
+       this.GetData();
   }
 
   toggleSelectedTday3(val:string){
@@ -273,67 +273,37 @@ export class StocklistComponent implements OnInit {
     if(!this.tday_3)
        this.tday=''
 
-    this.signalRService.connection
-    .invoke('GetStocksList',this.Favoriteselected,this.upperckt,this.lowerckt,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,this.targetPrice,this.bullish,this.bearish, this.IsOrderbyVolumne,this.IsOrderbyaward,this.selectedCKTName,this.selectedorder)
-    .catch((error: any) => {
-      console.log(`SGetAllStocks error: ${error}`);
-      alert('GetAllStocks error!, see console for details.');
-    });
+       this.GetData();
   }
   GetShowNotification() {
 
     this.ShowNotification = !this.ShowNotification;
-    this.signalRService.connection
-    .invoke('GetStocksList',this.Favoriteselected,this.upperckt,this.lowerckt,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,this.targetPrice,this.bullish,this.bearish, this.IsOrderbyVolumne,this.IsOrderbyaward,this.selectedCKTName,this.selectedorder)
-    .catch((error: any) => {
-      console.log(`SGetAllStocks error: ${error}`);
-      alert('GetAllStocks error!, see console for details.');
-    });
+    this.GetData();
   }
 
   sliderEvent(value: any) {
 
 
 
-    this.signalRService.connection
-    .invoke('GetStocksList',this.Favoriteselected,this.upperckt,this.lowerckt,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,this.targetPrice,this.bullish,this.bearish, this.IsOrderbyVolumne,this.IsOrderbyaward,this.selectedCKTName,this.selectedorder)
-    .catch((error: any) => {
-      console.log(`SGetAllStocks error: ${error}`);
-      alert('GetAllStocks error!, see console for details.');
-    });
+    this.GetData();
   }
   getAutoTrade(){
 
     this.EnabledAutoTradeSelected = !this.EnabledAutoTradeSelected;
-    this.signalRService.connection
-    .invoke('GetStocksList',this.Favoriteselected,this.upperckt,this.lowerckt,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,this.targetPrice,this.bullish,this.bearish, this.IsOrderbyVolumne,this.IsOrderbyaward,this.selectedCKTName,this.selectedorder)
-    .catch((error: any) => {
-      console.log(`SGetAllStocks error: ${error}`);
-      alert('GetAllStocks error!, see console for details.');
-    });
+    this.GetData();
 
   }
 
   SortOrderbyVolumne() {
     this.IsOrderbyVolumne = !this.IsOrderbyVolumne;
-    this.signalRService.connection
-    .invoke('GetStocksList',this.Favoriteselected,this.upperckt,this.lowerckt,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,this.targetPrice,this.bullish,this.bearish, this.IsOrderbyVolumne,this.IsOrderbyaward,this.selectedCKTName,this.selectedorder)
-    .catch((error: any) => {
-      console.log(`SGetAllStocks error: ${error}`);
-      alert('GetAllStocks error!, see console for details.');
-    });
+    this.GetData();
   }
 
 
 
   SortOrderbyOrder() {
     this.IsOrderbyaward = !this.IsOrderbyaward;
-    this.signalRService.connection
-    .invoke('GetStocksList',this.Favoriteselected,this.upperckt,this.lowerckt,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,this.targetPrice,this.bullish,this.bearish, this.IsOrderbyVolumne,this.IsOrderbyaward,this.selectedCKTName,this.selectedorder)
-    .catch((error: any) => {
-      console.log(`SGetAllStocks error: ${error}`);
-      alert('GetAllStocks error!, see console for details.');
-    });
+    this.GetData();
   }
 
 
@@ -341,67 +311,37 @@ export class StocklistComponent implements OnInit {
 
     debugger;
     this.bullish = !this.bullish;
-    this.signalRService.connection
-    .invoke('GetStocksList',this.Favoriteselected,this.upperckt,this.lowerckt,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,this.targetPrice,this.bullish,this.bearish, this.IsOrderbyVolumne,this.IsOrderbyaward,this.selectedCKTName,this.selectedorder)
-    .catch((error: any) => {
-      console.log(`SGetAllStocks error: ${error}`);
-      alert('GetAllStocks error!, see console for details.');
-    });
+    this.GetData();
   }
 
   getbearish(){
     debugger;
     this.bearish = !this.bearish;
-    this.signalRService.connection
-    .invoke('GetStocksList',this.Favoriteselected,this.upperckt,this.lowerckt ,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,this.targetPrice,this.bullish,this.bearish, this.IsOrderbyVolumne,this.IsOrderbyaward,this.selectedCKTName,this.selectedorder)
-    .catch((error: any) => {
-      console.log(`SGetAllStocks error: ${error}`);
-      alert('GetAllStocks error!, see console for details.');
-    });
+    this.GetData();
   }
 
   getupperCircuit(){
 
     debugger;
     this.upperckt = !this.upperckt;
-    this.signalRService.connection
-    .invoke('GetStocksList',this.Favoriteselected,this.upperckt,this.lowerckt,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,this.targetPrice,this.bullish,this.bearish, this.IsOrderbyVolumne,this.IsOrderbyaward,this.selectedCKTName,this.selectedorder)
-    .catch((error: any) => {
-      console.log(`SGetAllStocks error: ${error}`);
-      alert('GetAllStocks error!, see console for details.');
-    });
+    this.GetData();
   }
 
   getlowerCircuit(){
     debugger;
     this.lowerckt = !this.lowerckt;
-    this.signalRService.connection
-    .invoke('GetStocksList',this.Favoriteselected,this.upperckt,this.lowerckt ,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,this.targetPrice,this.bullish,this.bearish, this.IsOrderbyVolumne,this.IsOrderbyaward,this.selectedCKTName,this.selectedorder)
-    .catch((error: any) => {
-      console.log(`SGetAllStocks error: ${error}`);
-      alert('GetAllStocks error!, see console for details.');
-    });
+    this.GetData();
   }
   getonlyfavorites(){
     debugger;
     this.Favoriteselected = !this.Favoriteselected;
-    this.signalRService.connection
-    .invoke('GetStocksList',this.Favoriteselected,this.upperckt,this.lowerckt,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,this.targetPrice,this.bullish,this.bearish, this.IsOrderbyVolumne,this.IsOrderbyaward,this.selectedCKTName,this.selectedorder)
-    .catch((error: any) => {
-      console.log(`SGetAllStocks error: ${error}`);
-      alert('GetAllStocks error!, see console for details.');
-    });
+    this.GetData();
   }
 
   getTargetprices(){
     debugger;
     this.targetPrice = !this.targetPrice;
-    this.signalRService.connection
-    .invoke('GetStocksList',this.Favoriteselected,this.upperckt,this.lowerckt,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,this.targetPrice,this.bullish,this.bearish, this.IsOrderbyVolumne,this.IsOrderbyaward,this.selectedCKTName,this.selectedorder)
-    .catch((error: any) => {
-      console.log(`SGetAllStocks error: ${error}`);
-      alert('GetAllStocks error!, see console for details.');
-    });
+    this.GetData();
   }
 
 
@@ -665,6 +605,9 @@ carDateCalculator(value :string ){
 debugger;
 this.gridloading=false;
       var  i=0;
+
+
+
       let res = data.map((val: Equities) => {
         var from =(val.last).toFixed(2);
          var to = ((val.last)-((0.50/100)*val.last)).toFixed(2);
@@ -766,7 +709,8 @@ profit_Increase :val.profit_Increase,
 revenueIncrease :val.revenueIncrease,
 profitDifference :val.profitDifference,
 revenueDifference :val.revenueDifference,
-quarterEnd :val.quarterEnd
+quarterEnd :val.quarterEnd,
+rowcount:val.rowcount
 
           // calc_ma:this.getma(+[val.last],null),
           // calc_wma:this.getwma([val.last],null)
@@ -775,6 +719,32 @@ quarterEnd :val.quarterEnd
         }
         i++;
       });
+
+    //  this.view= subscribe((data) => {
+    //     super.next(data);
+    //     this.loading = false;
+    //   });
+    //   debugger;
+    //   this.view = this.getDataObservable(res).pipe(
+
+    //     map(data => {
+
+    //       debugger;
+    //       return process(data, this.statepg);
+    //     }, 4000)
+
+
+    //  );
+
+      // this.view = {
+      //   data: res,
+      //   total: res[0].rowcount,
+      // };
+      var rowcount=res[0].rowcount- res.length
+      for (let i = 0; i < rowcount-1; i++) {
+        res.push({  });
+
+      }
 
       this.gridDataEquties = this.getDataObservable(res);
 
