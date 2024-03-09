@@ -32,7 +32,7 @@ export class StocklistComponent implements OnInit {
 
   public statepg: State = {
     skip: 0,
-    take: 200
+    take: 300
 
 };
 
