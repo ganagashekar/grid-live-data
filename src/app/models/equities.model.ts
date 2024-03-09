@@ -93,5 +93,7 @@ last7DaysChange :string;
  revenueDifference :number
 quarterEnd :Date
 rowcount:number
+futurePercentage :number
+quaterlyResults :string
 
 }

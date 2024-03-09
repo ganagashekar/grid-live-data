@@ -17,6 +17,13 @@
       </mat-icon>
       </button>
   </td>
+  <td>
+    <mat-form-field>
+      <input  (dateChange)="onDateChange($event)" matInput [matDatepicker]="picker" placeholder="Choose a date">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+  </td>
   </table>
 <table>
 <kendo-grid  [sortable]="true" [kendoGridBinding]="(gridData )!">

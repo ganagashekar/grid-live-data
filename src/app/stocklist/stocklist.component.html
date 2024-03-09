@@ -235,9 +235,7 @@
               <span style="color: rgb(13, 12, 12); border-radius: 4px; font-size: 12px;margin: 0.5px;display: inline-block;" [ngStyle]="{'background-color': carDateCalculator(dataItem.recmdtn) ? '#affbb5' : '#ffe8e7'}">
                Beta : {{dataItem.beta | number : '1.2-2'}}
               </span>
-              <span style="color: rgb(7, 7, 7); border-radius: 4px; font-size: 12px;margin: 0.5px;display: inline-block;" [ngStyle]="{'background-color': carDateCalculator(dataItem.recmdtn) ? '#affbb5' : '#ffe8e7'}">
-               eps :  {{dataItem.eps | currency :'INR'}}
-              </span>
+
               <span style="color: rgb(10, 10, 10); border-radius: 4px; font-size: 13px;margin: 0.5px;display: inline-block;" [ngStyle]="{'background-color': carDateCalculator(dataItem.recmdtn) ? '#affbb5' : '#ffe8e7'}">
                 Target : {{dataItem.target | currency :'INR'}}
               </span>
@@ -245,8 +243,15 @@
                 Vol : {{dataItem.volumeC }}
               </span>
               &nbsp;
+              <span style="border-radius: 4px;margin-top: -1%; font-size: 10px;display: inline-block;text-align: right;" >
+
+                &nbsp; Quater : {{dataItem.quarterEnd | date: 'MMM-YY' }} &nbsp;
+
+               </span>
+              &nbsp;
               <span style="background-color: '#7a06c2'; border-radius: 3px; color: #ffffff; font-size: 10px;"  [ngStyle]="{'display': dataItem.awardCount > 5 ? '' : 'none'}"  > &nbsp; {{dataItem.awardCount}} &nbsp;
               </span>
+
 
 
 
@@ -378,11 +383,21 @@
 
              </span>
 
-             <span style="border-radius: 4px;margin-top: -1%; font-size: 10px;display: inline-block;text-align: right;" >
 
-              &nbsp; Quater : {{dataItem.quarterEnd | date: 'MMM-YY' }} &nbsp;
+             <span style="border-radius: 4px;margin-top: -1%; font-weight: bold; font-size: 10px;display: inline-block;text-align: right;" [ngStyle]="{'background-color':  (dataItem.futurePercentage) > 1 ? '#affbb5' : '#ffe8e7'}" >
+
+              &nbsp; {{dataItem.futurePercentagetext}} : {{dataItem.futurePercentage }} &nbsp;
 
              </span>
+
+
+              <span style="text-align: right;font-size: 7px">
+               Prof(CR) :
+              <span style="text-align: right;" *ngFor="let subCategory of dataItem.quaterlyResults.split(',')"    >
+                <span  style="color:  whitesmoke;  border-radius: 2px; font-size: 10px;margin:  0.2px;display: inline-block;" [ngStyle]="{'background-color':  subCategory  > 0 ? '#008000' : '#FF0000'}" > {{subCategory}}</span>&nbsp;
+                 </span>
+                </span>
+
             </div>
             </div>
 
@@ -391,36 +406,42 @@
 
 
             <div style="float: right;">
+              <div>
+                <table  style="border-spacing: 10px;">
+                  <tr>
+                    <td  style="text-align: left;">
+                      <app-notification-toggle [bgcolor]="'#8ACDD7'" (selectedChange)="addormidifyWacthList($event)"  [savedtext]="'W1'" [displaytext]="'W1'" [valuetext]="dataItem.wacthList" [symbol]="dataItem.symbol" ></app-notification-toggle>
+                      <app-notification-toggle [bgcolor]="'#FF90BC'"  (selectedChange)="addormidifyWacthList($event)" [savedtext]="'W2'" [displaytext]="'W2'" [valuetext]="dataItem.wacthList" [symbol]="dataItem.symbol" ></app-notification-toggle>
+                      <app-notification-toggle [bgcolor]="'#DC8686'"  (selectedChange)="addormidifyWacthList($event)" [savedtext]="'W3'"  [displaytext]="'W3'" [valuetext]="dataItem.wacthList" [symbol]="dataItem.symbol" ></app-notification-toggle>
 
-              <table style="border-spacing: 10px;">
-                <tr>
-                  <td colspan="2" style="text-align: left;">
-                    <app-notification-toggle [bgcolor]="'#8ACDD7'" (selectedChange)="addormidifyWacthList($event)"  [savedtext]="'W1'" [displaytext]="'W1'" [valuetext]="dataItem.wacthList" [symbol]="dataItem.symbol" ></app-notification-toggle>
-                    <app-notification-toggle [bgcolor]="'#FF90BC'"  (selectedChange)="addormidifyWacthList($event)" [savedtext]="'W2'" [displaytext]="'W2'" [valuetext]="dataItem.wacthList" [symbol]="dataItem.symbol" ></app-notification-toggle>
-                    <app-notification-toggle [bgcolor]="'#DC8686'"  (selectedChange)="addormidifyWacthList($event)" [savedtext]="'W3'"  [displaytext]="'W3'" [valuetext]="dataItem.wacthList" [symbol]="dataItem.symbol" ></app-notification-toggle>
 
 
+                    </td>
+                    <td>
+                    <span style="text-align: right;">
+                      <app-notification-toggle [bgcolor]="'#1B4242'" (selectedChange)="addormidifyTdays($event)" [displaytext]="'T+1'" [valuetext]="dataItem.tdays" [savedtext]="'t1'" [symbol]="dataItem.symbol" ></app-notification-toggle>
+                      <app-notification-toggle [bgcolor]="'#5C8374'" (selectedChange)="addormidifyTdays($event)" [displaytext]="'T+2'" [valuetext]="dataItem.tdays" [savedtext]="'t2'" [symbol]="dataItem.symbol" ></app-notification-toggle>
+                      <app-notification-toggle [bgcolor]="'#9EC8B9'" (selectedChange)="addormidifyTdays($event)" [displaytext]="'T+3'" [valuetext]="dataItem.tdays" [savedtext]="'t3'"  [symbol]="dataItem.symbol" ></app-notification-toggle>
+                      &nbsp;
+
+
+                       <span #anchor>
+                        <app-minmax-toggle [pr_change]="dataItem.pr_change" [pr_Macresult]="dataItem.pr_Macresult"
+
+                        [pr_Match]="dataItem.pr_Match"
+                        [pr_RSI]="dataItem.pr_RSI"
+                        [pr_date]="dataItem.pr_date" [pr_open]="dataItem.pr_open" [pr_close]="dataItem.pr_close" [pr_volume]="dataItem.pr_volume"   [anchor]="anchor"></app-minmax-toggle>
+
+                                      </span>
+                    </span>
                   </td>
 
-                  <span style="text-align: right;">
-                    <app-notification-toggle [bgcolor]="'#1B4242'" (selectedChange)="addormidifyTdays($event)" [displaytext]="'T+1'" [valuetext]="dataItem.tdays" [savedtext]="'t1'" [symbol]="dataItem.symbol" ></app-notification-toggle>
-                    <app-notification-toggle [bgcolor]="'#5C8374'" (selectedChange)="addormidifyTdays($event)" [displaytext]="'T+2'" [valuetext]="dataItem.tdays" [savedtext]="'t2'" [symbol]="dataItem.symbol" ></app-notification-toggle>
-                    <app-notification-toggle [bgcolor]="'#9EC8B9'" (selectedChange)="addormidifyTdays($event)" [displaytext]="'T+3'" [valuetext]="dataItem.tdays" [savedtext]="'t3'"  [symbol]="dataItem.symbol" ></app-notification-toggle>
-                    &nbsp;
+                  </tr>
+                </table>
+              </div>
 
-
-                     <span #anchor>
-                      <app-minmax-toggle [pr_change]="dataItem.pr_change" [pr_Macresult]="dataItem.pr_Macresult"
-
-                      [pr_Match]="dataItem.pr_Match"
-                      [pr_RSI]="dataItem.pr_RSI"
-                      [pr_date]="dataItem.pr_date" [pr_open]="dataItem.pr_open" [pr_close]="dataItem.pr_close" [pr_volume]="dataItem.pr_volume"   [anchor]="anchor"></app-minmax-toggle>
-
-                                    </span>
-                  </span>
-                </tr>
-              </table>
-            <table>
+            <div>
+            <table >
 
                 <tr>
                   <td>
@@ -544,8 +565,9 @@
 
               </tr>
             </table>
-
-        <table style="float: right;">
+          </div>
+          <div>
+        <table >
 
                 <tr>
 
@@ -554,15 +576,14 @@
 
                     <span style="text-align: right;" *ngFor="let subCategory of dataItem.last7DaysChange.split(',')"    >
                      <span  style="color:  whitesmoke;  border-radius: 2px; font-size: 10px;margin:  0.2px;display: inline-block;" [ngStyle]="{'background-color':  subCategory  > 0 ? '#008000' : '#FF0000'}" > {{subCategory}}</span>&nbsp;
-                      </span>
-
-
-
-                                      </td>
+                      </span> </td>
                 </tr>
+
+
+
               </table>
-              <div>
-              </div>
+            </div>
+
             </div>
 
             <mat-progress-bar

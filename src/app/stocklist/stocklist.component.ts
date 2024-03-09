@@ -69,7 +69,10 @@ export class StocklistComponent implements OnInit {
     {text :"BulishCount",value :"BulishCount"},
     {text :"fn_eps",value :"fn_eps"},
     {text :"FnUpdatedon",value :"FnUpdatedon"},
-    {text :"estimate_meanPriceTarget",value :"estimate_meanPriceTarget"}
+    {text :"estimate_meanPriceTarget",value :"estimate_meanPriceTarget"},
+    {text :"FuturePercentage",value :"FuturePercentage"},
+    {text :"RecentNetProfit",value :"RecentNetProfit"}
+
 
 
 
@@ -710,7 +713,11 @@ revenueIncrease :val.revenueIncrease,
 profitDifference :val.profitDifference,
 revenueDifference :val.revenueDifference,
 quarterEnd :val.quarterEnd,
-rowcount:val.rowcount
+rowcount:val.rowcount,
+futurePercentage:val.futurePercentage,
+futurePercentagetext: val.futurePercentage > 0 ? 'Up' : 'Down',
+
+quaterlyResults:val.quaterlyResults
 
           // calc_ma:this.getma(+[val.last],null),
           // calc_wma:this.getwma([val.last],null)

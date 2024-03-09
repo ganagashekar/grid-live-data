@@ -38,14 +38,8 @@ export class StockpredictionsComponent implements OnInit {
 
 
     orderbySize : boolean;
-
+    SelectedDate : string | any ;
     constructor(public signalRService: SignalrService, public signalRBreezeService: SignalrBreezeService,public stocksService: StocksService, private http: HttpClient) {
-
-
-
-
-
-
     }
 
 
@@ -53,10 +47,15 @@ export class StockpredictionsComponent implements OnInit {
     getorderbySize(){
       this.orderbySize = !this.orderbySize;
     }
+    onDateChange(event: any ): void {
+      debugger;
+      this.SelectedDate = event.value.toUTCString();
+      this.getdata()
 
+    }
 
  getdata(){
-  this.signalRBreezeService.connection.invoke('GetTopStockforBuyAutomation',this.orderbySize)
+  this.signalRBreezeService.connection.invoke('GetTopStockforBuyAutomation',this.orderbySize,this.SelectedDate)
       .catch((error: any) => {
         console.log(`SGetAllStocks error: ${error}`);
 
