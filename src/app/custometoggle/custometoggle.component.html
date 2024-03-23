@@ -1,6 +1,20 @@
 <button  mat-icon-button (click)="toggleSelected()">
 
+
   <mat-icon
+  *ngIf="selected"
+  color="primary"
+  aria-label="Example icon-button with a heart icon">
+{{iconNameSelected}}
+</mat-icon>
+
+<mat-icon
+  *ngIf="!selected"
+  color="warn"
+  aria-label="Example icon-button with a heart icon">
+  {{iconNamedisSelected}}
+</mat-icon>
+  <!-- <mat-icon
     *ngIf="selected"
     color="primary"
     aria-label="Example icon-button with a heart icon">
@@ -12,6 +26,6 @@
     color="warn"
     aria-label="Example icon-button with a heart icon">
     remove_circle_outline
-  </mat-icon>
+  </mat-icon> -->
 
 </button>

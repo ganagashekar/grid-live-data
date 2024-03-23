@@ -32,7 +32,7 @@ export class StocklistComponent implements OnInit {
 
   public statepg: State = {
     skip: 0,
-    take: 300
+    take: 200
 
 };
 
@@ -102,6 +102,7 @@ export class StocklistComponent implements OnInit {
   bufferValue = 0;
   Favoriteselected: boolean = false;
   EnabledAutoTradeSelected: boolean = false;
+  IncludeDeleted: boolean = false;
   ShowNotification :boolean=false;
   upperckt:boolean=false;
   lowerckt:boolean=false;
@@ -140,7 +141,7 @@ export class StocklistComponent implements OnInit {
   constructor(private toastrService: ToastrService,public signalRService: SignalrService, public signalRBreezeService: SignalrBreezeService,public stocksService: StocksService, private http: HttpClient) {
  this.gridloading=true;
     this.signalRService.connection
-    .invoke('GetStocksList',false,false,false,false,false,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,false,false,false,false,false,"","",0,250)
+    .invoke('GetStocksList',false,false,false,false,false,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,false,false,false,false,false,"","",0,200,false)
     .catch((error: any) => {
       console.log(`SGetAllStocks error: ${error}`);
       this.showError(`SGetAllStocks error: ${error}`, "StockList")
@@ -201,17 +202,12 @@ export class StocklistComponent implements OnInit {
   public dataStateChange(state: DataStateChangeEvent): void {
     debugger;
     this.statepg = state;
-    this.signalRService.connection
-    .invoke('GetStocksList',this.Favoriteselected,this.upperckt,this.lowerckt,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,this.targetPrice,this.bullish,this.bearish, this.IsOrderbyVolumne,this.IsOrderbyaward,this.selectedCKTName,this.selectedorder,this.statepg.skip,this.statepg.take)
-    .catch((error: any) => {
-      console.log(`SGetAllStocks error: ${error}`);
-      alert('GetAllStocks error!, see console for details.');
-    });
+   this.GetData()
 }
 
 GetData(){
   this.signalRService.connection
-  .invoke('GetStocksList',this.Favoriteselected,this.upperckt,this.lowerckt,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,this.targetPrice,this.bullish,this.bearish, this.IsOrderbyVolumne,this.IsOrderbyaward,this.selectedCKTName,this.selectedorder,this.statepg.skip,this.statepg.take)
+  .invoke('GetStocksList',this.Favoriteselected,this.upperckt,this.lowerckt,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,this.targetPrice,this.bullish,this.bearish, this.IsOrderbyVolumne,this.IsOrderbyaward,this.selectedCKTName,this.selectedorder,this.statepg.skip,this.statepg.take,this.IncludeDeleted)
   .catch((error: any) => {
     console.log(`SGetAllStocks error: ${error}`);
     alert('GetAllStocks error!, see console for details.');
@@ -297,6 +293,12 @@ GetData(){
 
   }
 
+  getExclude(){
+
+    this.IncludeDeleted = !this.IncludeDeleted;
+    this.GetData();
+
+  }
   SortOrderbyVolumne() {
     this.IsOrderbyVolumne = !this.IsOrderbyVolumne;
     this.GetData();
@@ -520,7 +522,16 @@ addormidifyIsAutoBuy(p :any) {
     alert('GetAllStocks error!, see console for details.');
   });
   }
+  addormidifyIsExclude(p :any) {
+    debugger;
 
+    this.signalRService.connection
+    .invoke('AddOrModifyIsExclude',p.msnid,p.selected==true?1 :0)
+    .catch((error: any) => {
+      console.log(`SGetAllStocks error: ${error}`);
+      alert('GetAllStocks error!, see console for details.');
+    });
+    }
 
 
 addormidifypoint(p :any) {
@@ -584,6 +595,12 @@ carDateCalculator(value :string ){
       this.showSuccess(data, "Auto Trade Price")
      // alert(data)
     })
+    this.signalRService.connection.on("SendAddOrModifyIsExclude",(data :any) => {
+
+      this.showSuccess(data, "Exclude Saved")
+     // alert(data)
+    })
+
 
     this.signalRBreezeService.connection.on("SendSetBuyPriceAlter",(data :any) => {
 
@@ -702,6 +719,7 @@ pr_RSI :val.pr_RSI,
 pr_Macresult:val.pr_Macresult,
 pr_Match:val.pr_Match,
 last7DaysChange:val.last7DaysChange,
+isIncludeDeleted:val.isIncludeDeleted,
 
 
 

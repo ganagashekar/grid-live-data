@@ -13,7 +13,8 @@ export class CustometoggleComponent implements OnInit {
   @Input() selected: boolean = false;
   @Input() msnid: string ="";
   @Output() selectedChange = new EventEmitter();
-
+  @Input() iconNameSelected: 'done' |any;
+  @Input() iconNamedisSelected: 'done' |any ;
   constructor() { }
 
   ngOnInit() {

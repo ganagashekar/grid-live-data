@@ -77,6 +77,20 @@
 
         </button>
       </td>
+      <td>
+        <button (click)="getExclude()"  mat-stroked-button color="accent">
+          <mat-icon
+          *ngIf="IncludeDeleted"
+          >delete
+
+          </mat-icon>
+
+          <mat-icon
+          *ngIf="!IncludeDeleted">
+          delete_outline
+          </mat-icon>
+          </button>
+      </td>
 
 
     <td>
@@ -245,7 +259,7 @@
               &nbsp;
               <span style="border-radius: 4px;margin-top: -1%; font-size: 10px;display: inline-block;text-align: right;" >
 
-                &nbsp; Quater : {{dataItem.quarterEnd | date: 'MMM-YY' }} &nbsp;
+                 Quater : {{dataItem.quarterEnd | date: 'MMM-YY' }} &nbsp;
 
                </span>
               &nbsp;
@@ -298,8 +312,11 @@
 
               </span>
              <span style="border-radius: 4px; font-size: 10px;display: inline-block;">
-              <app-custometoggle (selectedChange)="addormidifyIsAutoBuy($event)" [msnid]="dataItem.secId" [selected]="dataItem.isenabledforautoTrade"></app-custometoggle>
+              <app-custometoggle [iconNamedisSelected]="'remove_circle_outline'" [iconNameSelected]="'done_all'" (selectedChange)="addormidifyIsAutoBuy($event)" [msnid]="dataItem.secId" [selected]="dataItem.isenabledforautoTrade"></app-custometoggle>
               </span>
+              <span style="border-radius: 4px; font-size: 10px;display: inline-block;">
+                <app-custometoggle [iconNamedisSelected]="'delete_outline'" [iconNameSelected]="'delete'" (selectedChange)="addormidifyIsExclude($event)" [msnid]="dataItem.secId" [selected]="dataItem.isIncludeDeleted"></app-custometoggle>
+                </span>
 
 
 

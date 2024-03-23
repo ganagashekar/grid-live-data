@@ -72,6 +72,12 @@ export class DayChartComponent {
   ]
     ngOnChanges(changes: any) {
 
+      if(changes.CurrentData.currentValue.open < changes.CurrentData.currentValue.last){
+        this.lineStyle.color="green";
+      }
+      else{
+        this.lineStyle.color="red";
+      }
 
       const dataopen=  this.dataopen.slice(0);
        const data= this.data.slice(0);
@@ -79,12 +85,6 @@ export class DayChartComponent {
 
 
 
-      if(changes.CurrentData.currentValue.open < changes.CurrentData.currentValue.last){
-        this.lineStyle.color="green";
-      }
-      else{
-        this.lineStyle.color="red";
-      }
 
 
 

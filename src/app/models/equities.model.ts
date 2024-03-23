@@ -95,5 +95,5 @@ quarterEnd :Date
 rowcount:number
 futurePercentage :number
 quaterlyResults :string
-
+isIncludeDeleted : number
 }
