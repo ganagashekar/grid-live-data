@@ -71,7 +71,9 @@ export class StocklistComponent implements OnInit {
     {text :"FnUpdatedon",value :"FnUpdatedon"},
     {text :"estimate_meanPriceTarget",value :"estimate_meanPriceTarget"},
     {text :"FuturePercentage",value :"FuturePercentage"},
-    {text :"RecentNetProfit",value :"RecentNetProfit"}
+    {text :"RecentNetProfit",value :"RecentNetProfit"},
+    {text :"up_stck",value :"up_stck"},
+    {text :"dn_stck",value :"dn_stck"}
 
 
 
@@ -82,6 +84,16 @@ export class StocklistComponent implements OnInit {
   selectedCKTName : any ;
 
 
+  ExchangeName = new FormControl();
+  ExchangeNameList :  dropdownModel[] =[
+    {text :"All",value :"All"},
+    {text :"NFO",value :"NFO"},
+    {text :"BSE",value :"BSE"},
+
+
+
+
+  ];
 
   orderName = new FormControl();
   orderNameList :  dropdownModel[] =[
@@ -94,6 +106,7 @@ export class StocklistComponent implements OnInit {
 
   ];
   selectedorder : any ;
+  selectedExchange:any;
 
   bgcolor ="#B90143";
   color: ThemePalette = 'primary';
@@ -141,7 +154,7 @@ export class StocklistComponent implements OnInit {
   constructor(private toastrService: ToastrService,public signalRService: SignalrService, public signalRBreezeService: SignalrBreezeService,public stocksService: StocksService, private http: HttpClient) {
  this.gridloading=true;
     this.signalRService.connection
-    .invoke('GetStocksList',false,false,false,false,false,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,false,false,false,false,false,"","",0,200,false)
+    .invoke('GetStocksList',false,false,false,false,false,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,false,false,false,false,false,"","",0,200,false,'All')
     .catch((error: any) => {
       console.log(`SGetAllStocks error: ${error}`);
       this.showError(`SGetAllStocks error: ${error}`, "StockList")
@@ -207,11 +220,21 @@ export class StocklistComponent implements OnInit {
 
 GetData(){
   this.signalRService.connection
-  .invoke('GetStocksList',this.Favoriteselected,this.upperckt,this.lowerckt,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,this.targetPrice,this.bullish,this.bearish, this.IsOrderbyVolumne,this.IsOrderbyaward,this.selectedCKTName,this.selectedorder,this.statepg.skip,this.statepg.take,this.IncludeDeleted)
+  .invoke('GetStocksList',this.Favoriteselected,this.upperckt,this.lowerckt,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,this.targetPrice,this.bullish,this.bearish, this.IsOrderbyVolumne,this.IsOrderbyaward,this.selectedCKTName,this.selectedorder,this.statepg.skip,this.statepg.take,this.IncludeDeleted,this.selectedExchange)
   .catch((error: any) => {
     console.log(`SGetAllStocks error: ${error}`);
     alert('GetAllStocks error!, see console for details.');
   });
+}
+
+selectedExchangeChange(event: any) {
+  debugger;
+  this.selectedExchange=event;
+
+
+
+
+
 }
 
   selectedorderChange(event: any) {

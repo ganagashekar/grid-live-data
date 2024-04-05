@@ -195,6 +195,15 @@
       <mat-icon>looks_3</mat-icon>
     </button>
 
+    <mat-form-field>
+      <mat-select  placeholder="CKT" (selectionChange)="selectedExchangeChange($event.value)"[formControl]="ExchangeName"  [(value)]="selectedExchange">
+
+
+
+        <mat-option *ngFor="let topping of ExchangeNameList" [value]="topping.text">{{topping.text}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
 </div>
 
     </td>
