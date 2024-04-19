@@ -133,6 +133,7 @@
 
 
     </td>
+    
       <td>
         <mat-form-field>
           <mat-select  placeholder="CKT" (selectionChange)="selectedCKTChange($event.value)"[formControl]="CKTName"  [(value)]="selectedCKTName">
@@ -203,6 +204,40 @@
         <mat-option *ngFor="let topping of ExchangeNameList" [value]="topping.text">{{topping.text}}</mat-option>
       </mat-select>
     </mat-form-field>
+
+    <mat-form-field>
+      <mat-select  placeholder="StatsColumn" (selectionChange)="selectedStatsColumnRecordsChange($event.value)"[formControl]="StatsColumnRecords"  [(value)]="selectedStatsColumn">
+
+
+
+        <mat-option *ngFor="let topping of StatsColumneRecordsList" [value]="topping.text">{{topping.text}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-select  placeholder="Condition" (selectionChange)="selectedStatsColumnConditionRecordsChange($event.value)"[formControl]="StatsColumnConditionRecords"  [(value)]="selectedStatsColumnCondition">
+
+
+
+        <mat-option *ngFor="let topping of StatsColumnConditioneRecordsList" [value]="topping.text">{{topping.text}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+      <mat-form-field>
+        <mat-select  placeholder="change" (selectionChange)="selectedpastChangeRecordsChange($event.value)"[formControl]="pastChangeRecords"  [(value)]="selectedpastChange">
+
+
+
+          <mat-option *ngFor="let topping of pastChangeRecordsList" [value]="topping.text">{{topping.text}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+     
+
+
+      
+
+   
 
 </div>
 
@@ -451,14 +486,24 @@
                       &nbsp;
 
 
-                       <span #anchor>
-                        <app-minmax-toggle [pr_change]="dataItem.pr_change" [pr_Macresult]="dataItem.pr_Macresult"
+                     
 
-                        [pr_Match]="dataItem.pr_Match"
-                        [pr_RSI]="dataItem.pr_RSI"
-                        [pr_date]="dataItem.pr_date" [pr_open]="dataItem.pr_open" [pr_close]="dataItem.pr_close" [pr_volume]="dataItem.pr_volume"   [anchor]="anchor"></app-minmax-toggle>
+                                      <span style="color: rgb(10, 10, 10); border-radius: 4px; font-size: 12px;display: inline-block;" [ngStyle]="{'background-color': (dataItem.past_PercentageChange) > 0 ? '#affbb5' : '#ffe8e7'}" >
+                    <span> {{ dataItem.past_PercentageChange > 0 ? '+':'' }}</span>  {{ dataItem.past_PercentageChange | number : '1.2-2'  }} %
+                   </span>
+                   &nbsp;
+                   <span style="color: rgb(10, 10, 10); border-radius: 4px; font-size: 12px;display: inline-block;" [ngStyle]="{'background-color': (dataItem.past_PriceChange) > 0 ? '#affbb5' : '#ffe8e7'}" >
+                    <span> {{ dataItem.past_PriceChange > 0 ? '+':'' }}</span>  {{ dataItem.past_PriceChange | number : '1.2-2'  }}
+                   </span>
 
-                                      </span>
+                   <span #anchor>
+                    <app-minmax-toggle [pr_change]="dataItem.pr_change" [pr_Macresult]="dataItem.pr_Macresult"
+
+                    [pr_Match]="dataItem.pr_Match"
+                    [pr_RSI]="dataItem.pr_RSI"
+                    [pr_date]="dataItem.pr_date" [pr_open]="dataItem.pr_open" [pr_close]="dataItem.pr_close" [pr_volume]="dataItem.pr_volume"   [anchor]="anchor"></app-minmax-toggle>
+
+                                  </span>
                     </span>
                   </td>
 

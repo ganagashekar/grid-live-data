@@ -73,13 +73,10 @@ export class StocklistComponent implements OnInit {
     {text :"FuturePercentage",value :"FuturePercentage"},
     {text :"RecentNetProfit",value :"RecentNetProfit"},
     {text :"up_stck",value :"up_stck"},
-    {text :"dn_stck",value :"dn_stck"}
-
-
-
-
-
-
+    {text :"dn_stck",value :"dn_stck"},
+    {text :"NewEquities",value :"NewEquities"},
+    {text :"Past_PercentageChange",value :"Past_PercentageChange"},
+    {text :"Past_PriceChange",value :"Past_PriceChange"},
   ];
   selectedCKTName : any ;
 
@@ -94,6 +91,48 @@ export class StocklistComponent implements OnInit {
 
 
   ];
+
+  selectedpastChange : any ;
+  pastChangeRecords = new FormControl();
+  pastChangeRecordsList :  dropdownModel[] =[
+    {text :"-3",value :"-3"},
+    {text :"-5",value :"-5"},
+    {text :"-7",value :"-7"},
+    {text :"-10",value :"-10"},
+    {text :"-13",value :"-13"},
+    {text :"-15",value :"-15"},
+    {text :"-20",value :"-20"},
+
+    {text :"3",value :"3"},
+    {text :"5",value :"5"},
+    {text :"7",value :"7"},
+    {text :"10",value :"10"},
+    {text :"12",value :"12"},
+    {text :"15",value :"15"},
+    {text :"20",value :"20"},
+
+  ];
+
+  selectedStatsColumn : any ;
+  StatsColumnRecords = new FormControl();
+  StatsColumneRecordsList :  dropdownModel[] =[
+    {text :"ThreedaysChange",value :"ThreedaysChange"},
+    {text :"FivedaysChange",value :"FivedaysChange"},
+    {text :"SevendaysChange",value :"SevendaysChange"},
+    {text :"TendaysChange",value :"TendaysChange"},
+    {text :"FifteendaysChange",value :"FifteendaysChange"},
+    {text :"change",value :"change"},
+  ];
+
+  selectedStatsColumnCondition : any ;
+  StatsColumnConditionRecords = new FormControl();
+  StatsColumnConditioneRecordsList :  dropdownModel[] =[
+    {text :"<",value :"<"},
+    {text :">",value :">"},
+    {text :"=",value :"="},
+    {text :" ",value :" "}
+  ];
+
 
   orderName = new FormControl();
   orderNameList :  dropdownModel[] =[
@@ -154,7 +193,7 @@ export class StocklistComponent implements OnInit {
   constructor(private toastrService: ToastrService,public signalRService: SignalrService, public signalRBreezeService: SignalrBreezeService,public stocksService: StocksService, private http: HttpClient) {
  this.gridloading=true;
     this.signalRService.connection
-    .invoke('GetStocksList',false,false,false,false,false,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,false,false,false,false,false,"","",0,200,false,'All')
+    .invoke('GetStocksList',false,false,false,false,false,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,false,false,false,false,false,"","",0,200,false,'All','','','')
     .catch((error: any) => {
       console.log(`SGetAllStocks error: ${error}`);
       this.showError(`SGetAllStocks error: ${error}`, "StockList")
@@ -212,6 +251,18 @@ export class StocklistComponent implements OnInit {
 
   }
 
+  selectedStatsColumnRecordsChange(event: any) {
+    debugger;
+    this.selectedStatsColumn=event;
+  }
+  selectedStatsColumnConditionRecordsChange(event: any) {
+    debugger;
+    this.selectedStatsColumnCondition=event;
+  }
+  selectedpastChangeRecordsChange(event: any) {
+    debugger;
+    this.selectedpastChange=event;
+  }
   public dataStateChange(state: DataStateChangeEvent): void {
     debugger;
     this.statepg = state;
@@ -220,7 +271,8 @@ export class StocklistComponent implements OnInit {
 
 GetData(){
   this.signalRService.connection
-  .invoke('GetStocksList',this.Favoriteselected,this.upperckt,this.lowerckt,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,this.targetPrice,this.bullish,this.bearish, this.IsOrderbyVolumne,this.IsOrderbyaward,this.selectedCKTName,this.selectedorder,this.statepg.skip,this.statepg.take,this.IncludeDeleted,this.selectedExchange)
+  .invoke('GetStocksList',this.Favoriteselected,this.upperckt,this.lowerckt,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,this.targetPrice,this.bullish,this.bearish, this.IsOrderbyVolumne,this.IsOrderbyaward,this.selectedCKTName,this.selectedorder,this.statepg.skip,this.statepg.take,this.IncludeDeleted,this.selectedExchange,
+  this.selectedStatsColumn,this.selectedStatsColumnCondition,this.selectedpastChange)
   .catch((error: any) => {
     console.log(`SGetAllStocks error: ${error}`);
     alert('GetAllStocks error!, see console for details.');
@@ -758,7 +810,9 @@ rowcount:val.rowcount,
 futurePercentage:val.futurePercentage,
 futurePercentagetext: val.futurePercentage > 0 ? 'Up' : 'Down',
 
-quaterlyResults:val.quaterlyResults
+quaterlyResults:val.quaterlyResults,
+past_PriceChange:val.past_PriceChange,
+past_PercentageChange:val.past_PercentageChange
 
           // calc_ma:this.getma(+[val.last],null),
           // calc_wma:this.getwma([val.last],null)
