@@ -54,6 +54,7 @@ export class StocklistComponent implements OnInit {
   CKTName = new FormControl();
   CKTNameList :  dropdownModel[] =[
     {text :"",value :""},
+    {text :"change",value :"change"},
     {text :"oPM_Percentage",value :"oPM_Percentage"},
     {text :"nPM_Percentage",value :"nPM_Percentage"},
 
@@ -180,7 +181,12 @@ export class StocklistComponent implements OnInit {
 
   IsOrderbyVolumne:boolean=false;
 
+  IsVolumeBRK:boolean=false;
+  Is52weeks:boolean=false;
+
   IsOrderbyaward:boolean=false;
+
+  IsorderByChg=false;
 
   optionsRange: Options = {
     floor: 0,
@@ -193,7 +199,7 @@ export class StocklistComponent implements OnInit {
   constructor(private toastrService: ToastrService,public signalRService: SignalrService, public signalRBreezeService: SignalrBreezeService,public stocksService: StocksService, private http: HttpClient) {
  this.gridloading=true;
     this.signalRService.connection
-    .invoke('GetStocksList',false,false,false,false,false,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,false,false,false,false,false,"","",0,200,false,'All','','','')
+    .invoke('GetStocksList',false,false,false,false,false,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,false,false,false,false,false,"","",0,200,false,'All','','','',false,false,true)
     .catch((error: any) => {
       console.log(`SGetAllStocks error: ${error}`);
       this.showError(`SGetAllStocks error: ${error}`, "StockList")
@@ -270,9 +276,10 @@ export class StocklistComponent implements OnInit {
 }
 
 GetData(){
+  debugger;
   this.signalRService.connection
   .invoke('GetStocksList',this.Favoriteselected,this.upperckt,this.lowerckt,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,this.targetPrice,this.bullish,this.bearish, this.IsOrderbyVolumne,this.IsOrderbyaward,this.selectedCKTName,this.selectedorder,this.statepg.skip,this.statepg.take,this.IncludeDeleted,this.selectedExchange,
-  this.selectedStatsColumn,this.selectedStatsColumnCondition,this.selectedpastChange)
+  this.selectedStatsColumn,this.selectedStatsColumnCondition,this.selectedpastChange,this.IsVolumeBRK,this.Is52weeks,this.IsorderByChg)
   .catch((error: any) => {
     console.log(`SGetAllStocks error: ${error}`);
     alert('GetAllStocks error!, see console for details.');
@@ -378,7 +385,15 @@ selectedExchangeChange(event: any) {
     this.IsOrderbyVolumne = !this.IsOrderbyVolumne;
     this.GetData();
   }
+  Get52weeks(){
+    this.Is52weeks=!this.Is52weeks;
+    this.GetData();
+  }
 
+  GetVolumeBrekaouts(){
+    this.IsVolumeBRK=!this.IsVolumeBRK;
+    this.GetData();
+  }
 
 
   SortOrderbyOrder() {
@@ -386,6 +401,10 @@ selectedExchangeChange(event: any) {
     this.GetData();
   }
 
+  GetOrderbyChange(){
+    this.IsorderByChg = !this.IsorderByChg;
+    this.GetData();
+  }
 
   getbullish(){
 
@@ -780,6 +799,7 @@ this.gridloading=false;
           buyatChange:val.buyatChange,
           tdays :val.tdays,
           wacthList:val.wacthList,
+          pr_adx:val.pr_adx,
 
 pr_change :val.pr_change,
 pr_close:val.pr_close,

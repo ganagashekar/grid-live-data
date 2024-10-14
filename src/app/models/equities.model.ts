@@ -76,6 +76,7 @@ pr_date:string;
 pr_Match:string,
 pr_Macresult:string,
 pr_RSI:string,
+pr_adx:string,
 
 bullishCount:number;
 bearishCount:number;

@@ -19,6 +19,7 @@ export class MinmaxToggleComponent implements OnInit {
   @Input() pr_open  :string;
   @Input() pr_volume  :string;
   @Input() pr_date :string;
+  @Input() pr_adx :string;
 
   @Input() pr_Macresult :string;
   @Input() pr_RSI :string;

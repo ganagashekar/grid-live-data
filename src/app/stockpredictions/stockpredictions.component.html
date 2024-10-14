@@ -1,6 +1,45 @@
 
 
 
+  <div style="display: flex;">
+    <app-dashboard-stats 
+    [current_Change]="maain_Dahsbaord_Stats.nifty_Current_AvgChange"
+    [current_advance]="maain_Dahsbaord_Stats.nifty_Current_Advance" 
+    [current_decline]="maain_Dahsbaord_Stats.nifty_Current_Decline"
+    [pre_advance]="maain_Dahsbaord_Stats.nifty_Previous_Advance" 
+    [pre_decline]="maain_Dahsbaord_Stats.nifty_Previous_Decline" 
+    [pre_Change]="maain_Dahsbaord_Stats.nifty_Previous_AvgChange" 
+    [Type]="'NIFTY'"></app-dashboard-stats>
+
+    <app-dashboard-stats 
+    [current_Change]="maain_Dahsbaord_Stats.bankNifty_Current_AvgChange"
+    [current_advance]="maain_Dahsbaord_Stats.bankNifty_Current_Advance" 
+    [current_decline]="maain_Dahsbaord_Stats.bankNifty_Current_Decline"
+    [pre_advance]="maain_Dahsbaord_Stats.bankNifty_Previous_Advance" 
+    [pre_decline]="maain_Dahsbaord_Stats.bankNifty_Previous_Decline" 
+    [pre_Change]="maain_Dahsbaord_Stats.bankNifty_Previous_AvgChange" 
+    [Type]="'BANKNIFTY'"></app-dashboard-stats>
+
+    <app-dashboard-stats 
+    [current_Change]="maain_Dahsbaord_Stats.psU_Current_AvgChange"
+    [current_advance]="maain_Dahsbaord_Stats.psU_Current_Advance" 
+    [current_decline]="maain_Dahsbaord_Stats.psU_Current_Decline"
+    [pre_advance]="maain_Dahsbaord_Stats.psU_Previous_Advance" 
+    [pre_decline]="maain_Dahsbaord_Stats.psU_Previous_Decline" 
+    [pre_Change]="maain_Dahsbaord_Stats.psU_Previous_AvgChange" 
+    [Type]="'PSU'"></app-dashboard-stats>
+
+    <app-dashboard-stats 
+    [current_Change]="maain_Dahsbaord_Stats.option_Current_AvgChange"
+    [current_advance]="maain_Dahsbaord_Stats.option_Current_Advance" 
+    [current_decline]="maain_Dahsbaord_Stats.option_Current_Decline"
+    [pre_advance]="maain_Dahsbaord_Stats.option_Previous_Advance" 
+    [pre_decline]="maain_Dahsbaord_Stats.option_Previous_Decline" 
+    [pre_Change]="maain_Dahsbaord_Stats.option_Previous_AvgChange" 
+    [Type]="'OPTIONS'"></app-dashboard-stats>
+    
+</div>
+
 <table>
   <td>
     <button (click)="getorderbySize()"  mat-stroked-button color="accent">
@@ -27,7 +66,7 @@
   </table>
 <table>
 <kendo-grid  [sortable]="true" [kendoGridBinding]="(gridData )!">
-  <kendo-grid-column [width]="100" title="Stock">
+  <kendo-grid-column [width]="250" title="Stock">
       <ng-template kendoGridCellTemplate let-dataItem>
           {{ dataItem.stock_Name  }}
       </ng-template>

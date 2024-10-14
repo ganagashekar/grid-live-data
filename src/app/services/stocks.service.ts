@@ -284,3 +284,5 @@ export interface Stock {
     change_pct:number;
 
 }
+
+

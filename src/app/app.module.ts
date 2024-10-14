@@ -77,6 +77,11 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import { InputsModule } from '@progress/kendo-angular-inputs';
 import { PopupModule } from '@progress/kendo-angular-popup';
 import { StockpredictionsComponent } from './stockpredictions/stockpredictions.component';
+import { TalibstatsComponent } from './talibstats/talibstats.component';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
+import { DealcomponentComponent } from './dealcomponent/dealcomponent.component';
+import { DashboardStatsComponent } from './dashboard-stats/dashboard-stats.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -87,6 +92,8 @@ const routes: Routes = [
   { path: 'StockDetails', component: StockdetailsComponent },
   { path: 'Stocks', component: StocklistComponent },
   { path: 'pred', component: StockpredictionsComponent },
+  { path: 'bench', component: TalibstatsComponent },
+  { path: 'dstats', component: DashboardStatsComponent },
   // { path: 'about', component: AboutComponent },
   // { path: 'products', component: ProductsComponent },
   // { path: '**', component: HomeComponent }, // If no matching route found, go back to home route
@@ -119,7 +126,10 @@ const routes: Routes = [
       CustometoggleComponent,
       NotificationToggleComponent,
       MinmaxToggleComponent,
-      StockpredictionsComponent
+      StockpredictionsComponent,
+      TalibstatsComponent,
+      DealcomponentComponent,
+      DashboardStatsComponent
    ],
     imports: [
       ToastrModule.forRoot({
@@ -155,7 +165,9 @@ const routes: Routes = [
         NgxSliderModule,
         MatButtonModule,
          MatMenuModule,MatAutocompleteModule,ReactiveFormsModule,FormsModule,MatCheckboxModule,MatSidenavModule,MatToolbarModule,MatIconModule,MatChipsModule,MatBadgeModule, MatExpansionModule,
-         InputsModule,PopupModule,MatTableModule
+         InputsModule,PopupModule,MatTableModule,MatPaginatorModule,
+         MatSortModule,
+        
 
 
     ],

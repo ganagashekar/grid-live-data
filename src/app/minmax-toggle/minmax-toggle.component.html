@@ -55,7 +55,12 @@
               </td>
 
           </tr>
-
+          <tr>
+            <td>ADX</td>
+            <td  *ngFor="let subCategory of pr_adx.split(',')">
+              {{ subCategory }}
+              </td>
+          </tr>
           <tr>
             <td>RSI</td>
             <td  *ngFor="let subCategory of pr_RSI.split(',')">
@@ -68,8 +73,9 @@
             <td  *ngFor="let subCategory of pr_Match.split(',')">
               {{ subCategory }}
               </td>
-
           </tr>
+
+         
 
         </table>
 

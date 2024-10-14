@@ -1,0 +1,247 @@
+
+
+<div>
+    <table>
+        <td>
+          <button (click)="getorderbySize()"  mat-stroked-button color="accent">
+      
+      
+      
+            <mat-icon
+            *ngIf="orderbySize">
+            favorite
+            </mat-icon>
+            <mat-icon
+            *ngIf="!orderbySize">
+            favorite_border
+            </mat-icon>
+            </button>
+        </td>
+        <td>
+          <mat-form-field>
+            <input  (dateChange)="onDateChange($event)" matInput [matDatepicker]="picker" placeholder="Choose a date">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+        </td>
+        
+        <td>
+            <app-notification-toggle [bgcolor]="'#1B4242'" 
+            (selectedChange)="Fetchdata(2)" 
+            [displaytext]="'2Day'" 
+            [valuetext]="'2Day'" 
+            [savedtext]="'2Day'" 
+            [symbol]="'test'" ></app-notification-toggle>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+
+            <app-notification-toggle [bgcolor]="'#1B4242'" 
+            (selectedChange)="Fetchdata(3)" 
+            [displaytext]="'3Day'" 
+            [valuetext]="'3Day'" 
+            [savedtext]="'3Day'" 
+            [symbol]="'test'" ></app-notification-toggle>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <app-notification-toggle [bgcolor]="'#1B4242'" 
+            (selectedChange)="Fetchdata(5)" 
+            [displaytext]="'5Day'" 
+            [valuetext]="'5Day'" 
+            [savedtext]="'5Day'" 
+            [symbol]="'test'" ></app-notification-toggle>
+
+       
+
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <app-notification-toggle [bgcolor]="'#1B4242'" 
+            (selectedChange)="Fetchdata(10)" 
+            [displaytext]="'10Day'" 
+            [valuetext]="'10Day'" 
+            [savedtext]="'10Day'" 
+            [symbol]="'test'" ></app-notification-toggle>
+
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <app-notification-toggle [bgcolor]="'#1B4242'" 
+            (selectedChange)="Fetchdata(15)" 
+            [displaytext]="'15Day'" 
+            [valuetext]="'15Day'" 
+            [savedtext]="'15Day'" 
+            [symbol]="'test'" ></app-notification-toggle>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+
+            <app-notification-toggle [bgcolor]="'#1B4242'" 
+            (selectedChange)="Fetchdata(20)" 
+            [displaytext]="'20Day'" 
+            [valuetext]="'20Day'" 
+            [savedtext]="'20Day'" 
+            [symbol]="'test'" ></app-notification-toggle>
+
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <app-notification-toggle [bgcolor]="'#1B4242'" 
+            (selectedChange)="Fetchdata(25)" 
+            [displaytext]="'25Day'" 
+            [valuetext]="'25Day'" 
+            [savedtext]="'25Day'" 
+            [symbol]="'test'" ></app-notification-toggle>
+
+
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <app-notification-toggle [bgcolor]="'#1B4242'" 
+            (selectedChange)="Fetchdata(30)" 
+            [displaytext]="'30Day'" 
+            [valuetext]="'30Day'" 
+            [savedtext]="'30Day'" 
+            [symbol]="'test'" ></app-notification-toggle>
+
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <app-notification-toggle [bgcolor]="'#1B4242'" 
+            (selectedChange)="Fetchdata(45)" 
+            [displaytext]="'45Day'" 
+            [valuetext]="'45Day'" 
+            [savedtext]="'45Day'" 
+            [symbol]="'test'" ></app-notification-toggle>
+
+           
+
+        </table>
+</div>
+
+    <div class="example-header">
+        <mat-form-field>
+          <input matInput (keyup)="applyFilter($event)" placeholder="Filter">
+        </mat-form-field>
+      </div>
+
+<div>
+    <mat-table [dataSource]="gridData" matSort>
+        <ng-container  matColumnDef="id">
+          <mat-header-cell [style.display]="'none'" fxFlex="10px" *matHeaderCellDef mat-sort-header> ID </mat-header-cell>
+          <mat-cell [style.display]="'none'" *matCellDef="let dataItem"> {{dataItem.id}} </mat-cell>
+         <mat-footer-cell *matFooterCellDef>
+            <!-- <div>
+              <table width="100%">
+              <thead>
+                <tr>
+                  <td>
+                    <mat-checkbox>Price Include VAT</mat-checkbox>
+                  </td>
+                  <td class="text-right">
+                    <b>Total Amount</b>
+                  </td>
+                  <td class="text-right; width=200px">
+                    <b>{{10 | number:'1.2-2'}}</b>
+                  </td>
+                </tr>
+              </thead>
+              </table>
+          </div> -->
+          </mat-footer-cell> 
+        </ng-container>
+        <ng-container matColumnDef="stockcode">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Stockcode </mat-header-cell>
+          <mat-cell *matCellDef="let dataItem"> {{dataItem.stockcode}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="last">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> last </mat-header-cell>
+          <mat-cell *matCellDef="let dataItem"> {{dataItem.last}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="benchmarkReturn">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Benchmarks </mat-header-cell>
+          <mat-cell *matCellDef="let row"> {{row.benchmarkReturn}} </mat-cell>
+          <td mat-footer-cell *matFooterCellDef></td>
+        </ng-container>
+
+        <ng-container matColumnDef="totalReturn">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Total Return </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.totalReturn}} </mat-cell>
+            <td mat-footer-cell *matFooterCellDef></td>
+          </ng-container>
+
+          <ng-container matColumnDef="winRate">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> WinRate </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.winRate}} </mat-cell>
+            <td mat-footer-cell *matFooterCellDef></td>
+          </ng-container>
+    
+          <ng-container matColumnDef="bestTrade">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> BestTrade </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.bestTrade}} </mat-cell>
+            <td mat-footer-cell *matFooterCellDef></td>
+          </ng-container>
+          <ng-container matColumnDef="worstTrade">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Worst Trade </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.worstTrade}} </mat-cell>
+            <td mat-footer-cell *matFooterCellDef></td>
+          </ng-container>
+
+          <ng-container matColumnDef="avgWinningTrade">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Avg WiningTrade </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.avgWinningTrade}} </mat-cell>
+            <td mat-footer-cell *matFooterCellDef></td>
+          </ng-container>
+          <ng-container matColumnDef="avgLosingTrade">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Avg Losing Trade </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.avgLosingTrade}} </mat-cell>
+            <td mat-footer-cell *matFooterCellDef></td>
+          </ng-container>
+
+          <ng-container matColumnDef="avgWinningTradeDuration">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Avg Wining Trade Duration </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.avgWinningTradeDuration}} </mat-cell>
+            <td mat-footer-cell *matFooterCellDef></td>
+          </ng-container>
+          <ng-container matColumnDef="avgLosingTradeDuration">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Avg Losing Trade Duration </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.avgLosingTradeDuration}} </mat-cell>
+            <td mat-footer-cell *matFooterCellDef></td>
+          </ng-container>
+          
+
+          <ng-container matColumnDef="profitFactor">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Profit Factor </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.profitFactor}} </mat-cell>
+            <td mat-footer-cell *matFooterCellDef></td>
+          </ng-container>
+
+          <ng-container matColumnDef="totalTrades">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Total Trades </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.totalTrades}} </mat-cell>
+            <td mat-footer-cell *matFooterCellDef></td>
+          </ng-container>
+          <ng-container matColumnDef="totalClosedTrades">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Total Closed Trades </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.totalClosedTrades}} </mat-cell>
+            <td mat-footer-cell *matFooterCellDef></td>
+          </ng-container>
+          <ng-container matColumnDef="totalOpenTrades">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Total Open Trades </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.totalOpenTrades}} </mat-cell>
+            <td mat-footer-cell *matFooterCellDef></td>
+          </ng-container>
+          <ng-container matColumnDef="expectancy">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Expectancy </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.expectancy}} </mat-cell>
+            <td mat-footer-cell *matFooterCellDef></td>
+          </ng-container>
+
+          <ng-container matColumnDef="bulishCount">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Bulish Count </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.bulishCount}} </mat-cell>
+            <td mat-footer-cell *matFooterCellDef></td>
+          </ng-container>
+          <ng-container matColumnDef="bearishCount">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Bearish Count </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.bearishCount}} </mat-cell>
+            <td mat-footer-cell *matFooterCellDef></td>
+          </ng-container>
+          <ng-container matColumnDef="buyDate">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Buy Date </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.buyDate}} </mat-cell>
+            <td mat-footer-cell *matFooterCellDef></td>
+          </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+         <mat-footer-row *matFooterRowDef="['id']"></mat-footer-row>   
+      </mat-table>
+      <mat-paginator [pageSizeOptions]="[50, 100]"></mat-paginator>
+</div>
+

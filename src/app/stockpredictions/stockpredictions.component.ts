@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { accountTransactions } from '../main-panel/transaction-data/transactions';
 import { Stock, StocksService } from '../services/stocks.service';
 import { ProgressBarMode } from '@angular/material/progress-bar';
@@ -11,6 +11,7 @@ import { SortDescriptor } from '@progress/kendo-data-query';
 import { HttpClient } from '@angular/common/http';
 import { StockPredicitonModel } from '../models/stockPredictionModel';
 import { SignalrBreezeService } from '../services/signalr.serviceBreeze';
+import { DashboardStats, Maain_Dahsbaord_Stats } from '../models/news.model';
 
 @Component({
   selector: 'app-stockpredictions',
@@ -26,9 +27,10 @@ export class StockpredictionsComponent implements OnInit {
     mode: ProgressBarMode = 'determinate';
     value = 0;
     bufferValue = 0;
+    counter=10;
 
-
-    public prevDataItem!: Stock;
+    public dashboardStats: DashboardStats;
+    public maain_Dahsbaord_Stats: Maain_Dahsbaord_Stats
     private stocksUrl: string = 'assets/data.json';
     private immutableData!: any[];
 
@@ -40,6 +42,40 @@ export class StockpredictionsComponent implements OnInit {
     orderbySize : boolean;
     SelectedDate : string | any ;
     constructor(public signalRService: SignalrService, public signalRBreezeService: SignalrBreezeService,public stocksService: StocksService, private http: HttpClient) {
+      debugger;
+      this.maain_Dahsbaord_Stats ={
+        psU_Current_AvgChange:0,
+        psU_Current_Decline:0,
+        option_Current_Advance: 0,
+        bankNifty_Current_Advance :0,
+        bankNifty_Current_AvgChange : 0,
+        bankNifty_Current_Decline:0,
+        bankNifty_Previous_Advance:0,
+        bankNifty_Previous_AvgChange:0,
+        bankNifty_Previous_Decline:0,
+        bankNiftyName:'BANKNIFTY',
+        nifty_Current_Advance:0,
+        nifty_Current_AvgChange:0,
+        nifty_Current_Decline:0,
+        nifty_Previous_Advance:0,
+        nifty_Previous_AvgChange:0,
+        nifty_Previous_Decline:0,
+        niftyName:"NIFTY",
+        option_Current_AvgChange:0,
+        option_Current_Decline:0,
+        option_Previous_Advance:0,
+        option_Previous_AvgChange:0,
+        option_Previous_Decline:0,
+        optionName:'Option',
+        psU_Current_Advance:0,
+        psU_Previous_Advance:0,
+        psU_Previous_AvgChange:0,
+        psU_Previous_Decline:0,
+        psUName :"PSU"
+
+
+
+      }
     }
 
 
@@ -62,16 +98,73 @@ export class StockpredictionsComponent implements OnInit {
       });
  }
 
+ getstats(){
+  this.signalRBreezeService.connection.invoke('GetDashboard_option_data')
+      .catch((error: any) => {
+        console.log(`GetDashboard_option_data error: ${error}`);
+
+      });
+ }
 
     ngOnInit() {
+     
      this. orderbySize=true;
      this.getdata()
+     this.getstats()
 
       setInterval(()=> {
+       
        this.getdata()
       }, 2 * 1000);
-       this.signalRBreezeService.connection.on("SendExportBuyStockAlterFromAPP_IND",(data :any) => {
+
+      this.signalRBreezeService.connection.on("SendGetDashboard_option_data",(data :Maain_Dahsbaord_Stats) => {
         debugger;
+
+        this.maain_Dahsbaord_Stats ={
+          psU_Current_AvgChange:data.psU_Current_AvgChange,
+          psU_Current_Decline:data.psU_Current_Decline,
+          option_Current_Advance: data.option_Current_Advance,
+          bankNifty_Current_Advance :data.bankNifty_Current_Advance,
+          bankNifty_Current_AvgChange : data.bankNifty_Current_AvgChange,
+          bankNifty_Current_Decline:data.bankNifty_Current_Decline,
+          bankNifty_Previous_Advance:data.bankNifty_Previous_Advance,
+          bankNifty_Previous_AvgChange:data.bankNifty_Previous_AvgChange,
+          bankNifty_Previous_Decline:data.bankNifty_Previous_Decline,
+          bankNiftyName:'BANKNIFTY',
+          nifty_Current_Advance:data.nifty_Current_Advance,
+          nifty_Current_AvgChange:data.nifty_Current_AvgChange,
+          nifty_Current_Decline:data.nifty_Current_Decline,
+          nifty_Previous_Advance:data.nifty_Previous_Advance,
+          nifty_Previous_AvgChange:data.nifty_Previous_AvgChange,
+          nifty_Previous_Decline:data.nifty_Previous_Decline,
+          niftyName:"NIFTY",
+          option_Current_AvgChange:data.option_Current_AvgChange,
+          option_Current_Decline:data.option_Current_Decline,
+          option_Previous_Advance:data.option_Previous_Advance,
+          option_Previous_AvgChange:data.option_Previous_AvgChange,
+          option_Previous_Decline:data.option_Previous_Decline,
+          optionName:'Option',
+          psU_Current_Advance:data.psU_Current_Advance,
+          psU_Previous_Advance:data.psU_Previous_Advance,
+          psU_Previous_AvgChange:data.psU_Previous_AvgChange,
+          psU_Previous_Decline:data.psU_Previous_Decline,
+          psUName :"PSU"
+  
+  
+  
+        }
+
+      })
+       this.signalRBreezeService.connection.on("SendExportBuyStockAlterFromAPP_IND",(data :any) => {
+        // debugger;
+        // this.counter=this.counter+5;
+        // this.dashboardStats ={
+        //   current_Change:this.counter+1,
+        //   current_decline:this.counter+2,
+        //   current_advance: this.counter+3,
+        // }
+       // this.updateFreq=667
+       //this.dashboardStats.current_Change= 132;
         var  i=0;
         let res = data.map((val: StockPredicitonModel) => {
 

@@ -1,0 +1,44 @@
+<div>
+<mat-card class="example-card">
+	<mat-card-content>
+        <div style="float: left;" >
+			<p [ngStyle]="{'color': current_Change > 0 ? 'green' : 'red'}" style="color: rgb(231, 133, 53); font-size: 18px;"> {{Type}}</p>
+		</div>
+	
+	<div>
+		<mat-icon [ngStyle]="{'color': current_Change > 0 ? 'green' : 'red'}"
+			*ngIf="current_Change > 0"
+			>arrow_upwards
+	
+			</mat-icon>
+	
+			<mat-icon [ngStyle]="{'color': current_Change > 0 ? 'green' : 'red'}"
+			*ngIf="current_Change < 0">
+			arrow_downward
+			</mat-icon>
+	</div>
+	   <div>
+		
+		   <div  style="float: right;">
+			CHG : <b [ngStyle]="{'color': current_Change > 0 ? 'green' : 'red'}" style="font-size: 20px;">  {{current_Change | number : '1.2-2'}} %</b>
+			 <p> <b style="color: green;">  Advance :  {{current_advance}} </b> &nbsp;&nbsp;  <b style="color: red;">Decline : {{current_decline}}</b></p>
+		   </div>
+
+		   
+        
+
+	   </div>
+
+	   <div>
+		
+		 <div  style="float: left;">
+			PRE-CHG :<b [ngStyle]="{'color': pre_Change > 0 ? 'green' : 'red'}" style="font-size: 13px;">   {{pre_Change | number : '1.2-2'}}</b>
+			  <p> <b style="color: green; font-size: 12px;">  Advance :  {{pre_advance}}</b>  &nbsp;&nbsp; <b style="color: red;font-size: 12px;">Decline : {{pre_decline}}</b></p>
+		 </div>
+	 </div>
+
+	  <br>
+	  <br>
+	</mat-card-content>
+   </mat-card>
+</div>

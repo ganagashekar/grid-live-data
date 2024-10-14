@@ -110,7 +110,30 @@
         </button>
 
 
+        
 
+
+
+
+    </td>
+    <td>
+      <button (click)="GetVolumeBrekaouts()" mat-stroked-button color="accent">
+
+          
+        Vol BRK
+        <mat-icon
+        *ngIf="IsVolumeBRK"
+        >arrow_downward
+
+        </mat-icon>
+
+        <mat-icon
+        *ngIf="!IsVolumeBRK">
+        arrow_upward
+        </mat-icon>
+        </button>
+
+        
 
     </td>
     <td>
@@ -133,7 +156,43 @@
 
 
     </td>
+    <td>
+      <button (click)="Get52weeks()" mat-stroked-button color="accent">
+
+         
+        52 WK
+        <mat-icon
+        *ngIf="Is52weeks"
+        >arrow_downward
+
+        </mat-icon>
+
+        <mat-icon
+        *ngIf="!Is52weeks">
+        arrow_upward
+        </mat-icon>
+         </button>
+
+         
+    </td>
     
+    <td>
+      <button (click)="GetOrderbyChange()" mat-stroked-button color="accent">
+
+        
+        CHG
+        <mat-icon
+        *ngIf="IsorderByChg"
+        >arrow_downward
+
+        </mat-icon>
+
+        <mat-icon
+        *ngIf="!IsorderByChg">
+        arrow_upward
+        </mat-icon>
+         </button>
+    </td>
       <td>
         <mat-form-field>
           <mat-select  placeholder="CKT" (selectionChange)="selectedCKTChange($event.value)"[formControl]="CKTName"  [(value)]="selectedCKTName">
@@ -309,6 +368,10 @@
               &nbsp;
               <span style="background-color: '#7a06c2'; border-radius: 3px; color: #ffffff; font-size: 10px;"  [ngStyle]="{'display': dataItem.awardCount > 5 ? '' : 'none'}"  > &nbsp; {{dataItem.awardCount}} &nbsp;
               </span>
+
+              <!-- <span style="border-radius: 4px; font-size: 10px;display: inline-block;">
+                <app-custometoggle [iconNamedisSelected]="'outlined_flag'" [iconNameSelected]="'flag'" (selectedChange)="addormidifyIsAutoBuy($event)" [msnid]="dataItem.secId" [selected]="dataItem.isenabledforautoTrade"></app-custometoggle>
+                </span> -->
 
 
 
@@ -501,7 +564,13 @@
 
                     [pr_Match]="dataItem.pr_Match"
                     [pr_RSI]="dataItem.pr_RSI"
-                    [pr_date]="dataItem.pr_date" [pr_open]="dataItem.pr_open" [pr_close]="dataItem.pr_close" [pr_volume]="dataItem.pr_volume"   [anchor]="anchor"></app-minmax-toggle>
+                    [pr_date]="dataItem.pr_date" 
+                    [pr_open]="dataItem.pr_open"
+                     [pr_close]="dataItem.pr_close" 
+                     [pr_volume]="dataItem.pr_volume"   
+                     [pr_adx]="dataItem.pr_adx"
+                     [anchor]="anchor"
+                     ></app-minmax-toggle>
 
                                   </span>
                     </span>
