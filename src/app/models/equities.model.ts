@@ -99,4 +99,5 @@ quaterlyResults :string
 isIncludeDeleted : number,
 past_PriceChange : number,
 past_PercentageChange : number,
+dealCount:number
 }

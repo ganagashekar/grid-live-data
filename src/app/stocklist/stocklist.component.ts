@@ -183,6 +183,7 @@ export class StocklistComponent implements OnInit {
 
   IsVolumeBRK:boolean=false;
   Is52weeks:boolean=false;
+  IsDeal:boolean=false;
 
   IsOrderbyaward:boolean=false;
 
@@ -199,7 +200,7 @@ export class StocklistComponent implements OnInit {
   constructor(private toastrService: ToastrService,public signalRService: SignalrService, public signalRBreezeService: SignalrBreezeService,public stocksService: StocksService, private http: HttpClient) {
  this.gridloading=true;
     this.signalRService.connection
-    .invoke('GetStocksList',false,false,false,false,false,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,false,false,false,false,false,"","",0,200,false,'All','','','',false,false,true)
+    .invoke('GetStocksList',false,false,false,false,false,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,false,false,false,false,false,"","",0,200,false,'All','','','',false,false,true,false)
     .catch((error: any) => {
       console.log(`SGetAllStocks error: ${error}`);
       this.showError(`SGetAllStocks error: ${error}`, "StockList")
@@ -279,7 +280,7 @@ GetData(){
   debugger;
   this.signalRService.connection
   .invoke('GetStocksList',this.Favoriteselected,this.upperckt,this.lowerckt,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,this.targetPrice,this.bullish,this.bearish, this.IsOrderbyVolumne,this.IsOrderbyaward,this.selectedCKTName,this.selectedorder,this.statepg.skip,this.statepg.take,this.IncludeDeleted,this.selectedExchange,
-  this.selectedStatsColumn,this.selectedStatsColumnCondition,this.selectedpastChange,this.IsVolumeBRK,this.Is52weeks,this.IsorderByChg)
+  this.selectedStatsColumn,this.selectedStatsColumnCondition,this.selectedpastChange,this.IsVolumeBRK,this.Is52weeks,this.IsorderByChg,this.IsDeal)
   .catch((error: any) => {
     console.log(`SGetAllStocks error: ${error}`);
     alert('GetAllStocks error!, see console for details.');
@@ -387,6 +388,11 @@ selectedExchangeChange(event: any) {
   }
   Get52weeks(){
     this.Is52weeks=!this.Is52weeks;
+    this.GetData();
+  }
+
+  GetDeals(){
+    this.IsDeal=!this.IsDeal;
     this.GetData();
   }
 
@@ -832,7 +838,8 @@ futurePercentagetext: val.futurePercentage > 0 ? 'Up' : 'Down',
 
 quaterlyResults:val.quaterlyResults,
 past_PriceChange:val.past_PriceChange,
-past_PercentageChange:val.past_PercentageChange
+past_PercentageChange:val.past_PercentageChange,
+dealCount:val.dealCount,
 
           // calc_ma:this.getma(+[val.last],null),
           // calc_wma:this.getwma([val.last],null)

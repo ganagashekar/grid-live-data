@@ -99,6 +99,7 @@ export class StockpredictionsComponent implements OnInit {
  }
 
  getstats(){
+  debugger;
   this.signalRBreezeService.connection.invoke('GetDashboard_option_data')
       .catch((error: any) => {
         console.log(`GetDashboard_option_data error: ${error}`);
@@ -109,13 +110,17 @@ export class StockpredictionsComponent implements OnInit {
     ngOnInit() {
      
      this. orderbySize=true;
-     this.getdata()
-     this.getstats()
+     
+     
+     setInterval(()=> {
+      this.getstats()
+     
+    }, 5 * 1000);
 
       setInterval(()=> {
        
        this.getdata()
-      }, 2 * 1000);
+      }, 15 * 1000);
 
       this.signalRBreezeService.connection.on("SendGetDashboard_option_data",(data :Maain_Dahsbaord_Stats) => {
         debugger;
@@ -193,7 +198,9 @@ export class StockpredictionsComponent implements OnInit {
 
             volatilityresults_UpperBand:val.volatilityresults_UpperBand,
             volatilityresults_LowerBand:val.volatilityresults_LowerBand,
-            stock_Name :val.stock_Name
+            stock_Name :val.stock_Name,
+            bullishCount_95:val.bullishCount_95,
+            bullishCount_100:val.bullishCount_100
 
 
 

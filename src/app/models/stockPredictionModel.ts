@@ -1,6 +1,8 @@
 export interface StockPredicitonModel {
           symbol : string;
           bulishCount :number;
+          bullishCount_100:number;
+          bullishCount_95:number;
           bearishCount :number;
           ltt :Date
           candleResult_Price :number;

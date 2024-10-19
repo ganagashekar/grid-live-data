@@ -175,6 +175,26 @@
 
          
     </td>
+
+    <td>
+      <button (click)="GetDeals()" mat-stroked-button color="accent">
+
+         
+        Bulk
+        <mat-icon
+        *ngIf="IsDeal"
+        >arrow_downward
+
+        </mat-icon>
+
+        <mat-icon
+        *ngIf="!IsDeal">
+        arrow_upward
+        </mat-icon>
+         </button>
+
+         
+    </td>
     
     <td>
       <button (click)="GetOrderbyChange()" mat-stroked-button color="accent">
@@ -366,6 +386,11 @@
 
                </span>
               &nbsp;
+             
+                <span [ngStyle]="{'display': IsDeal ? '' : 'none'}" style="background-color: 'Green'; border-radius: 3px; color: #ffffff; font-size: 10px;" > &nbsp; {{dataItem.dealCount}} &nbsp;
+
+
+              </span>
               <span style="background-color: '#7a06c2'; border-radius: 3px; color: #ffffff; font-size: 10px;"  [ngStyle]="{'display': dataItem.awardCount > 5 ? '' : 'none'}"  > &nbsp; {{dataItem.awardCount}} &nbsp;
               </span>
 
