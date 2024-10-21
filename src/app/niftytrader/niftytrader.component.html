@@ -1,0 +1,40 @@
+<div>
+    <mat-card class="example-card">
+        <mat-card-content>
+            <table>
+                <tr>
+                    <td>CALL Buying</td>
+                    <td [ngStyle]="{'color': Nifty_Call_Buying > Nifty_Put_Buying ? 'green' : 'red'}"><b>&nbsp;:&nbsp;{{Nifty_Call_Buying}}</b></td>
+                    <td>&nbsp;</td>
+                    
+                    <td>PUT Buying</td>
+                    <td [ngStyle]="{'color': Nifty_Call_Buying < Nifty_Put_Buying ? 'green' : 'red'}"><b>&nbsp;:&nbsp;{{Nifty_Put_Buying}}</b></td>
+                </tr>
+                <tr>
+                    <td>CALL WRT</td>
+                    <td [ngStyle]="{'color': Nifty_Call_Writing > Nifty_Put_Writing ? 'green' : 'red'}"><b>&nbsp;:&nbsp;{{Nifty_Call_Writing}}</b></td>
+                    <td>&nbsp;</td>
+                   
+                    <td>PUT WRT</td>
+                    <td [ngStyle]="{'color': Nifty_Call_Writing < Nifty_Put_Writing ? 'green' : 'red'}" > <b>&nbsp;:&nbsp;{{Nifty_Put_Writing}}</b></td>
+                </tr>
+                <tr>
+                    <td>CALL LNG</td>
+                    <td [ngStyle]="{'color': Nifty_Call_Long_Covering > Nifty_Put_Long_Covering ? 'green' : 'red'}" ><b>&nbsp;:&nbsp;{{Nifty_Call_Long_Covering}}</b></td>
+                    <td>&nbsp;</td>
+                  
+                    <td>PUT Long</td>
+                    <td [ngStyle]="{'color': Nifty_Call_Long_Covering < Nifty_Put_Long_Covering ? 'green' : 'red'}" ><b>&nbsp;:&nbsp;{{Nifty_Put_Long_Covering}}</b></td>
+                </tr>
+                <tr>
+                    <td>CALL Short</td>
+                    <td [ngStyle]="{'color': Nifty_Call_Short_Covering > Nifty_Put_Short_Covering ? 'green' : 'red'}" ><b>&nbsp;:&nbsp;{{Nifty_Call_Short_Covering}}</b></td>
+                    <td>&nbsp;</td>
+                    <td>PUT Short</td>
+                    <td [ngStyle]="{'color': Nifty_Call_Short_Covering < Nifty_Put_Short_Covering ? 'green' : 'red'}" ><b>&nbsp;:&nbsp;{{Nifty_Put_Short_Covering}}</b></td>
+                </tr>
+               
+            </table>
+        </mat-card-content>
+       </mat-card>
+    </div>

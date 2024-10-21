@@ -82,6 +82,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { DealcomponentComponent } from './dealcomponent/dealcomponent.component';
 import { DashboardStatsComponent } from './dashboard-stats/dashboard-stats.component';
+import { NiftytraderComponent } from './niftytrader/niftytrader.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -129,7 +130,8 @@ const routes: Routes = [
       StockpredictionsComponent,
       TalibstatsComponent,
       DealcomponentComponent,
-      DashboardStatsComponent
+      DashboardStatsComponent,
+      NiftytraderComponent
    ],
     imports: [
       ToastrModule.forRoot({

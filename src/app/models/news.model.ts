@@ -9,6 +9,17 @@ export interface DashboardStats{
     current_advance :number|any;
     current_decline:number|any;
 }
+
+export interface main_Dashboard_Stats_Nifty{
+    nifty_Put_Buying :number;
+    nifty_Put_Long_Covering:number;
+    nifty_Put_Short_Covering:Number;
+    nifty_Put_Writing:Number;
+    nifty_Call_Buying:number;
+    nifty_Call_Long_Covering:number;
+    nifty_Call_Short_Covering:number;
+    nifty_Call_Writing:number;
+}
 export interface Maain_Dahsbaord_Stats {
     nifty_Current_AvgChange : number|any;
     nifty_Current_Advance:number|any;

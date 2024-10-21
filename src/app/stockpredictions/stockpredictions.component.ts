@@ -11,7 +11,7 @@ import { SortDescriptor } from '@progress/kendo-data-query';
 import { HttpClient } from '@angular/common/http';
 import { StockPredicitonModel } from '../models/stockPredictionModel';
 import { SignalrBreezeService } from '../services/signalr.serviceBreeze';
-import { DashboardStats, Maain_Dahsbaord_Stats } from '../models/news.model';
+import { DashboardStats, Maain_Dahsbaord_Stats, main_Dashboard_Stats_Nifty } from '../models/news.model';
 
 @Component({
   selector: 'app-stockpredictions',
@@ -31,6 +31,7 @@ export class StockpredictionsComponent implements OnInit {
 
     public dashboardStats: DashboardStats;
     public maain_Dahsbaord_Stats: Maain_Dahsbaord_Stats
+    public main_Dashboard_Stats_Niftys: main_Dashboard_Stats_Nifty
     private stocksUrl: string = 'assets/data.json';
     private immutableData!: any[];
 
@@ -43,6 +44,20 @@ export class StockpredictionsComponent implements OnInit {
     SelectedDate : string | any ;
     constructor(public signalRService: SignalrService, public signalRBreezeService: SignalrBreezeService,public stocksService: StocksService, private http: HttpClient) {
       debugger;
+
+      this.main_Dashboard_Stats_Niftys= {
+      nifty_Call_Buying : 0,
+      nifty_Put_Buying:0,
+      nifty_Put_Long_Covering:0,
+      nifty_Put_Short_Covering:0,
+      nifty_Put_Writing:0,
+      nifty_Call_Long_Covering:0,
+      nifty_Call_Short_Covering:0,
+      nifty_Call_Writing:0,
+
+
+  
+      },
       this.maain_Dahsbaord_Stats ={
         psU_Current_AvgChange:0,
         psU_Current_Decline:0,
@@ -98,6 +113,16 @@ export class StockpredictionsComponent implements OnInit {
       });
  }
 
+ getstatsNiftyTrder(){
+  debugger;
+  this.signalRBreezeService.connection.invoke('GetDashboard_option_data_NiftyTrader')
+      .catch((error: any) => {
+        console.log(`GetDashboard_option_data_NiftyTrader error: ${error}`);
+
+      });
+ }
+
+
  getstats(){
   debugger;
   this.signalRBreezeService.connection.invoke('GetDashboard_option_data')
@@ -121,6 +146,26 @@ export class StockpredictionsComponent implements OnInit {
        
        this.getdata()
       }, 15 * 1000);
+
+      setInterval(()=> {
+       
+        this.getstatsNiftyTrder()
+       }, 30 * 1000);
+
+      this.signalRBreezeService.connection.on("SendGetDashboard_option_data_NiftyTrader",(data :main_Dashboard_Stats_Nifty) => {
+
+        this.main_Dashboard_Stats_Niftys = {
+          nifty_Call_Buying: data.nifty_Call_Buying,
+          nifty_Call_Long_Covering :data.nifty_Call_Long_Covering,
+          nifty_Call_Short_Covering :data.nifty_Call_Short_Covering,
+          nifty_Call_Writing :data.nifty_Call_Writing,
+          nifty_Put_Buying :data.nifty_Put_Buying,
+          nifty_Put_Long_Covering :data.nifty_Put_Long_Covering,
+          nifty_Put_Short_Covering :data.nifty_Put_Short_Covering,
+          nifty_Put_Writing :data.nifty_Put_Buying
+
+        }
+      });
 
       this.signalRBreezeService.connection.on("SendGetDashboard_option_data",(data :Maain_Dahsbaord_Stats) => {
         debugger;
