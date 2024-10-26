@@ -41,25 +41,257 @@
     [pre_Change]="maain_Dahsbaord_Stats.psU_Previous_AvgChange" 
     [Type]="'P    S    U'"></app-dashboard-stats>
 
-    <app-niftytrader 
-    [Nifty_Call_Buying]= "main_Dashboard_Stats_Niftys.nifty_Call_Buying" 
-    [Nifty_Put_Buying]= "main_Dashboard_Stats_Niftys.nifty_Put_Buying" 
 
-    [Nifty_Call_Writing]= "main_Dashboard_Stats_Niftys.nifty_Call_Writing" 
-    [Nifty_Put_Writing]= "main_Dashboard_Stats_Niftys.nifty_Put_Writing" 
-
-    [Nifty_Put_Long_Covering] ="main_Dashboard_Stats_Niftys.nifty_Put_Long_Covering" 
-    [Nifty_Call_Long_Covering] ="main_Dashboard_Stats_Niftys.nifty_Call_Long_Covering" 
-    [Nifty_Put_Short_Covering] ="main_Dashboard_Stats_Niftys.nifty_Put_Short_Covering" 
-    [Nifty_Call_Short_Covering] ="main_Dashboard_Stats_Niftys.nifty_Call_Short_Covering" 
-
->
-
-
-</app-niftytrader>
+<div>
+  <span>
+    
+      {{maain_Dahsbaord_Stats.lastUpdateDateTime}} &nbsp;&nbsp;
+   
+  </span>
+  <table>
+    <tr>
+      
+      <td></td>
+      <td style="text-align: left;">
+        Advance
+      </td>
+      :
+      <td style="text-align: right;">
+        Decline
+      </td>
+    </tr>
+  <tr style="background-color: antiquewhite;">
+    <td  [ngStyle]="{'color': maain_Dahsbaord_Stats.totalSectorAvg  >  0 ? 'green' : 'red'}">
+      Overall <b style="font-size: 12pt;">({{maain_Dahsbaord_Stats.totalSectorAvg.toFixed(2)}})</b>
+    </td>
+    <td style="font-size: 16pt;" [ngStyle]="{'color': maain_Dahsbaord_Stats.totalSectorAvg_Advance  >  maain_Dahsbaord_Stats.totalSectorAvg_Decline ? 'green' : 'red'}">
+      &nbsp; <b>{{maain_Dahsbaord_Stats.totalSectorAvg_Advance}}</b>
+     
+      <mat-icon>arrow_upward</mat-icon> &nbsp;  &nbsp; 
+      <span style="font-size: 13pt;">
+        {{( maain_Dahsbaord_Stats.totalSectorAvg_Advance/maain_Dahsbaord_Stats.totalSectorAvg_Decline).toFixed(2)}} x times
+      </span>
+      <br>
+      <span style="font-size: 8pt;">
+        Buy Call
+      </span>
+    </td>
+    <td> &nbsp;: &nbsp;</td>
+    <td style="font-size: 16pt;" [ngStyle]="{'color': maain_Dahsbaord_Stats. totalSectorAvg_Advance  <  maain_Dahsbaord_Stats.totalSectorAvg_Decline ? 'green' : 'red'}">
+      <b> {{maain_Dahsbaord_Stats.totalSectorAvg_Decline}}</b>
+     <mat-icon>arrow_downward</mat-icon> &nbsp;  &nbsp; 
+     <span style="font-size: 13pt;">
+      {{( maain_Dahsbaord_Stats.totalSectorAvg_Decline/(maain_Dahsbaord_Stats.totalSectorAvg_Advance)).toFixed(2)}}
+      x times
+    </span>
+    <br>
+    <span style="font-size: 8pt;">
+      Buy PUT
+    </span>
+    </td>
+    <hr>
+  </tr>
+</table>
+</div>
 
     
 </div>
+<br>
+<div>
+  <mat-card class="example-card">
+    <mat-card-content>
+<div style="display: flex;">
+      <div>
+        {{main_Dashboard_Stats_Niftys.lastupdated_Nifty_Trader_Date}}
+      <app-niftytrader 
+      [Nifty_Call_Buying]= "main_Dashboard_Stats_Niftys.nifty_Call_Buying" 
+      [Nifty_Put_Buying]= "main_Dashboard_Stats_Niftys.nifty_Put_Buying" 
+  
+      [Nifty_Call_Writing]= "main_Dashboard_Stats_Niftys.nifty_Call_Writing" 
+      [Nifty_Put_Writing]= "main_Dashboard_Stats_Niftys.nifty_Put_Writing" 
+  
+      [Nifty_Put_Long_Covering] ="main_Dashboard_Stats_Niftys.nifty_Put_Long_Covering" 
+      [Nifty_Call_Long_Covering] ="main_Dashboard_Stats_Niftys.nifty_Call_Long_Covering" 
+      [Nifty_Put_Short_Covering] ="main_Dashboard_Stats_Niftys.nifty_Put_Short_Covering" 
+      [Nifty_Call_Short_Covering] ="main_Dashboard_Stats_Niftys.nifty_Call_Short_Covering" 
+  
+  >
+  
+  
+  </app-niftytrader>
+  
+  <mat-card>
+    <mat-card-content>
+  <table >
+
+  
+    <tr>
+      <td>
+        Financial 
+      </td>
+      <td [ngStyle]="{'color': maain_Dahsbaord_Stats. financials_Advance  >  maain_Dahsbaord_Stats.financials_Decline ? 'green' : 'red'}">
+        &nbsp; <b>{{maain_Dahsbaord_Stats.financials_Advance}}</b>
+        <mat-icon>arrow_upward</mat-icon>
+      </td>
+      <td> &nbsp;: &nbsp;</td>
+      <td [ngStyle]="{'color': maain_Dahsbaord_Stats. financials_Advance  <  maain_Dahsbaord_Stats.financials_Decline ? 'green' : 'red'}">
+       <b> {{maain_Dahsbaord_Stats.financials_Decline}}</b>
+        <mat-icon>arrow_downward</mat-icon>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Energy 
+      </td>
+      <td [ngStyle]="{'color': maain_Dahsbaord_Stats. energy_Advance  >  maain_Dahsbaord_Stats.engery_Decline ? 'green' : 'red'}">
+        &nbsp;  <b> {{maain_Dahsbaord_Stats.energy_Advance}}</b>
+      </td>
+      <td> &nbsp;: &nbsp;</td>
+      <td [ngStyle]="{'color': maain_Dahsbaord_Stats. energy_Advance  <  maain_Dahsbaord_Stats.engery_Decline ? 'green' : 'red'}">
+        <b>{{maain_Dahsbaord_Stats.engery_Decline}}</b>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Technology 
+      </td>
+      <td [ngStyle]="{'color': maain_Dahsbaord_Stats. technology_Advance  >  maain_Dahsbaord_Stats.technology_Decline ? 'green' : 'red'}">
+        &nbsp;    <b>{{maain_Dahsbaord_Stats.technology_Advance}}</b> 
+      </td>
+      <td> &nbsp;: &nbsp;</td>
+      <td [ngStyle]="{'color': maain_Dahsbaord_Stats. technology_Advance  <  maain_Dahsbaord_Stats.technology_Decline ? 'green' : 'red'}">
+       <b>{{maain_Dahsbaord_Stats.technology_Decline}}</b> 
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Healthcare 
+      </td>
+      <td [ngStyle]="{'color': maain_Dahsbaord_Stats. healthcare_Advance  >  maain_Dahsbaord_Stats.healthcare_Advance ? 'green' : 'red'}">
+        &nbsp; <b> {{maain_Dahsbaord_Stats.healthcare_Advance}}</b>
+      </td>
+      <td> &nbsp;: &nbsp;</td>
+      <td [ngStyle]="{'color': maain_Dahsbaord_Stats. healthcare_Advance  <  maain_Dahsbaord_Stats.healthcare_Decline ? 'green' : 'red'}">
+        <b>{{maain_Dahsbaord_Stats.healthcare_Decline}}</b>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Industrials 
+      </td>
+      <td [ngStyle]="{'color': maain_Dahsbaord_Stats. industrials_Advance  >  maain_Dahsbaord_Stats.industrials_Decline ? 'green' : 'red'}">
+        &nbsp; <b> {{maain_Dahsbaord_Stats.industrials_Advance}}</b>
+      </td>
+      <td> &nbsp;: &nbsp;</td>
+      <td [ngStyle]="{'color': maain_Dahsbaord_Stats. industrials_Advance  <  maain_Dahsbaord_Stats.industrials_Decline ? 'green' : 'red'}">
+        <b>{{maain_Dahsbaord_Stats.industrials_Decline}}</b>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Real Estate 
+      </td>
+      <td [ngStyle]="{'color': maain_Dahsbaord_Stats. realEstate_Advance  >  maain_Dahsbaord_Stats.realEstate_Decline ? 'green' : 'red'}">
+        &nbsp; <b>{{maain_Dahsbaord_Stats.realEstate_Advance}} </b> 
+      </td>
+      <td> &nbsp;: &nbsp;</td>
+      <td [ngStyle]="{'color': maain_Dahsbaord_Stats. realEstate_Advance  <  maain_Dahsbaord_Stats.realEstate_Decline ? 'green' : 'red'}">
+        <b>{{maain_Dahsbaord_Stats.realEstate_Decline}}</b>
+      </td>
+    </tr>
+  </table>
+</mat-card-content>
+</mat-card>
+</div>
+&nbsp;&nbsp;&nbsp;&nbsp;
+  <div>
+    <mat-card>
+      <mat-card-content>
+      
+    <table>
+    
+      <tr>
+        <td>
+          
+        </td>
+        <td>
+          <div style="display: flex;">
+            <kendo-grid  [sortable]="true" [kendoGridBinding]="(qtyData )!">
+          
+              <kendo-grid-column [width]="100" title="Name">
+                <ng-template kendoGridCellTemplate let-dataItem >
+                    {{ dataItem.symbol  }}
+                    
+                    <b>
+                    <span [ngStyle]="{'color': dataItem. buy  >  dataItem.sell ? 'green' : 'red'}" [innerHTML]="dataItem.icons"></span>
+                  </b>
+                    
+                 
+                
+                    
+                </ng-template>
+            </kendo-grid-column>
+            <kendo-grid-column [width]="80" title="Buy QTY">
+              <ng-template kendoGridCellTemplate let-dataItem>
+                 <b [ngStyle]="{'color': dataItem. buy  >  dataItem.sell ? 'green' : 'red'}"> 
+                  {{ dataItem.buy .toFixed(1) }}</b>
+              </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column [width]="80" title="Sell QTY">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              <b [ngStyle]="{'color': dataItem. buy  <  dataItem.sell ? 'green' : 'red'}"> 
+                {{ dataItem.sell.toFixed(1)}}
+              </b>
+            </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column [width]="80" title="Xtimes">
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <b [ngStyle]="{'color': dataItem. buy  <  dataItem.sell ? 'green' : 'red'}"> 
+              {{ dataItem.xtimes.toFixed(1)  }}
+              x
+              {{ dataItem.type  }}
+              </b>
+          </ng-template>
+      </kendo-grid-column>
+
+      <kendo-grid-column [width]="80" title="CHG">
+        <ng-template kendoGridCellTemplate let-dataItem>
+          <b [ngStyle]="{'color': dataItem.cHG  >  0 ? 'green' : 'red'}"> 
+            {{ dataItem.chg.toFixed(2)  }} %
+           
+            </b>
+        </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column field="lastUpdatedOn" title="lastUpdatedOn">
+
+      <ng-template
+          kendoGridFooterTemplate
+              let-column="column"> {{column.lastUpdatedOn}}</ng-template>
+  </kendo-grid-column>
+          
+
+
+          
+            </kendo-grid>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </mat-card-content>
+</mat-card>
+
+  
+</div>
+</div>
+
+  
+
+</mat-card-content>
+
+</mat-card>
+
+</div>
+
 <br>
 
 

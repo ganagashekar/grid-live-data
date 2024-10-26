@@ -19,6 +19,19 @@ export interface main_Dashboard_Stats_Nifty{
     nifty_Call_Long_Covering:number;
     nifty_Call_Short_Covering:number;
     nifty_Call_Writing:number;
+    lastupdated_Nifty_Trader_Date:string;
+}
+export interface DashboardCountsForQTY{
+
+    buy :number | any;
+    sell:number |any;
+    type:string|any;
+    symbol:string|any;
+    xTimes:string |any;
+    lastUpdatedOn:string;
+    chg:number| any;
+
+
 }
 export interface Maain_Dahsbaord_Stats {
     nifty_Current_AvgChange : number|any;
@@ -51,7 +64,24 @@ export interface Maain_Dahsbaord_Stats {
     psU_Previous_AvgChange:number|any;
     psU_Previous_Advance:number|any;
     psU_Previous_Decline:number|any;
-    psUName:string|any
+    psUName:string|any;
+     financials_Advance :number|any;
+     financials_Decline :number|any;
+     healthcare_Advance :number|any;
+     healthcare_Decline :number|any;
+     industrials_Advance :number|any;
+     industrials_Decline :number|any;
+     technology_Advance :number|any;
+     technology_Decline :number|any;
+     energy_Advance :number|any;
+     engery_Decline :number|any;
+     realEstate_Advance :number|any;
+     realEstate_Decline :number|any;
+     totalSectorAvg :number|any;
+     totalSectorAvg_Advance :number|any;
+     totalSectorAvg_Decline :number|any;
+     lastUpdateDateTime:string|any;
+
 
 
 

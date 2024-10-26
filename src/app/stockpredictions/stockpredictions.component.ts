@@ -11,7 +11,7 @@ import { SortDescriptor } from '@progress/kendo-data-query';
 import { HttpClient } from '@angular/common/http';
 import { StockPredicitonModel } from '../models/stockPredictionModel';
 import { SignalrBreezeService } from '../services/signalr.serviceBreeze';
-import { DashboardStats, Maain_Dahsbaord_Stats, main_Dashboard_Stats_Nifty } from '../models/news.model';
+import { DashboardCountsForQTY, DashboardStats, Maain_Dahsbaord_Stats, main_Dashboard_Stats_Nifty } from '../models/news.model';
 
 @Component({
   selector: 'app-stockpredictions',
@@ -23,6 +23,7 @@ export class StockpredictionsComponent implements OnInit {
   public transactionCards: Transactions[] = accountTransactions;
    // public gridData: StockPredicitonModel[] |any;
     public gridData: Observable<StockPredicitonModel[]> |any;
+    public qtyData: Observable<DashboardCountsForQTY[]> |any;
     color: ThemePalette = 'primary';
     mode: ProgressBarMode = 'determinate';
     value = 0;
@@ -39,11 +40,11 @@ export class StockpredictionsComponent implements OnInit {
     private signalRSubscription: Subscription | undefined;
     public updateFreq: number = 2000;
 
-
+    displayedqtyColumns: string[] = ['buy', 'sell', 'type', 'xtimes','symbol'];
     orderbySize : boolean;
     SelectedDate : string | any ;
     constructor(public signalRService: SignalrService, public signalRBreezeService: SignalrBreezeService,public stocksService: StocksService, private http: HttpClient) {
-      debugger;
+     
 
       this.main_Dashboard_Stats_Niftys= {
       nifty_Call_Buying : 0,
@@ -54,6 +55,7 @@ export class StockpredictionsComponent implements OnInit {
       nifty_Call_Long_Covering:0,
       nifty_Call_Short_Covering:0,
       nifty_Call_Writing:0,
+      lastupdated_Nifty_Trader_Date:''
 
 
   
@@ -86,7 +88,24 @@ export class StockpredictionsComponent implements OnInit {
         psU_Previous_Advance:0,
         psU_Previous_AvgChange:0,
         psU_Previous_Decline:0,
-        psUName :"PSU"
+        psUName :"PSU",
+        energy_Advance:0,
+        engery_Decline:0,
+        financials_Advance:0,
+        financials_Decline:0,
+        healthcare_Advance:0,
+        healthcare_Decline:0,
+        industrials_Advance:0,
+        industrials_Decline:0,
+        realEstate_Advance:0,
+        realEstate_Decline:0,
+        technology_Advance:0,
+        technology_Decline:0,
+        totalSectorAvg:0,
+        totalSectorAvg_Advance:0,
+        totalSectorAvg_Decline:0,
+        lastUpdateDateTime:''
+
 
 
 
@@ -99,7 +118,7 @@ export class StockpredictionsComponent implements OnInit {
       this.orderbySize = !this.orderbySize;
     }
     onDateChange(event: any ): void {
-      debugger;
+     
       this.SelectedDate = event.value.toUTCString();
       this.getdata()
 
@@ -114,7 +133,7 @@ export class StockpredictionsComponent implements OnInit {
  }
 
  getstatsNiftyTrder(){
-  debugger;
+ 
   this.signalRBreezeService.connection.invoke('GetDashboard_option_data_NiftyTrader')
       .catch((error: any) => {
         console.log(`GetDashboard_option_data_NiftyTrader error: ${error}`);
@@ -122,9 +141,18 @@ export class StockpredictionsComponent implements OnInit {
       });
  }
 
+ getstats_qty(){
+ 
+  this.signalRBreezeService.connection.invoke('GetDashboard_qty_data')
+      .catch((error: any) => {
+        console.log(`GetDashboard_qty_data error: ${error}`);
+
+      });
+ }
+
 
  getstats(){
-  debugger;
+ 
   this.signalRBreezeService.connection.invoke('GetDashboard_option_data')
       .catch((error: any) => {
         console.log(`GetDashboard_option_data error: ${error}`);
@@ -139,6 +167,11 @@ export class StockpredictionsComponent implements OnInit {
      
      setInterval(()=> {
       this.getstats()
+     
+    }, 5 * 1000);
+
+    setInterval(()=> {
+      this.getstats_qty()
      
     }, 5 * 1000);
 
@@ -162,13 +195,14 @@ export class StockpredictionsComponent implements OnInit {
           nifty_Put_Buying :data.nifty_Put_Buying,
           nifty_Put_Long_Covering :data.nifty_Put_Long_Covering,
           nifty_Put_Short_Covering :data.nifty_Put_Short_Covering,
-          nifty_Put_Writing :data.nifty_Put_Buying
+          nifty_Put_Writing :data.nifty_Put_Buying,
+          lastupdated_Nifty_Trader_Date:data.lastupdated_Nifty_Trader_Date,
 
         }
       });
 
       this.signalRBreezeService.connection.on("SendGetDashboard_option_data",(data :Maain_Dahsbaord_Stats) => {
-        debugger;
+       
 
         this.maain_Dahsbaord_Stats ={
           psU_Current_AvgChange:data.psU_Current_AvgChange,
@@ -198,15 +232,58 @@ export class StockpredictionsComponent implements OnInit {
           psU_Previous_Advance:data.psU_Previous_Advance,
           psU_Previous_AvgChange:data.psU_Previous_AvgChange,
           psU_Previous_Decline:data.psU_Previous_Decline,
-          psUName :"PSU"
-  
-  
-  
+          psUName :"PSU",
+
+          energy_Advance :data.energy_Advance,
+          engery_Decline:data.engery_Decline,
+          financials_Advance: data.financials_Advance,
+          financials_Decline:data.financials_Decline,
+          healthcare_Advance:data.healthcare_Advance,
+          healthcare_Decline:data.healthcare_Decline,
+          industrials_Advance:data.industrials_Advance,
+          industrials_Decline:data.industrials_Decline,
+          realEstate_Advance:data.realEstate_Advance,
+          realEstate_Decline:data.realEstate_Decline,
+          technology_Advance:data.technology_Advance,
+          technology_Decline:data.technology_Decline,
+          totalSectorAvg:data.totalSectorAvg,
+
+          totalSectorAvg_Advance:data.totalSectorAvg_Advance,
+          totalSectorAvg_Decline:data.totalSectorAvg_Decline,
+          lastUpdateDateTime:data.lastUpdateDateTime
+
+         
+
         }
 
       })
+
+      this.signalRBreezeService.connection.on("SendGetDashboard_qty_data",(data :any) => {
+
+        let res = data.map((val: DashboardCountsForQTY) => { 
+
+        return{
+        buy:val.buy,
+        sell:val.sell,
+        symbol:val.symbol,
+        type:val.type,
+        xtimes:val.xTimes,
+        lastUpdatedOn:val.lastUpdatedOn,
+        icons:val.type=='BUY' ? '&uarr;':'&darr;',
+        chg:val.chg,
+        
+      
+        
+
+        } 
+        })
+
+        this.qtyData = res
+
+      })
+
        this.signalRBreezeService.connection.on("SendExportBuyStockAlterFromAPP_IND",(data :any) => {
-        // debugger;
+        //
         // this.counter=this.counter+5;
         // this.dashboardStats ={
         //   current_Change:this.counter+1,
