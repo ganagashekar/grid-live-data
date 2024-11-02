@@ -11,7 +11,7 @@ import { SortDescriptor } from '@progress/kendo-data-query';
 import { HttpClient } from '@angular/common/http';
 import { StockPredicitonModel } from '../models/stockPredictionModel';
 import { SignalrBreezeService } from '../services/signalr.serviceBreeze';
-import { DashboardCountsForQTY, DashboardStats, Maain_Dahsbaord_Stats, main_Dashboard_Stats_Nifty } from '../models/news.model';
+import { Dashboard_High_low, DashboardCountsForQTY, DashboardStats, Maain_Dahsbaord_Stats, main_Dashboard_Stats_Nifty } from '../models/news.model';
 
 @Component({
   selector: 'app-stockpredictions',
@@ -43,6 +43,9 @@ export class StockpredictionsComponent implements OnInit {
     displayedqtyColumns: string[] = ['buy', 'sell', 'type', 'xtimes','symbol'];
     orderbySize : boolean;
     SelectedDate : string | any ;
+
+    dashboard_High_low :Dashboard_High_low ;
+    
     constructor(public signalRService: SignalrService, public signalRBreezeService: SignalrBreezeService,public stocksService: StocksService, private http: HttpClient) {
      
 
@@ -59,6 +62,17 @@ export class StockpredictionsComponent implements OnInit {
 
 
   
+      },
+
+      this.dashboard_High_low={
+        isnifty_lowtrend:0,
+        isnifty_uptrend:0,
+        isbanknifty_lowtrend:0,
+        isbanknifty_uptrend:0,
+        ispsu_lowtrend:0,
+        ispsu_uptrend:0,
+        isoptions_lowtrend:0,
+        isoptions_uptrend:0, 
       },
       this.maain_Dahsbaord_Stats ={
         psU_Current_AvgChange:0,
@@ -158,6 +172,15 @@ export class StockpredictionsComponent implements OnInit {
         console.log(`GetDashboard_option_data error: ${error}`);
 
       });
+
+      this.signalRBreezeService.connection.invoke('GetDashboardStatsHighLow')
+      .catch((error: any) => {
+        console.log(`GetDashboard_option_data error: ${error}`);
+
+      });
+
+
+      
  }
 
     ngOnInit() {
@@ -195,11 +218,28 @@ export class StockpredictionsComponent implements OnInit {
           nifty_Put_Buying :data.nifty_Put_Buying,
           nifty_Put_Long_Covering :data.nifty_Put_Long_Covering,
           nifty_Put_Short_Covering :data.nifty_Put_Short_Covering,
-          nifty_Put_Writing :data.nifty_Put_Buying,
+          nifty_Put_Writing :data.nifty_Put_Writing,
           lastupdated_Nifty_Trader_Date:data.lastupdated_Nifty_Trader_Date,
 
         }
       });
+
+      this.signalRBreezeService.connection.on("SendGetashboardStatsHighLow",(data :Dashboard_High_low) => {
+       
+        this.dashboard_High_low={
+          isnifty_lowtrend:data.isnifty_lowtrend,
+          isnifty_uptrend:data.isnifty_uptrend,
+          isbanknifty_lowtrend:data.isbanknifty_lowtrend,
+          isbanknifty_uptrend:data.isbanknifty_uptrend,
+          ispsu_lowtrend:data.ispsu_lowtrend,
+          ispsu_uptrend:data.ispsu_uptrend,
+          isoptions_lowtrend:data.isoptions_lowtrend,
+          isoptions_uptrend:data.isoptions_uptrend, 
+        }
+
+      });
+
+      
 
       this.signalRBreezeService.connection.on("SendGetDashboard_option_data",(data :Maain_Dahsbaord_Stats) => {
        
@@ -259,9 +299,7 @@ export class StockpredictionsComponent implements OnInit {
       })
 
       this.signalRBreezeService.connection.on("SendGetDashboard_qty_data",(data :any) => {
-
         let res = data.map((val: DashboardCountsForQTY) => { 
-
         return{
         buy:val.buy,
         sell:val.sell,
@@ -271,37 +309,20 @@ export class StockpredictionsComponent implements OnInit {
         lastUpdatedOn:val.lastUpdatedOn,
         icons:val.type=='BUY' ? '&uarr;':'&darr;',
         chg:val.chg,
-        
-      
-        
-
         } 
         })
-
         this.qtyData = res
-
       })
 
        this.signalRBreezeService.connection.on("SendExportBuyStockAlterFromAPP_IND",(data :any) => {
-        //
-        // this.counter=this.counter+5;
-        // this.dashboardStats ={
-        //   current_Change:this.counter+1,
-        //   current_decline:this.counter+2,
-        //   current_advance: this.counter+3,
-        // }
-       // this.updateFreq=667
-       //this.dashboardStats.current_Change= 132;
         var  i=0;
         let res = data.map((val: StockPredicitonModel) => {
-
-          return { // Return the new object structure
+          return { 
             symbol: val.symbol,
             bulishCount:val.bulishCount,
             bearishCount:val.bearishCount,
             ltt:val.ltt,
             candleResult_Price:val.candleResult_Price,
-
             candleResult_Match:val.candleResult_Match,
             candleResult_Size:val.candleResult_Size,
             candleResult_Body:val.candleResult_Body,
@@ -309,7 +330,6 @@ export class StockpredictionsComponent implements OnInit {
             candleResult_LowerWick:val.candleResult_LowerWick,
             candleResult_BodyPct:val.candleResult_BodyPct,
             candleResult_UpperWickPct:val.candleResult_UpperWickPct,
-
             candleResult_LowerWickPct:val.candleResult_LowerWickPct,
             candleResult_Volume:val.candleResult_Volume,
             macdresult_Macd:val.macdresult_Macd,
@@ -317,49 +337,16 @@ export class StockpredictionsComponent implements OnInit {
             macdresult_FastEma:val.macdresult_FastEma,
             macdresult_SlowEma:val.macdresult_SlowEma,
             volatilityresults_Sar:val.volatilityresults_Sar,
-
             volatilityresults_UpperBand:val.volatilityresults_UpperBand,
             volatilityresults_LowerBand:val.volatilityresults_LowerBand,
             stock_Name :val.stock_Name,
             bullishCount_95:val.bullishCount_95,
             bullishCount_100:val.bullishCount_100
-
-
-
-            // currency:"$",
-            // stockName:val.stock_name,
-            // change:val.change,
-            // volume:val.ttv,
-            // open: val.open,
-            // low:val.low,
-            // high:val.high,
-            // last :val.last,
-            // //volume: val.bQty,
-            // symbol:val.symbol,
-            // currentPrice: val.last,
-            // bQty :val.bQty,
-            // sQty:val.sQty,
-            // netQtry : val.bQty-val.sQty,
-            // avgPrice:val.avgPrice,
-            // //intraday: Observable<number[]>;
-            // intraday: [val.last],
-            // dataopen:[val.open],
-            // dataavgPrice:[val.avgPrice],
-            // mostnumber:val.last,
-            // bPrice:val.bPrice,
-            // sPrice :val.sPrice,
-
           }
           i++;
         });
-
         this.gridData = res;// this.getDataObservable(res);
-
-
-
         })
-
-
       }
 
 

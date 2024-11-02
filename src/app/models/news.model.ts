@@ -81,8 +81,15 @@ export interface Maain_Dahsbaord_Stats {
      totalSectorAvg_Advance :number|any;
      totalSectorAvg_Decline :number|any;
      lastUpdateDateTime:string|any;
+}
 
-
-
-
+export interface Dashboard_High_low{
+    isnifty_lowtrend :number|any;
+    isnifty_uptrend :number|any;
+    ispsu_lowtrend :number|any;
+    ispsu_uptrend :number|any;
+    isoptions_lowtrend :number|any;
+    isoptions_uptrend :number|any;
+    isbanknifty_lowtrend :number|any;
+    isbanknifty_uptrend :number|any;
 }

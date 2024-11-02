@@ -203,6 +203,50 @@
 </mat-card-content>
 </mat-card>
 </div>
+
+<div>
+  <div>
+    <mat-card>
+      <mat-card-content>
+        <div>
+          <table>
+            <tr>
+              <td>Type </td>
+              <td>Low Trend</td>
+              <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+              <td>High Trend</td>
+            </tr>
+            <tr>
+              <td>NIFTY</td>
+              <td  [ngStyle]="{'color': dashboard_High_low.isnifty_lowtrend  <  dashboard_High_low.isnifty_uptrend ? 'green' : 'red'}" >:&nbsp;{{ dashboard_High_low.isnifty_lowtrend}}</td>
+              <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+              <td [ngStyle]="{'color': dashboard_High_low.isnifty_lowtrend  >  dashboard_High_low.isnifty_uptrend ? 'green' : 'red'}" >:&nbsp;{{ dashboard_High_low.isnifty_uptrend}}</td>
+            </tr>
+            <tr>
+              <td>BANK</td>
+              <td>:&nbsp;{{ dashboard_High_low.isbanknifty_lowtrend}}</td>
+              <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+              <td>:&nbsp;{{ dashboard_High_low.isbanknifty_uptrend}}</td>
+            </tr>
+            <tr>
+              <td>PSU</td>
+              <td>:&nbsp;{{ dashboard_High_low.ispsu_lowtrend}}</td>
+              <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+              <td>:&nbsp;{{ dashboard_High_low.ispsu_uptrend}}</td>
+            </tr>
+            <tr>
+              <td>Options</td>
+              <td>:&nbsp;{{ dashboard_High_low.isoptions_lowtrend}}</td>
+              <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+              <td>:&nbsp;{{ dashboard_High_low.isoptions_uptrend}}</td>
+            </tr>
+           
+          </table>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
 &nbsp;&nbsp;&nbsp;&nbsp;
   <div>
     <mat-card>
@@ -293,7 +337,6 @@
 </div>
 
 <br>
-
 
 <table>
   <td>
