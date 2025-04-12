@@ -1,0 +1,108 @@
+<!-- <kendo-chart class="charts-height" [transitions]="false" [chartArea]="{ background: 'transparent' }" >
+    <kendo-chart-value-axis>
+        <kendo-chart-value-axis-item [visible]="false" [majorGridLines]="{ visible: false }">
+        </kendo-chart-value-axis-item>
+    </kendo-chart-value-axis>
+    <kendo-chart-category-axis>
+        <kendo-chart-category-axis-item [visible]="false" [majorGridLines]="{ visible: false }">
+        </kendo-chart-category-axis-item>
+    </kendo-chart-category-axis>
+    <kendo-chart-series>
+        <kendo-chart-series-item [type]="'line'"
+
+        [line]="lineStyle"[data]="data" [markers]="{ visible: false }" [color]="changePct > 0 ? 'green' : 'red'">
+        </kendo-chart-series-item>
+        <kendo-chart-series-item [type]="'area'" [data]="data"  [line]="lineStyle" [markers]="{ visible: false }" [color]="changePct > 0 ? 'green' : 'red'"
+            [opacity]="0.2">
+        </kendo-chart-series-item>
+    </kendo-chart-series>
+    <kendo-chart-tooltip></kendo-chart-tooltip>
+</kendo-chart> -->
+<!-- <kendo-sparkline chartdata="data" [data]="data"></kendo-sparkline> -->
+<!-- <kendo-sparkline [data]="data"></kendo-sparkline> -->
+
+<!-- <kendo-chart (render)="onRender($event)" [style.height.px]="60"  [transitions]="false"  > -->
+
+  <!-- <div #container>
+  </div> -->
+
+
+  <!-- <kendo-chart [popupSettings]="{ appendTo: popupContainer }"  [style.height.px]="80"  [transitions]="false"  > -->
+    <kendo-chart    [transitions]="false"  >
+
+        <kendo-chart-tooltip  [shared]="true" class="top" position="top">
+      
+          <ng-template style="height: 10px;width: 10px; margin-top: 50px;" kendoChartSeriesTooltipTemplate let-value="value">
+      
+      
+             <a (click)="setpoint(symbol,value)">
+              <!-- <mat-icon >
+                alarm_on
+              </mat-icon> -->
+              {{ value }}
+            </a>
+      
+      
+      
+          </ng-template>
+        </kendo-chart-tooltip>
+        <kendo-chart-category-axis>
+          <kendo-chart-category-axis-item
+          [categories]="categories"
+          type="date"
+          [baseUnit]="'auto'"
+          categoryField="Date"
+          [labels]="{ format: '{0:HH:mm}' }">
+
+          >
+          </kendo-chart-category-axis-item>
+      </kendo-chart-category-axis>
+      <!-- <kendo-chart-value-axis>
+        <kendo-chart-value-axis-item [min]="min" [max]="max"  [visible]="false" [majorGridLines]="{ visible: false }">
+        </kendo-chart-value-axis-item>
+      </kendo-chart-value-axis> -->
+      <kendo-chart-value-axis>
+        <kendo-chart-value-axis-item name="valueAxis"  [min]="min" [max]="max" [plotBands]="[{from:open,to :last , color: 'darkblack',opacity: 100}]"  [visible]="true" [majorGridLines]="{ visible: false }">
+        </kendo-chart-value-axis-item>
+      </kendo-chart-value-axis>
+      <!-- <kendo-chart-value-axis>
+        <kendo-chart-value-axis-item [min]="min"c categoryField="date"  [max]="max" [visible]="false" [plotBands]="[{from:open,to :last , color: 'darkblack',opacity: 100}]"  [majorGridLines]="{ visible: false }">
+        </kendo-chart-value-axis-item>
+      </kendo-chart-value-axis> -->
+      
+        <kendo-chart-series>
+            <kendo-chart-series-item
+                type="line"
+      
+                noteTextField="extremum"
+                [opacity]="10"
+                [data]="data"
+                [markers]="{ visible: false }"
+                
+                [line]="lineStyle"
+      
+            >
+            <!-- <div #container>
+            </div> -->
+            </kendo-chart-series-item>
+            <kendo-chart-series-item
+            type="line"
+                [stack]="true"
+                color="darkblue"
+                [opacity]="8"
+            [markers]="{ visible: false }"
+             [data]="dataopen">
+            </kendo-chart-series-item>
+            <!-- <kendo-chart-series-item
+            type="line"
+      
+                color="skyblue"
+      
+            [markers]="{ visible: false }"
+             [data]="dataavgPrice">
+            </kendo-chart-series-item> -->
+        </kendo-chart-series>
+      
+      </kendo-chart>
+      
+      

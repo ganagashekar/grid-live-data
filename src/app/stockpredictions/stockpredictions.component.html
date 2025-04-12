@@ -200,8 +200,12 @@
       </td>
     </tr>
   </table>
+
+  
 </mat-card-content>
 </mat-card>
+
+
 </div>
 
 <div>
@@ -224,21 +228,52 @@
             </tr>
             <tr>
               <td>BANK</td>
-              <td>:&nbsp;{{ dashboard_High_low.isbanknifty_lowtrend}}</td>
-              <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
-              <td>:&nbsp;{{ dashboard_High_low.isbanknifty_uptrend}}</td>
+              <td  [ngStyle]="{'color': dashboard_High_low.isbanknifty_lowtrend  <  dashboard_High_low.isbanknifty_uptrend ? 'green' : 'red'}">:&nbsp;{{ dashboard_High_low.isbanknifty_lowtrend}}</td>
+              <td  >&nbsp;&nbsp;&nbsp;&nbsp;</td>
+              <td [ngStyle]="{'color': dashboard_High_low.isbanknifty_lowtrend  >  dashboard_High_low.isbanknifty_uptrend ? 'green' : 'red'}">:&nbsp;{{ dashboard_High_low.isbanknifty_uptrend}}</td>
             </tr>
             <tr>
               <td>PSU</td>
-              <td>:&nbsp;{{ dashboard_High_low.ispsu_lowtrend}}</td>
+              <td [ngStyle]="{'color': dashboard_High_low.ispsu_lowtrend  <  dashboard_High_low.ispsu_uptrend ? 'green' : 'red'}"> :&nbsp;{{ dashboard_High_low.ispsu_lowtrend}}</td>
               <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
-              <td>:&nbsp;{{ dashboard_High_low.ispsu_uptrend}}</td>
+              <td [ngStyle]="{'color': dashboard_High_low.ispsu_lowtrend  >  dashboard_High_low.ispsu_uptrend ? 'green' : 'red'}">:&nbsp;{{ dashboard_High_low.ispsu_uptrend}}</td>
             </tr>
             <tr>
               <td>Options</td>
-              <td>:&nbsp;{{ dashboard_High_low.isoptions_lowtrend}}</td>
+              <td [ngStyle]="{'color': dashboard_High_low.isoptions_lowtrend  <  dashboard_High_low.isoptions_uptrend ? 'green' : 'red'}">:&nbsp;{{ dashboard_High_low.isoptions_lowtrend}}</td>
               <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
-              <td>:&nbsp;{{ dashboard_High_low.isoptions_uptrend}}</td>
+              <td [ngStyle]="{'color': dashboard_High_low.isoptions_lowtrend  >  dashboard_High_low.isoptions_uptrend ? 'green' : 'red'}">:&nbsp;{{ dashboard_High_low.isoptions_uptrend}}</td>
+            </tr>
+           
+          </table>
+
+
+          <br>
+          <table>
+            <tr>
+              <td><b>Type</b> </td>
+              <td><b>Amount</b> </td>
+              <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+              <td><b>CHG</b></td>
+            </tr>
+            <tr>
+              <td>CALL</td>
+              <td  [ngStyle]="{'color': dashboard_AmountOrCHG.optioncall_amount  > dashboard_AmountOrCHG.optionput_amount ? 'green' : 'red'}" >:&nbsp;{{ dashboard_AmountOrCHG.optioncall_amount}} lk</td>
+              <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+              <td [ngStyle]="{'color': dashboard_AmountOrCHG.optioncall_CHG  > dashboard_AmountOrCHG.optionput_CHG ? 'green' : 'red'}" >:&nbsp;{{ dashboard_AmountOrCHG.optioncall_CHG }}</td>
+            </tr>
+            <tr>
+              <td>PUT</td>
+              <td  [ngStyle]="{'color': dashboard_AmountOrCHG.optionput_amount  > dashboard_AmountOrCHG.optioncall_amount ? 'green' : 'red'}" >:&nbsp;{{ dashboard_AmountOrCHG.optionput_amount}} lk</td>
+              <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+              <td [ngStyle]="{'color': dashboard_AmountOrCHG.optionput_CHG  > dashboard_AmountOrCHG.optioncall_CHG ? 'green' : 'red'}" >:&nbsp;{{ dashboard_AmountOrCHG.optionput_CHG }}</td>
+            </tr>
+
+            <tr>
+              <td>Equities</td>
+              <td  [ngStyle]="{'color': dashboard_AmountOrCHG.equities_amount  > 0 ? 'green' : 'red'}" >:&nbsp;{{ dashboard_AmountOrCHG.equities_amount}} lk</td>
+              <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+              <td [ngStyle]="{'color': dashboard_AmountOrCHG.equities_CHG  > 0 ? 'green' : 'red'}" >:&nbsp;{{ dashboard_AmountOrCHG.equities_CHG }}</td>
             </tr>
            
           </table>
@@ -317,6 +352,11 @@
 
           
             </kendo-grid>
+          </div>
+        </td>
+        <td>
+          <div style="display: flex;">
+        
           </div>
         </td>
       </tr>

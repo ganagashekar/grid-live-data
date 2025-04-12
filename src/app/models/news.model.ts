@@ -93,3 +93,13 @@ export interface Dashboard_High_low{
     isbanknifty_lowtrend :number|any;
     isbanknifty_uptrend :number|any;
 }
+
+
+export interface Dashboard_AmountOrCHG{
+    optioncall_amount :number|any;
+    optioncall_CHG :number|any;
+    optionput_amount :number|any;
+    optionput_CHG :number|any;
+    equities_amount :number|any;
+    equities_CHG :number|any;
+}

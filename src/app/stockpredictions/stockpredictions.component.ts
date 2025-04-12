@@ -11,7 +11,7 @@ import { SortDescriptor } from '@progress/kendo-data-query';
 import { HttpClient } from '@angular/common/http';
 import { StockPredicitonModel } from '../models/stockPredictionModel';
 import { SignalrBreezeService } from '../services/signalr.serviceBreeze';
-import { Dashboard_High_low, DashboardCountsForQTY, DashboardStats, Maain_Dahsbaord_Stats, main_Dashboard_Stats_Nifty } from '../models/news.model';
+import { Dashboard_AmountOrCHG, Dashboard_High_low, DashboardCountsForQTY, DashboardStats, Maain_Dahsbaord_Stats, main_Dashboard_Stats_Nifty } from '../models/news.model';
 
 @Component({
   selector: 'app-stockpredictions',
@@ -31,6 +31,7 @@ export class StockpredictionsComponent implements OnInit {
     counter=10;
 
     public dashboardStats: DashboardStats;
+    public dashboard_AmountOrCHG:Dashboard_AmountOrCHG;
     public maain_Dahsbaord_Stats: Maain_Dahsbaord_Stats
     public main_Dashboard_Stats_Niftys: main_Dashboard_Stats_Nifty
     private stocksUrl: string = 'assets/data.json';
@@ -63,6 +64,15 @@ export class StockpredictionsComponent implements OnInit {
 
   
       },
+      this.dashboard_AmountOrCHG={
+       equities_amount: 0,
+       equities_CHG:0,
+       optioncall_amount:0,
+       optioncall_CHG:0,
+       optionput_amount:0,
+       optionput_CHG:0,
+
+      }
 
       this.dashboard_High_low={
         isnifty_lowtrend:0,
@@ -155,6 +165,16 @@ export class StockpredictionsComponent implements OnInit {
       });
  }
 
+
+ GetDashboardPorC(){
+ 
+  this.signalRBreezeService.connection.invoke('GetDashboardPorC')
+      .catch((error: any) => {
+        console.log(`GetDashboard_option_data_NiftyTrader error: ${error}`);
+
+      });
+ }
+
  getstats_qty(){
  
   this.signalRBreezeService.connection.invoke('GetDashboard_qty_data')
@@ -191,6 +211,13 @@ export class StockpredictionsComponent implements OnInit {
      setInterval(()=> {
       this.getstats()
      
+     
+    }, 5 * 1000);
+
+    setInterval(()=> {
+     
+      this.GetDashboardPorC();
+     
     }, 5 * 1000);
 
     setInterval(()=> {
@@ -207,6 +234,22 @@ export class StockpredictionsComponent implements OnInit {
        
         this.getstatsNiftyTrder()
        }, 30 * 1000);
+
+
+       this.signalRBreezeService.connection.on("SendGetDashboardPorC",(data :any) => {
+        debugger;
+        this.dashboard_AmountOrCHG = {
+          equities_amount: data[2].amount,
+          equities_CHG: data[2].avgchg,
+          optioncall_amount : data[0].amount,
+          optionput_amount : data[1].amount,
+          optioncall_CHG : data[0].avgchg,
+          optionput_CHG:data[1].avgchg,
+
+         
+
+        }
+      });
 
       this.signalRBreezeService.connection.on("SendGetDashboard_option_data_NiftyTrader",(data :main_Dashboard_Stats_Nifty) => {
 
