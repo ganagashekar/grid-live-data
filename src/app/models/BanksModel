@@ -10,6 +10,7 @@ export interface BankGroup {
 }
 
 
+
 /** list of banks */
 export const BANKS: Bank[] = [
   {name: 'Bank A (Switzerland)', id: 'A'},

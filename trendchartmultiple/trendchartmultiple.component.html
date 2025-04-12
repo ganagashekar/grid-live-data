@@ -1,5 +1,3 @@
-
-
 <!-- <kendo-chart class="charts-height" [transitions]="false" [chartArea]="{ background: 'transparent' }" >
     <kendo-chart-value-axis>
         <kendo-chart-value-axis-item [visible]="false" [majorGridLines]="{ visible: false }">
@@ -30,7 +28,7 @@
 
 
   <!-- <kendo-chart [popupSettings]="{ appendTo: popupContainer }"  [style.height.px]="80"  [transitions]="false"  > -->
-    <kendo-chart    [transitions]="false"   >
+    <kendo-chart    [transitions]="false"  >
 
         <kendo-chart-tooltip  [shared]="true" class="top" position="top">
       
@@ -49,9 +47,13 @@
           </ng-template>
         </kendo-chart-tooltip>
         <kendo-chart-category-axis>
-          <kendo-chart-category-axis-item name="categoryAxis"  [visible]="true"
+          <kendo-chart-category-axis-item
           [categories]="categories"
-          [majorGridLines]="{ visible: false }"
+          type="date"
+          [baseUnit]="'auto'"
+          categoryField="Date"
+          [labels]="{ format: '{0:HH:mm}' }">
+
           >
           </kendo-chart-category-axis-item>
       </kendo-chart-category-axis>
@@ -60,9 +62,7 @@
         </kendo-chart-value-axis-item>
       </kendo-chart-value-axis> -->
       <kendo-chart-value-axis>
-        <kendo-chart-value-axis-item name="valueAxis"  
-        
-         [visible]="false" [majorGridLines]="{ visible: false }">
+        <kendo-chart-value-axis-item name="valueAxis"  [min]="min" [max]="max" [plotBands]="[{from:open,to :last , color: 'darkblack',opacity: 100}]"  [visible]="true" [majorGridLines]="{ visible: false }">
         </kendo-chart-value-axis-item>
       </kendo-chart-value-axis>
       <!-- <kendo-chart-value-axis>
@@ -76,38 +76,23 @@
       
                 noteTextField="extremum"
                 [opacity]="10"
-                [data]="Lastdata"
+                [data]="data"
                 [markers]="{ visible: false }"
                 
                 [line]="lineStyle"
       
             >
-           
+            <!-- <div #container>
+            </div> -->
             </kendo-chart-series-item>
-
             <kendo-chart-series-item
             type="line"
-  
-            noteTextField="extremum"
-            [opacity]="10"
-            [data]="data"
-            [markers]="{ visible: false }"
-            
-            [line]="lineStyle"
-  
-        >
-       
-        </kendo-chart-series-item>
-            <kendo-chart-series-item
-            type="line"
-            noteTextField="extremum"
                 [stack]="true"
                 color="darkblue"
                 [opacity]="8"
             [markers]="{ visible: false }"
-            [line]="lineStyle"
              [data]="dataopen">
-            </kendo-chart-series-item> 
+            </kendo-chart-series-item>
             <!-- <kendo-chart-series-item
             type="line"
       

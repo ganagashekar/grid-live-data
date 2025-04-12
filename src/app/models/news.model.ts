@@ -103,3 +103,10 @@ export interface Dashboard_AmountOrCHG{
     equities_amount :number|any;
     equities_CHG :number|any;
 }
+export interface TrendModel {
+    TimeGroup	:Date
+    avg_totalBuyQt:number
+  	avg_totalSellQ :number	
+    avg_ttv	:number
+    avg_change:number
+}

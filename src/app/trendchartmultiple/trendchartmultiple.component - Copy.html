@@ -1,4 +1,12 @@
+<kendo-sparkline
+          [data]="dataopen"
+       type="line"
+          
+        >
+        </kendo-sparkline>
 
+<!-- <kendo-sparkline [data]="data"> </kendo-sparkline>
+<kendo-sparkline [data]="dataopen"> </kendo-sparkline> -->
 
 <!-- <kendo-chart class="charts-height" [transitions]="false" [chartArea]="{ background: 'transparent' }" >
     <kendo-chart-value-axis>
@@ -76,7 +84,7 @@
       
                 noteTextField="extremum"
                 [opacity]="10"
-                [data]="Lastdata"
+                [data]="data"
                 [markers]="{ visible: false }"
                 
                 [line]="lineStyle"
@@ -84,28 +92,13 @@
             >
            
             </kendo-chart-series-item>
-
+            <kendo-sparkline [data]="dataopen"> </kendo-sparkline>
             <kendo-chart-series-item
             type="line"
-  
-            noteTextField="extremum"
-            [opacity]="10"
-            [data]="data"
-            [markers]="{ visible: false }"
-            
-            [line]="lineStyle"
-  
-        >
-       
-        </kendo-chart-series-item>
-            <kendo-chart-series-item
-            type="line"
-            noteTextField="extremum"
                 [stack]="true"
                 color="darkblue"
                 [opacity]="8"
             [markers]="{ visible: false }"
-            [line]="lineStyle"
              [data]="dataopen">
             </kendo-chart-series-item> 
             <!-- <kendo-chart-series-item
