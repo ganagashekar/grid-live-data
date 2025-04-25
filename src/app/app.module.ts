@@ -84,6 +84,7 @@ import { DealcomponentComponent } from './dealcomponent/dealcomponent.component'
 import { DashboardStatsComponent } from './dashboard-stats/dashboard-stats.component';
 import { NiftytraderComponent } from './niftytrader/niftytrader.component';
 import { TrendchartmultipleComponent } from './trendchartmultiple/trendchartmultiple.component';
+import { PcrratiosComponent } from './pcrratios/pcrratios.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -97,6 +98,7 @@ const routes: Routes = [
   { path: 'bench', component: TalibstatsComponent },
   { path: 'dstats', component: DashboardStatsComponent },
   { path: 'trend', component: TrendchartmultipleComponent },
+  { path: 'pcr', component: PcrratiosComponent },
   // { path: 'about', component: AboutComponent },
   // { path: 'products', component: ProductsComponent },
   // { path: '**', component: HomeComponent }, // If no matching route found, go back to home route
@@ -134,7 +136,8 @@ const routes: Routes = [
       DealcomponentComponent,
       DashboardStatsComponent,
       NiftytraderComponent,
-      TrendchartmultipleComponent
+      TrendchartmultipleComponent,
+      PcrratiosComponent
    ],
     imports: [
       ToastrModule.forRoot({
