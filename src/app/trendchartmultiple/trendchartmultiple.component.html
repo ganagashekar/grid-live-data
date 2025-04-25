@@ -1,121 +1,241 @@
-
-
-<!-- <kendo-chart class="charts-height" [transitions]="false" [chartArea]="{ background: 'transparent' }" >
-    <kendo-chart-value-axis>
-        <kendo-chart-value-axis-item [visible]="false" [majorGridLines]="{ visible: false }">
-        </kendo-chart-value-axis-item>
-    </kendo-chart-value-axis>
-    <kendo-chart-category-axis>
-        <kendo-chart-category-axis-item [visible]="false" [majorGridLines]="{ visible: false }">
-        </kendo-chart-category-axis-item>
-    </kendo-chart-category-axis>
-    <kendo-chart-series>
-        <kendo-chart-series-item [type]="'line'"
-
-        [line]="lineStyle"[data]="data" [markers]="{ visible: false }" [color]="changePct > 0 ? 'green' : 'red'">
-        </kendo-chart-series-item>
-        <kendo-chart-series-item [type]="'area'" [data]="data"  [line]="lineStyle" [markers]="{ visible: false }" [color]="changePct > 0 ? 'green' : 'red'"
-            [opacity]="0.2">
-        </kendo-chart-series-item>
-    </kendo-chart-series>
-    <kendo-chart-tooltip></kendo-chart-tooltip>
-</kendo-chart> -->
-<!-- <kendo-sparkline chartdata="data" [data]="data"></kendo-sparkline> -->
-<!-- <kendo-sparkline [data]="data"></kendo-sparkline> -->
-
-<!-- <kendo-chart (render)="onRender($event)" [style.height.px]="60"  [transitions]="false"  > -->
-
-  <!-- <div #container>
-  </div> -->
-
-
-  <!-- <kendo-chart [popupSettings]="{ appendTo: popupContainer }"  [style.height.px]="80"  [transitions]="false"  > -->
     <kendo-chart    [transitions]="false"   >
-
         <kendo-chart-tooltip  [shared]="true" class="top" position="top">
-      
           <ng-template style="height: 10px;width: 10px; margin-top: 50px;" kendoChartSeriesTooltipTemplate let-value="value">
-      
-      
              <a (click)="setpoint(symbol,value)">
-              <!-- <mat-icon >
-                alarm_on
-              </mat-icon> -->
               {{ value }}
             </a>
-      
-      
-      
           </ng-template>
         </kendo-chart-tooltip>
         <kendo-chart-category-axis>
-          <kendo-chart-category-axis-item name="categoryAxis"  [visible]="true"
-          [categories]="categories"
-          [majorGridLines]="{ visible: false }"
+          <kendo-chart-category-axis-item name="categoryAxis"    [visible]="false" 
+          [categories]="categories"        
+          [majorGridLines]="{ visible: true }"
           >
           </kendo-chart-category-axis-item>
       </kendo-chart-category-axis>
-      <!-- <kendo-chart-value-axis>
-        <kendo-chart-value-axis-item [min]="min" [max]="max"  [visible]="false" [majorGridLines]="{ visible: false }">
-        </kendo-chart-value-axis-item>
-      </kendo-chart-value-axis> -->
       <kendo-chart-value-axis>
         <kendo-chart-value-axis-item name="valueAxis"  
         
-         [visible]="false" [majorGridLines]="{ visible: false }">
+         [visible]="true" [majorGridLines]="{ visible: false }">
         </kendo-chart-value-axis-item>
       </kendo-chart-value-axis>
-      <!-- <kendo-chart-value-axis>
-        <kendo-chart-value-axis-item [min]="min"c categoryField="date"  [max]="max" [visible]="false" [plotBands]="[{from:open,to :last , color: 'darkblack',opacity: 100}]"  [majorGridLines]="{ visible: false }">
-        </kendo-chart-value-axis-item>
-      </kendo-chart-value-axis> -->
-      
         <kendo-chart-series>
+            <kendo-chart-series-item
+                type="line"
+                name="Yesterday"
+                noteTextField="extremum"
+                [opacity]="10"
+                [data]="Lastdata"
+                title="Yesterday"
+                color="orange"
+                [markers]="{ visible: false }"
+                [line]="lineStyle"
+            >
+            </kendo-chart-series-item>
             <kendo-chart-series-item
                 type="line"
       
                 noteTextField="extremum"
                 [opacity]="10"
-                [data]="Lastdata"
+                name="Fall"
+                color="red"
+                title="Fall High"
+                [opacity]="8"
+                [data]="fallhigh"
                 [markers]="{ visible: false }"
-                
                 [line]="lineStyle"
-      
             >
-           
+            </kendo-chart-series-item>
+            <kendo-chart-series-item
+                type="line"
+                name="Raise"
+                color="green"
+                title="Garin High"
+                [opacity]="8"
+                noteTextField="extremum"
+                [data]="gainhigh"
+                [markers]="{ visible: false }"
+                [line]="lineStyle"
+            >
             </kendo-chart-series-item>
 
             <kendo-chart-series-item
             type="line"
-  
             noteTextField="extremum"
-            [opacity]="10"
-            [data]="data"
-            [markers]="{ visible: false }"
-            
-            [line]="lineStyle"
-  
-        >
-       
-        </kendo-chart-series-item>
-            <kendo-chart-series-item
-            type="line"
-            noteTextField="extremum"
-                [stack]="true"
+            name="Today"
                 color="darkblue"
+                title="Today"
                 [opacity]="8"
             [markers]="{ visible: false }"
             [line]="lineStyle"
              [data]="dataopen">
             </kendo-chart-series-item> 
-            <!-- <kendo-chart-series-item
+        </kendo-chart-series>
+      
+      </kendo-chart>
+
+
+      <kendo-chart    [transitions]="false"   >
+        <kendo-chart-tooltip  [shared]="true" class="top" position="top">
+          <ng-template style="height: 10px;width: 10px; margin-top: 50px;" kendoChartSeriesTooltipTemplate let-value="value">
+             <a (click)="setpoint(symbol,value)">
+              {{ value }}
+            </a>
+          </ng-template>
+        </kendo-chart-tooltip>
+        <kendo-chart-category-axis>
+          <kendo-chart-category-axis-item name="categoryAxis"    [visible]="false" 
+          [categories]="categories"        
+          [majorGridLines]="{ visible: true }"
+          >
+          </kendo-chart-category-axis-item>
+      </kendo-chart-category-axis>
+      <kendo-chart-value-axis>
+        <kendo-chart-value-axis-item name="valueAxis"  
+        
+         [visible]="true" [majorGridLines]="{ visible: false }">
+        </kendo-chart-value-axis-item>
+      </kendo-chart-value-axis>
+        <kendo-chart-series>
+            <kendo-chart-series-item
+                type="line"
+                name="Yesterday"
+                noteTextField="extremum"
+                [opacity]="10"
+                [data]="ttvLastdata"
+                title="Yesterday"
+                color="orange"
+                [markers]="{ visible: false }"
+                [line]="lineStyle"
+            >
+            </kendo-chart-series-item>
+            <kendo-chart-series-item
+                type="line"
+      
+                noteTextField="extremum"
+                [opacity]="10"
+                name="Fall"
+                color="red"
+                title="Fall High"
+                [opacity]="8"
+                [data]="ttvfallhigh"
+                [markers]="{ visible: false }"
+                [line]="lineStyle"
+            >
+            </kendo-chart-series-item>
+            <kendo-chart-series-item
+                type="line"
+                name="Raise"
+                color="green"
+                title="Garin High"
+                [opacity]="8"
+                noteTextField="extremum"
+                [data]="ttvgainhigh"
+                [markers]="{ visible: false }"
+                [line]="lineStyle"
+            >
+            </kendo-chart-series-item>
+
+            <kendo-chart-series-item
             type="line"
-      
-                color="skyblue"
-      
+            noteTextField="extremum"
+            name="Today"
+                color="darkblue"
+                title="Today"
+                [opacity]="8"
             [markers]="{ visible: false }"
-             [data]="dataavgPrice">
-            </kendo-chart-series-item> -->
+            [line]="lineStyle"
+             [data]="ttvdataopen">
+            </kendo-chart-series-item> 
+        </kendo-chart-series>
+      
+      </kendo-chart>
+      
+      
+      <kendo-chart    [transitions]="false"   >
+        <kendo-chart-tooltip  [shared]="true" class="top" position="top">
+          <ng-template style="height: 10px;width: 10px; margin-top: 50px;" kendoChartSeriesTooltipTemplate let-value="value">
+             <a (click)="setpoint(symbol,value)">
+              {{ value }}
+            </a>
+          </ng-template>
+        </kendo-chart-tooltip>
+        <kendo-chart-category-axis>
+          <kendo-chart-category-axis-item name="categoryAxis"    [visible]="false" 
+          [categories]="categories"        
+          [majorGridLines]="{ visible: true }"
+          >
+          </kendo-chart-category-axis-item>
+      </kendo-chart-category-axis>
+      <kendo-chart-value-axis>
+        <kendo-chart-value-axis-item name="valueAxis"  
+        
+         [visible]="true" [majorGridLines]="{ visible: false }">
+        </kendo-chart-value-axis-item>
+      </kendo-chart-value-axis>
+        <kendo-chart-series>
+            <kendo-chart-series-item
+                type="line"
+                name="Yesterday"
+                noteTextField="extremum"
+                [opacity]="10"
+                [data]="bqtyLastdata"
+                title="Yesterday"
+                color="orange"
+                [markers]="{ visible: false }"
+                [line]="lineStyle"
+            >
+            </kendo-chart-series-item>
+            <kendo-chart-series-item
+                type="line"
+      
+                noteTextField="extremum"
+                [opacity]="10"
+                name="Fall"
+                color="red"
+                title="Fall High"
+                [opacity]="8"
+                [data]="bqtyfallhigh"
+                [markers]="{ visible: false }"
+                [line]="lineStyle"
+            >
+            </kendo-chart-series-item>
+            <kendo-chart-series-item
+                type="line"
+                name="Raise"
+                color="green"
+                title="Garin High"
+                [opacity]="8"
+                noteTextField="extremum"
+                [data]="bqtygainhigh"
+                [markers]="{ visible: false }"
+                [line]="lineStyle"
+            >
+            </kendo-chart-series-item>
+
+            <kendo-chart-series-item
+            type="line"
+            noteTextField="extremum"
+            name="Today"
+                color="darkblue"
+                title="Today"
+                [opacity]="8"
+            [markers]="{ visible: false }"
+            [line]="lineStyle"
+             [data]="bqtydataopen">
+            </kendo-chart-series-item> 
+
+            <kendo-chart-series-item
+            type="line"
+            noteTextField="extremum"
+            name="SellToday"
+                color="red"
+                title="Today"
+                [opacity]="8"
+            [markers]="{ visible: false }"
+            [line]="lineStyle"
+             [data]="sqtydataopen">
+            </kendo-chart-series-item> 
         </kendo-chart-series>
       
       </kendo-chart>

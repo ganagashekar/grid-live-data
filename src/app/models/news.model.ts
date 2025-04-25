@@ -108,5 +108,6 @@ export interface TrendModel {
     avg_totalBuyQt:number
   	avg_totalSellQ :number	
     avg_ttv	:number
-    avg_change:number
+    avg_change:number,
+    type:number
 }
