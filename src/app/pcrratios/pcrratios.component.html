@@ -1,4 +1,6 @@
 <kendo-chart    [transitions]="false"   >
+    <kendo-chart-legend position="bottom" orientation="horizontal">
+    </kendo-chart-legend>
     <kendo-chart-tooltip  [shared]="true" class="top" position="top">
       <ng-template style="height: 10px;width: 10px; margin-top: 50px;" kendoChartSeriesTooltipTemplate let-value="value">
          <a (click)="setpoint('NIFTY',value)">
@@ -8,31 +10,113 @@
     </kendo-chart-tooltip>
     <kendo-chart-category-axis>
       <kendo-chart-category-axis-item name="categoryAxis"    [visible]="false" 
-      [categories]="ltt"        
+      [categories]="ltt"       
+      [axisCrossingValue]="crossingValues" 
       [majorGridLines]="{ visible: false }"
       >
       </kendo-chart-category-axis-item>
   </kendo-chart-category-axis>
   <kendo-chart-value-axis>
-    <kendo-chart-value-axis-item name="valueAxis"  [min]="niftymin" [max]="niftymax"  [narrowRange]="true" 
+    <kendo-chart-value-axis-item name="valueAxis"  [min]="niftymin" [max]="niftymax"  [narrowRange]="false" 
     
      [visible]="true" [majorGridLines]="{ visible: true }">
+    </kendo-chart-value-axis-item>
+
+    <kendo-chart-value-axis-item name="valueAxis1"  [min]="bniftymin" [max]="bniftymax"    [narrowRange]="false" 
+    
+     [visible]="true" [majorGridLines]="{ visible: false }">
     </kendo-chart-value-axis-item>
   </kendo-chart-value-axis>
     <kendo-chart-series>
         <kendo-chart-series-item
             type="line"
             name="PCR"
-            
-            
+ 
+            [width]="1.5"
+            axis="valueAxis"
             [data]="niftypcr"
-            title="PCR"
-            color="blue"
+            title="NIFTYPCR"
+            color="#2196f3"
             [markers]="{ visible: false }"
-            [line]="lineStyle"
+            style="smooth"
+        >
+        </kendo-chart-series-item>
+
+        <kendo-chart-series-item
+            type="line"
+            name="NIFTY"
+ 
+            [width]="1.5"
+            axis="valueAxis1"
+            [data]="niftychg"
+            title="NIFTY50"
+            color="#f96c92"
+            
+            [markers]="{ visible: false }"
+            style="smooth"
         >
         </kendo-chart-series-item>
            </kendo-chart-series>
   
   </kendo-chart>
 
+<br>
+  <kendo-chart    [transitions]="false"   >
+    <kendo-chart-legend position="bottom" orientation="horizontal">
+    </kendo-chart-legend>
+    <kendo-chart-tooltip  [shared]="true" class="top" position="top">
+      <ng-template style="height:10px;width:10px;margin-top:50px;" kendoChartSeriesTooltipTemplate let-value="value">
+         <a (click)="setpoint('BANKNIFTY',value)">
+          {{ value }}
+        </a>
+      </ng-template>
+    </kendo-chart-tooltip>
+    <kendo-chart-category-axis>
+      <kendo-chart-category-axis-item name="categoryAxis"    [visible]="false" 
+      [categories]="ltt"       
+      [axisCrossingValue]="crossingValues" 
+      [majorGridLines]="{ visible: false }"
+      >
+      </kendo-chart-category-axis-item>
+  </kendo-chart-category-axis>
+  <kendo-chart-value-axis>
+    <kendo-chart-value-axis-item name="valueAxis"  [min]="bnkniftymin" [max]="bnkniftymax"  [narrowRange]="false" 
+    
+     [visible]="true" [majorGridLines]="{ visible: true }">
+    </kendo-chart-value-axis-item>
+
+    <kendo-chart-value-axis-item name="valueAxis1"  [min]="bnkbniftymin" [max]="bnkbniftymax"    [narrowRange]="false" 
+    
+     [visible]="true" [majorGridLines]="{ visible: false }">
+    </kendo-chart-value-axis-item>
+  </kendo-chart-value-axis>
+    <kendo-chart-series>
+        <kendo-chart-series-item
+            type="line"
+            name="PCR"
+            [width]="1.5"
+            axis="valueAxis"
+            [data]="bnkniftypcr"
+            title="BNKPCR"
+            color="#2196f3"
+            [markers]="{ visible: false }"
+            style="smooth"
+        >
+        </kendo-chart-series-item>
+
+        <kendo-chart-series-item
+            type="line"
+            name="BANKNIFTY"
+            [width]="1.5"
+            axis="valueAxis1"
+            [data]="bnkniftychg"
+            title="BANKNIFTY"
+            color="#f96c92"
+            
+            [markers]="{ visible: false }"
+            style="smooth"
+        >
+        </kendo-chart-series-item>
+           </kendo-chart-series>
+  
+  </kendo-chart>

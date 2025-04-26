@@ -17,13 +17,13 @@
     <kendo-appbar-spacer></kendo-appbar-spacer>
 
 
-    <button mat-button [matMenuTriggerFor]="aboveMenu">Above</button>
+    <button mat-button [matMenuTriggerFor]="aboveMenu">Charts</button>
     <mat-menu #aboveMenu="matMenu" yPosition="above">
-      <button mat-menu-item>Item 1</button>
-      <button mat-menu-item>Item 2</button>
+      <button [routerLink]="'chartsBank'" mat-menu-item>BANK</button>
+      <button [routerLink]="'chartsNifty'" mat-menu-item>NIFTY</button>
     </mat-menu>
 
-    <button mat-button [matMenuTriggerFor]="belowMenu">Below</button>
+    <!-- <button mat-button [matMenuTriggerFor]="belowMenu">Below</button>
     <mat-menu #belowMenu="matMenu" yPosition="below">
       <button mat-menu-item>Item 1</button>
       <button mat-menu-item>Item 2</button>
@@ -40,7 +40,7 @@
     <mat-menu #afterMenu="matMenu" xPosition="after">
       <button mat-menu-item>Item 1</button>
       <button mat-menu-item>Item 2</button>
-    </mat-menu>
+    </mat-menu> -->
 
     <kendo-appbar-section class="actions">
             <div kendoTooltip [offset]="4">
@@ -69,6 +69,9 @@
                 </a>
                 <a class="nav-link k-button k-flat k-text-right"  [routerLink]="'trend'">
                   Trend
+                </a>
+                <a class="nav-link k-button k-flat k-text-right"  [routerLink]="'pcr'">
+                  PCR
                 </a>
                 <a class="nav-link k-button k-flat k-text-right" [routerLink]="'/'">
                   Home
