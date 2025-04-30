@@ -1,3 +1,4 @@
+
 <kendo-chart    [transitions]="false"   >
     <kendo-chart-legend position="bottom" orientation="horizontal">
     </kendo-chart-legend>
@@ -17,12 +18,12 @@
       </kendo-chart-category-axis-item>
   </kendo-chart-category-axis>
   <kendo-chart-value-axis>
-    <kendo-chart-value-axis-item name="valueAxis"  [min]="niftymin" [max]="niftymax"  [narrowRange]="false" 
+    <kendo-chart-value-axis-item name="valueAxisNifty"  [min]="niftymin" [max]="niftymax"  [narrowRange]="false" 
     
      [visible]="true" [majorGridLines]="{ visible: true }">
     </kendo-chart-value-axis-item>
 
-    <kendo-chart-value-axis-item name="valueAxis1"  [min]="bniftymin" [max]="bniftymax"    [narrowRange]="false" 
+    <kendo-chart-value-axis-item name="valueAxis1NIFTY"  [min]="bniftymin" [max]="bniftymax"    [narrowRange]="false" 
     
      [visible]="true" [majorGridLines]="{ visible: false }">
     </kendo-chart-value-axis-item>
@@ -31,27 +32,32 @@
         <kendo-chart-series-item
             type="line"
             name="PCR"
- 
+            
             [width]="1.5"
-            axis="valueAxis"
+            axis="valueAxisNifty"
             [data]="niftypcr"
             title="NIFTYPCR"
             color="#2196f3"
             [markers]="{ visible: false }"
             style="smooth"
+            field="value"
+          
+            
         >
         </kendo-chart-series-item>
 
         <kendo-chart-series-item
             type="line"
             name="NIFTY"
- 
+            field="value"
+         
             [width]="1.5"
-            axis="valueAxis1"
+            axis="valueAxis1NIFTY"
             [data]="niftychg"
             title="NIFTY50"
             color="#f96c92"
-            
+            field="value"
+         
             [markers]="{ visible: false }"
             style="smooth"
         >
@@ -61,7 +67,7 @@
   </kendo-chart>
 
 <br>
-  <kendo-chart    [transitions]="false"   >
+  <kendo-chart visible="false"   [transitions]="false"   >
     <kendo-chart-legend position="bottom" orientation="horizontal">
     </kendo-chart-legend>
     <kendo-chart-tooltip  [shared]="true" class="top" position="top">
@@ -120,3 +126,47 @@
            </kendo-chart-series>
   
   </kendo-chart>
+
+
+  <br>
+  <kendo-chart visible="false"   [transitions]="false"   >
+    <kendo-chart-legend position="bottom" orientation="horizontal">
+    </kendo-chart-legend>
+    <kendo-chart-tooltip  [shared]="true" class="top" position="top">
+      <ng-template style="height:10px;width:10px;margin-top:50px;" kendoChartSeriesTooltipTemplate let-value="value">
+         <a (click)="setpoint('INIDAVIX',value)">
+          {{ value }}
+        </a>
+      </ng-template>
+    </kendo-chart-tooltip>
+    <kendo-chart-category-axis>
+      <kendo-chart-category-axis-item name="VIXcategoryAxis"    [visible]="false" 
+      [categories]="niftyvixltt"       
+      [axisCrossingValue]="crossingValues" 
+      [majorGridLines]="{ visible: false }"
+      >
+      </kendo-chart-category-axis-item>
+  </kendo-chart-category-axis>
+  <kendo-chart-value-axis>
+    <kendo-chart-value-axis-item name="VIXvalueAxis"  [min]="Vixymin" [max]="Vixmax"   [narrowRange]="false" 
+     [visible]="true" [majorGridLines]="{ visible: true }">
+    </kendo-chart-value-axis-item>
+  </kendo-chart-value-axis>
+    <kendo-chart-series>
+        <kendo-chart-series-item
+            type="line"
+            name="INIDAVIX"
+            [width]="1.5"
+            [data]="niftyvix"
+            title="BANKNIFTY"
+            color="#2196f3"
+            [markers]="{ visible: false }"
+            style="smooth"
+        >
+        </kendo-chart-series-item>
+           </kendo-chart-series>
+  
+  </kendo-chart>
+
+<br>
+<button mat-flat-button color="primary" (click)="ImportPCR()" > Save </button>

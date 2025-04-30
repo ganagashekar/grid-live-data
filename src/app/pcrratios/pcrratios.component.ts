@@ -1,10 +1,12 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild, ViewContainerRef } from '@angular/core';
-import { Series, SeriesLine, ValueAxis } from '@progress/kendo-angular-charts';
+import { Series, SeriesLine, SeriesNotes, ValueAxis } from '@progress/kendo-angular-charts';
 import { SignalrBreezeService } from '../services/signalr.serviceBreeze';
 import { SignalrService } from '../services/signalr.service';
 import { StocksService } from '../services/stocks.service';
 import { HttpClient } from '@angular/common/http';
 import { NIFTYPCR_OiData } from '../models/NIFTYPCRModel';
+import { kendochartModel } from '../models/kendochartmodel';
+import { NiftyTraderVIX } from '../models/niftyVix';
 
 @Component({
 selector: 'app-pcrratios',
@@ -16,8 +18,8 @@ export class PcrratiosComponent implements OnInit {
 @ViewChild('container', { read: ViewContainerRef, static: true })
 public popupContainer: ViewContainerRef | undefined;
 // @Input() public chartdata : Observable<number[]> | undefined;
-@Input() public niftypcr: number[] = [];
-@Input() public niftychg: number[] = [];
+@Input() public niftypcr: kendochartModel[] = [];
+@Input() public niftychg:kendochartModel[] = [];
 @Input() public ltt: string[] = [];
 @Input() niftymin=0;
 @Input() niftymax=0;
@@ -25,6 +27,24 @@ public popupContainer: ViewContainerRef | undefined;
 @Input() bniftymin=0;
 @Input() bniftymax=0;
 public crossingValues: number[] = [0, 2000];
+public notes: SeriesNotes = {
+  label: {
+    position: "outside",
+  },
+  line: {
+    length: 5,
+  },
+  icon: {
+    type: "square",
+  },
+  position: "bottom",
+};
+
+@Input() public niftyvix: number[] = [];
+@Input() public niftyvixltt: string[] = [];
+@Input() Vixymin=0;
+@Input() Vixmax=0;
+
 
 
 @Input() public bnkniftypcr: number[] = [];
@@ -89,8 +109,19 @@ ngOnInit(): void {
   })
 
 
-   this.signalRBreezeService.connection.on("SendGetNiftyPCR",(data :NIFTYPCR_OiData[]) => {
+  this.signalRBreezeService.connection.on("SendGetIndiaVIXPCR",(data :NiftyTraderVIX) => {
+    debugger;
 
+    this.Vixymin = Math.min(...data.chart_datas);
+    this.Vixmax = Math.max(...data.chart_datas);
+
+    this.niftyvix=data.chart_datas;
+    this.niftyvixltt=data.chart_times;
+  })
+
+
+   this.signalRBreezeService.connection.on("SendGetNiftyPCR",(data :NIFTYPCR_OiData[]) => {
+debugger;
     this.niftychg=[]
     this.niftypcr=[]
     this.ltt=[];
@@ -101,33 +132,27 @@ ngOnInit(): void {
     
 
     
-    //const lastValue = dataopen[dataopen.length - 1];
+    
    data.forEach( (item) => {
-     //const avgChange = (item.value1 + item.value2) / 2; // Calculate average
-    //await this.sleep(5000);
-    // if (item.avg_change != lastValue) {
-      niftychg.push(item.index_close);
-      niftypcr.push(item.pcr)
+      niftychg.push({ value: item.index_close, extremum: "" });
+      niftypcr.push({ value: item.pcr, extremum: "Buy" })
       ltt.push(item.time)
-      // Push to new array
-   // }
    });
-
-
-   const minValue = Math.min(...niftypcr);
-   const maxValue = Math.max(...niftypcr);
-
-   const bminValue = Math.min(...niftychg);
-   const bmaxValue = Math.max(...niftychg);
-
-   this.niftymin=minValue;
-   this.niftymax=maxValue;
-   this.bniftymax=bmaxValue;
-   this.bniftymin=bminValue
-
+   
    this.niftychg=niftychg
    this.niftypcr=niftypcr
    this.ltt=ltt
+
+    const niftyChgValues = this.niftychg.map(item => item.value);
+    const niftypcrValues = this.niftypcr.map(item => item.value);
+    this.niftymin = Math.min(...niftypcrValues);
+    this.niftymax = Math.max(...niftypcrValues);
+
+
+    this.bniftymin = Math.min(...niftyChgValues);
+    this.bniftymax = Math.max(...niftyChgValues);
+ 
+
 
   })
    
@@ -146,6 +171,13 @@ getNiftyData(){
     console.log(`SGetAllStocks error: ${error}`);
 
   });
+
+
+  this.signalRBreezeService.connection.invoke('GetIndiaVIXPCR')
+  .catch((error: any) => {
+    console.log(`SGetAllStocks error: ${error}`);
+
+  });
 }
 
 setpoint(symbol:string ,value : number){
@@ -153,4 +185,16 @@ setpoint(symbol:string ,value : number){
   this.selectedpoint.emit({symbol:symbol,value:value});
 }
 
+ImportPCR(){
+  this.signalRBreezeService.connection.invoke('UpdatePCR')
+        .catch((error: any) => {
+          console.log(`SGetAllStocks error: ${error}`);
+  
+        });
+
+  
 }
+
+}
+
+
