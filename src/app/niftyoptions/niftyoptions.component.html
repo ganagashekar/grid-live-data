@@ -1,0 +1,135 @@
+
+<kendo-chart    [transitions]="false"   >
+    <kendo-chart-legend position="bottom" orientation="horizontal">
+    </kendo-chart-legend>
+    <kendo-chart-tooltip  [shared]="true" class="top" position="top">
+      <ng-template style="height: 10px;width: 10px; margin-top: 50px;" kendoChartSeriesTooltipTemplate let-value="value">
+         <a (click)="setpoint('NIFTY',value)">
+          {{ value }}
+        </a>
+      </ng-template>
+    </kendo-chart-tooltip>
+    <kendo-chart-category-axis>
+      <kendo-chart-category-axis-item name="categoryAxis"    [visible]="false" 
+      [categories]="ltt"       
+      [axisCrossingValue]="crossingValues" 
+      [majorGridLines]="{ visible: false }"
+      >
+      </kendo-chart-category-axis-item>
+  </kendo-chart-category-axis>
+  <kendo-chart-value-axis>
+    <kendo-chart-value-axis-item name="valueAxisNifty"  color="#2196f3"  [min]="nifty_strikePricemin" [max]="nifty_strikePricemax"  [narrowRange]="true" 
+    
+     [visible]="true" [majorGridLines]="{ visible: true }">
+    </kendo-chart-value-axis-item>
+
+    <kendo-chart-value-axis-item name="valueAxis1NIFTY" color="#f96c92" [min]="nifty_avgprice_min" [max]="nifty_avgprice_max"    [narrowRange]="true" 
+    
+     [visible]="true" [majorGridLines]="{ visible: false }">
+    </kendo-chart-value-axis-item>
+  </kendo-chart-value-axis>
+    <kendo-chart-series>
+        <kendo-chart-series-item
+            type="line"
+            name="StrikePrice"
+            
+            [width]="1.5"
+            axis="valueAxisNifty"
+            [data]="nifty_strikePrice"
+            title="StrikePrice"
+            color="#2196f3"
+            [markers]="{ visible: false }"
+            style="smooth"
+            field="value"
+          
+            
+        >
+        </kendo-chart-series-item>
+
+        <kendo-chart-series-item
+            type="line"
+            name="SpotPriceDiff"
+            field="value"
+         
+            [width]="1.5"
+            axis="valueAxis1NIFTY"
+            [data]="nifty_avgprice_diff"
+            title="SpotPriceDiff"
+            color="#f96c92"
+            field="value"
+         
+            [markers]="{ visible: false }"
+            style="smooth"
+        >
+        </kendo-chart-series-item>
+           </kendo-chart-series>
+  
+  </kendo-chart>
+
+<br>
+  <kendo-chart visible="false"   [transitions]="false"   >
+    <kendo-chart-legend position="bottom" orientation="horizontal">
+    </kendo-chart-legend>
+    <kendo-chart-tooltip  [shared]="true" class="top" position="top">
+      <ng-template style="height:10px;width:10px;margin-top:50px;" kendoChartSeriesTooltipTemplate let-value="value">
+         <a (click)="setpoint('BANKNIFTY',value)">
+          {{ value }}
+        </a>
+      </ng-template>
+    </kendo-chart-tooltip>
+    <kendo-chart-category-axis>
+      <kendo-chart-category-axis-item name="categoryAxis"    [visible]="false" 
+      [categories]="ltt"
+         
+      [axisCrossingValue]="crossingValues" 
+      [majorGridLines]="{ visible: false }"
+      >
+      </kendo-chart-category-axis-item>
+  </kendo-chart-category-axis>
+  <kendo-chart-value-axis>
+    <kendo-chart-value-axis-item name="valueAxis"   color="#2196f3" [min]="niftype_pnlmin" [max]="niftype_pnlmax"  [narrowRange]="true" 
+    
+     [visible]="true" [majorGridLines]="{ visible: true }">
+    </kendo-chart-value-axis-item>
+
+    <kendo-chart-value-axis-item name="valueAxis1"  color="#f96c92"   [min]="niftyce_pnl_min" [max]="niftyce_pnlmax"    [narrowRange]="true" 
+    
+     [visible]="true" [majorGridLines]="{ visible: false }">
+    </kendo-chart-value-axis-item>
+  </kendo-chart-value-axis>
+    <kendo-chart-series>
+        <kendo-chart-series-item
+            type="line"
+            name="Put"
+            [width]="1.5"
+            axis="valueAxis"
+            [data]="niftype_pnl"
+            title="Put"
+            color="#2196f3"
+            [markers]="{ visible: false }"
+            style="smooth"
+        >
+        </kendo-chart-series-item>
+
+        <kendo-chart-series-item
+            type="line"
+            name="Call"
+            [width]="1.5"
+            axis="valueAxis1"
+            [data]="niftyce_pnl"
+            title="Call"
+            color="#f96c92"
+            
+            [markers]="{ visible: false }"
+            style="smooth"
+        >
+        </kendo-chart-series-item>
+           </kendo-chart-series>
+  
+  </kendo-chart>
+
+
+ 
+
+<br>
+<button mat-flat-button color="primary" (click)="ImportPCR()" > Save </button>

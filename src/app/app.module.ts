@@ -87,6 +87,7 @@ import { TrendchartmultipleComponent } from './trendchartmultiple/trendchartmult
 import { PcrratiosComponent } from './pcrratios/pcrratios.component';
 import { OptionchartsComponent } from './optioncharts/optioncharts.component';
 import { ChartniftyComponent } from './chartnifty/chartnifty.component';
+import { NiftyoptionsComponent } from './niftyoptions/niftyoptions.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -103,6 +104,7 @@ const routes: Routes = [
   { path: 'pcr', component: PcrratiosComponent },
   { path: 'chartsBank', component: OptionchartsComponent },
   { path: 'chartsNifty', component: ChartniftyComponent },
+  { path: 'no', component: NiftyoptionsComponent },
   // { path: 'about', component: AboutComponent },
   // { path: 'products', component: ProductsComponent },
   // { path: '**', component: HomeComponent }, // If no matching route found, go back to home route
@@ -143,7 +145,9 @@ const routes: Routes = [
       TrendchartmultipleComponent,
       PcrratiosComponent,
       OptionchartsComponent,
-      ChartniftyComponent
+      ChartniftyComponent,
+      NiftyoptionsComponent
+      
    ],
     imports: [
       ToastrModule.forRoot({
