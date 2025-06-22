@@ -69,9 +69,10 @@
 <br>
   <kendo-chart visible="false"   [transitions]="false"   >
     <kendo-chart-legend position="bottom" orientation="horizontal">
+    
     </kendo-chart-legend>
-    <kendo-chart-tooltip  [shared]="true" class="top" position="top">
-      <ng-template style="height:10px;width:10px;margin-top:50px;" kendoChartSeriesTooltipTemplate let-value="value">
+    <kendo-chart-tooltip  [shared]="true" position="bottom">
+      <ng-template style="" kendoChartSeriesTooltipTemplate let-value="value">
          <a (click)="setpoint('BANKNIFTY',value)">
           {{ value }}
         </a>
@@ -92,33 +93,51 @@
      [visible]="true" [majorGridLines]="{ visible: true }">
     </kendo-chart-value-axis-item>
 
-    <kendo-chart-value-axis-item name="valueAxis1"  color="#f96c92"   [min]="niftyce_pnl_min" [max]="niftyce_pnlmax"    [narrowRange]="true" 
-    
+    <kendo-chart-value-axis-item name="valueAxis1"  color="#f96c92"   [min]="niftyce_pnl_min" [max]="niftyce_pnlmax"    [narrowRange]="true"  
      [visible]="true" [majorGridLines]="{ visible: false }">
     </kendo-chart-value-axis-item>
+
+    
+    <!-- <kendo-chart-value-axis-item name="sportpricevalueAxis1"  color="#800080"   [min]="nifty_strikePricemin" [max]="nifty_strikePricemax"    [narrowRange]="true"  
+     [visible]="true" [majorGridLines]="{ visible: false }">
+    </kendo-chart-value-axis-item> -->
   </kendo-chart-value-axis>
     <kendo-chart-series>
         <kendo-chart-series-item
             type="line"
-            name="Put"
+            name="Put-Buy Call"
             [width]="1.5"
             axis="valueAxis"
             [data]="niftype_pnl"
             title="Put"
-            color="#2196f3"
+            color="#f96c92"
             [markers]="{ visible: false }"
             style="smooth"
         >
         </kendo-chart-series-item>
 
+
+        <!-- <kendo-chart-series-item
+            type="line"
+            name="Spot"
+            [width]="1.5"
+            axis="sportpricevalueAxis1"
+            [data]="nifty_strikePrice"
+            title="Put"
+            color="#800080"
+            [markers]="{ visible: false }"
+            style="smooth"
+        >
+        </kendo-chart-series-item> -->
+
         <kendo-chart-series-item
             type="line"
-            name="Call"
+            name="Call-Buy Put"
             [width]="1.5"
             axis="valueAxis1"
             [data]="niftyce_pnl"
             title="Call"
-            color="#f96c92"
+            color="#2196f3"
             
             [markers]="{ visible: false }"
             style="smooth"

@@ -98,7 +98,6 @@ export class NiftyoptionsComponent implements OnInit {
       const ltt=this.ltt.slice(0);
   
      data.forEach( (item) => {
-      debugger;
         niftyce_pnl.push(item.callPnL);
         niftype_pnl.push(item.putPnL);
         nifty_avgprice_diff.push(item.avgPrice);
@@ -135,12 +134,12 @@ export class NiftyoptionsComponent implements OnInit {
 
      this.nifty_strikePricemin=spot_minValue
      this.nifty_strikePricemax=spot_maxValue
-
+debugger;
         this.ltt=ltt
         this.niftyce_pnl=niftyce_pnl
         this.niftype_pnl=niftype_pnl
         this.nifty_strikePrice=nifty_strikePrice;
-        this.nifty_avgprice_diff=this.nifty_avgprice_diff
+        this.nifty_avgprice_diff=nifty_avgprice_diff
        
     
     })

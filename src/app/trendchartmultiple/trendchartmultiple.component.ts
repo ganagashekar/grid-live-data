@@ -178,7 +178,7 @@ export class TrendchartmultipleComponent implements OnInit {
         }
         if(item.type==4)
           {
-            this.gainhigh.push(item.avg_change)
+              this.gainhigh.push(item.avg_change)
               this.bqtygainhigh.push(item.avg_totalBuyQt)
               this.sqtygainhigh.push(item.avg_totalSellQ)
               this.ttvgainhigh.push(item.avg_ttv)
