@@ -39,7 +39,17 @@ export class NiftyoptionsComponent implements OnInit {
   
 
   
-  
+  @Input() public Day1_niftyce_pnl: number[] = [];
+  @Input() public Day1_niftype_pnl: number[] = [];
+  @Input() public Day1_nifty_avgprice_diff: number[] = [];
+  @Input() public Day1_nifty_strikePrice: number[] = [];
+
+  @Input() public Day2_niftyce_pnl: number[] = [];
+  @Input() public Day2_niftype_pnl: number[] = [];
+  @Input() public Day2_nifty_avgprice_diff: number[] = [];
+  @Input() public Day2_nifty_strikePrice: number[] = [];
+
+
   
   @Input() public niftyce_pnl: number[] = [];
   @Input() public niftype_pnl: number[] = [];
@@ -68,6 +78,7 @@ export class NiftyoptionsComponent implements OnInit {
   constructor(public signalRService: SignalrService, public signalRBreezeService: SignalrBreezeService,public stocksService: StocksService, private http: HttpClient) {
   
   this.getNiftyData();
+  this.GetPastNiftyPNL();
   
   
   setInterval(() => {
@@ -80,6 +91,42 @@ export class NiftyoptionsComponent implements OnInit {
   ngOnInit(): void {
   
     
+
+    this.signalRBreezeService.connection.on("SendGetPastNiftyPNL",(data :NiftyOptionPnL[]) => {
+    debugger;
+     if(data[0].day==1){
+      this.Day1_niftyce_pnl=[]
+      this.Day1_niftype_pnl=[]
+      
+      this.Day1_nifty_avgprice_diff=[];
+      this.Day1_nifty_strikePrice=[];
+
+      const niftyce_pnl=  this.Day1_niftyce_pnl.slice(0);
+      const niftype_pnl=  this.Day1_niftype_pnl.slice(0);
+      const nifty_avgprice_diff=  this.Day1_nifty_avgprice_diff.slice(0);
+      const nifty_strikePrice=  this.Day1_nifty_strikePrice.slice(0);
+
+
+      
+  
+     data.forEach( (item) => {
+        niftyce_pnl.push(item.callPnL);
+        niftype_pnl.push(item.putPnL);
+        nifty_avgprice_diff.push(item.avgPrice);
+        nifty_strikePrice.push(item.spotPrice);
+      //  ltt.push(item.ltt)
+     });
+  
+  
+        //this.ltt=ltt
+        this.Day1_niftyce_pnl=niftyce_pnl
+        this.Day1_niftype_pnl=niftype_pnl
+        this.Day1_nifty_strikePrice=nifty_strikePrice;
+        this.Day1_nifty_avgprice_diff=nifty_avgprice_diff
+    }
+
+
+    })
   
     this.signalRBreezeService.connection.on("SendGetNiftyPNL",(data :NiftyOptionPnL[]) => {
     
@@ -134,7 +181,6 @@ export class NiftyoptionsComponent implements OnInit {
 
      this.nifty_strikePricemin=spot_minValue
      this.nifty_strikePricemax=spot_maxValue
-debugger;
         this.ltt=ltt
         this.niftyce_pnl=niftyce_pnl
         this.niftype_pnl=niftype_pnl
@@ -150,37 +196,7 @@ debugger;
   
      this.signalRBreezeService.connection.on("SendGetNiftyPCR",(data :NiftyOptionPnL[]) => {
   debugger;
-    //   this.niftychg=[]
-    //   this.niftypcr=[]
-    //   this.ltt=[];
-    //   const niftychg=  this.niftychg.slice(0);
-    //   const niftypcr=  this.niftypcr.slice(0);
-    //   const ltt=this.ltt.slice(0);
-  
-      
-  
-      
-      
-    //  data.forEach( (item) => {
-    //     niftychg.push({ value: item.callPnL, extremum: "" });
-    //     niftypcr.push({ value: item.putPnL, extremum: "Buy" })
-    //     ltt.push(item.lTT)
-    //  });
-     
-    //  this.niftychg=niftychg
-    //  this.niftypcr=niftypcr
-    //  this.ltt=ltt
-  
-    //   const niftyChgValues = this.niftychg.map(item => item.value);
-    //   const niftypcrValues = this.niftypcr.map(item => item.value);
-    //   this.niftymin = Math.min(...niftypcrValues);
-    //   this.niftymax = Math.max(...niftypcrValues);
-  
-  
-    //   this.bniftymin = Math.min(...niftyChgValues);
-    //   this.bniftymax = Math.max(...niftyChgValues);
-   
-  
+    
   
     })
      
@@ -196,7 +212,16 @@ debugger;
   
   
   }
+  GetPastNiftyPNL(){
   
+    this.signalRBreezeService.connection.invoke('GetPastNiftyPNL',1)
+          .catch((error: any) => {
+            console.log(`SGetAllStocks error: ${error}`);
+    
+          });
+  
+  
+  }
   setpoint(symbol:string ,value : number){
     //debugger;
   //  this.selectedpoint.emit({symbol:symbol,value:value});

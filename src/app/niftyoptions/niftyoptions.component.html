@@ -62,6 +62,23 @@
             style="smooth"
         >
         </kendo-chart-series-item>
+
+        <kendo-chart-series-item
+            type="line"
+            name="SpotPriceDiff-Day1"
+            field="value"
+         
+            [width]="1.5"
+            axis="valueAxis1NIFTY"
+            [data]="Day1_nifty_avgprice_diff"
+            title="SpotPriceDiff"
+            color="#FF69B4"
+            field="value"
+         
+            [markers]="{ visible: false }"
+            style="smooth"
+        >
+        </kendo-chart-series-item>
            </kendo-chart-series>
   
   </kendo-chart>
@@ -103,46 +120,59 @@
     </kendo-chart-value-axis-item> -->
   </kendo-chart-value-axis>
     <kendo-chart-series>
-        <kendo-chart-series-item
-            type="line"
-            name="Put-Buy Call"
-            [width]="1.5"
-            axis="valueAxis"
-            [data]="niftype_pnl"
-            title="Put"
-            color="#f96c92"
-            [markers]="{ visible: false }"
-            style="smooth"
-        >
-        </kendo-chart-series-item>
+       <kendo-chart-series-item
+    type="line"
+    name="Put-Buy Call (Today)"
+    [width]="1.5"
+    axis="valueAxis"
+    [data]="niftype_pnl"
+    title="Put (Today)"
+    color="#f96c92"
+    [markers]="{ visible: false }"
+    style="smooth"
+>
+</kendo-chart-series-item>
 
+<kendo-chart-series-item
+    type="line"
+    name="Put-Buy Call (Day -1)"
+    [width]="1.5"
+    axis="valueAxis"
+    [data]="Day1_niftype_pnl"
+    title="Put (Day -1)"
+    color="#DDA0DD"
+    [markers]="{ visible: false }"
+    style="smooth"
+>
+</kendo-chart-series-item>
 
-        <!-- <kendo-chart-series-item
-            type="line"
-            name="Spot"
-            [width]="1.5"
-            axis="sportpricevalueAxis1"
-            [data]="nifty_strikePrice"
-            title="Put"
-            color="#800080"
-            [markers]="{ visible: false }"
-            style="smooth"
-        >
-        </kendo-chart-series-item> -->
+<kendo-chart-series-item
+    type="line"
+    name="Call-Buy Put (Today)"
+    [width]="1.5"
+    axis="valueAxis1"
+    [data]="niftyce_pnl"
+    title="Call (Today)"
+    color="#2196f3"
+    [markers]="{ visible: false }"
+    style="smooth"
+>
+</kendo-chart-series-item>
 
-        <kendo-chart-series-item
-            type="line"
-            name="Call-Buy Put"
-            [width]="1.5"
-            axis="valueAxis1"
-            [data]="niftyce_pnl"
-            title="Call"
-            color="#2196f3"
-            
-            [markers]="{ visible: false }"
-            style="smooth"
-        >
-        </kendo-chart-series-item>
+<kendo-chart-series-item
+    type="line"
+    name="Call-Buy Put (Day -1)"
+    [width]="1.5"
+    axis="valueAxis1"
+    [data]="Day1_niftyce_pnl"
+    title="Call (Day -1)"
+    color="#ADD8E6"
+    [markers]="{ visible: false }"
+    style="smooth"
+>
+</kendo-chart-series-item>
+       
+
            </kendo-chart-series>
   
   </kendo-chart>

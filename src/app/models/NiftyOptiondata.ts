@@ -4,4 +4,5 @@ export interface NiftyOptionPnL{
     callPnL:number;
     putPnL:number;
     ltt:string;
+    day:number
 }
