@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild, ViewContainerRef } from '@angular/core';
 import { kendochartModel } from '../models/kendochartmodel';
 import { SeriesLine, SeriesNotes } from '@progress/kendo-angular-charts';
 import { StocksService } from '../services/stocks.service';
@@ -7,7 +7,7 @@ import { SignalrService } from '../services/signalr.service';
 import { SignalrBreezeService } from '../services/signalr.serviceBreeze';
 import { NIFTYPCR_OiData } from '../models/NIFTYPCRModel';
 import { NiftyTraderVIX } from '../models/niftyVix';
-import { NiftyOptionPnL } from '../models/NiftyOptiondata';
+import { IntersectionData, NiftyOptionPnL } from '../models/NiftyOptiondata';
 import { min } from 'rxjs';
 
 @Component({
@@ -15,7 +15,9 @@ import { min } from 'rxjs';
   templateUrl: './niftyoptions.component.html',
   styleUrls: ['./niftyoptions.component.css']
 })
-export class NiftyoptionsComponent implements OnInit {
+
+
+export class NiftyoptionsComponent implements OnInit,OnChanges  {
 
 
   @ViewChild('container', { read: ViewContainerRef, static: true })
@@ -37,6 +39,10 @@ export class NiftyoptionsComponent implements OnInit {
     position: "bottom",
   };
   
+  public intersectionPoints: IntersectionData[] = [];
+
+  // Define a custom event to emit when an intersection is detected
+  @Output() intersectionDetected = new EventEmitter<IntersectionData>();
 
   
   @Input() public Day1_niftyce_pnl: number[] = [];
@@ -83,10 +89,74 @@ export class NiftyoptionsComponent implements OnInit {
   
   setInterval(() => {
   this.getNiftyData()
+//  // if ((changes['niftyce_pnl'] || changes['niftype_pnl'] || changes['ltt']) && this.niftyce_pnl.length > 0) {
+//       this.processIntersectionPoints();
+//    // }
   }, 5000);
   }
   
-  
+  private processIntersectionPoints(): void {
+    debugger;
+    const intersections: IntersectionData[] = [];
+
+    // Ensure all required arrays are available, non-empty, and have compatible lengths
+    if (!this.niftyce_pnl || !this.niftype_pnl || !this.ltt || !this.niftyce_pnl || 
+        this.niftyce_pnl.length === 0 || this.niftype_pnl.length === 0 || this.ltt.length === 0 || this.niftyce_pnl.length === 0 ||
+        this.niftyce_pnl.length !== this.niftyce_pnl.length || this.niftype_pnl.length !== this.niftyce_pnl.length || this.ltt.length !== this.niftyce_pnl.length) {
+        console.warn('PnL data, LTT data, or chart data not ready/compatible for intersection calculation. Skipping.');
+        this.intersectionPoints = []; // Clear previous intersections if data is not ready
+        return;
+    }
+
+    for (let i = 1; i < this.niftyce_pnl.length; i++) { // Iterate using chartData length as reference
+      // Use PnL values from the input arrays for intersection calculation
+      const prevCallPnl = this.niftyce_pnl[i - 1];
+      const currCallPnl = this.niftyce_pnl[i];
+      const prevPutPnl = this.niftype_pnl[i - 1];
+      const currPutPnl = this.niftype_pnl[i];
+
+      // Use DateTime from the LTT input array for the time axis
+      const prevDateTime = new Date(this.ltt[i - 1]);
+      const currDateTime = new Date(this.ltt[i]);
+
+      // Check for crossover based on PnL values
+      if ((prevCallPnl < prevPutPnl && currCallPnl > currPutPnl) ||
+          (prevCallPnl > prevPutPnl && currCallPnl < currPutPnl)) {
+          
+          // Precise linear interpolation for intersection point
+          // Calculate relative position (t) between prev and curr points where intersection occurs
+          const t = (prevPutPnl - prevCallPnl) /
+                    ((currCallPnl - prevCallPnl) - (currPutPnl - prevPutPnl));
+          
+          // Interpolate DateTime for the exact intersection point
+          const intersectionDateTime = new Date(
+              prevDateTime.getTime() + t * (currDateTime.getTime() - prevDateTime.getTime())
+          );
+
+          // Interpolate Value (PnL) for the exact intersection point
+          const intersectionY = prevCallPnl + t * (currCallPnl - prevCallPnl);
+
+          const intersectionDetail: IntersectionData = {
+              dateTime: intersectionDateTime,
+              value: intersectionY,
+              direction: (currCallPnl > currPutPnl) ? "Call PnL Crosses Above Put PnL" : "Call PnL Crosses Below Put PnL"
+          };
+
+          intersections.push(intersectionDetail);
+          
+          // Emit the custom event when an intersection is detected
+          this.intersectionDetected.emit(intersectionDetail);
+      }
+    }
+    this.intersectionPoints = intersections;
+  }
+
+    ngOnChanges(changes: SimpleChanges): void {
+    // Re-process intersections if PnL or LTT inputs change AND chartData is already available
+    if ((changes['niftyce_pnl'] || changes['niftype_pnl'] || changes['ltt']) && this.niftyce_pnl.length > 0) {
+      this.processIntersectionPoints();
+    }
+  }
   
   ngOnInit(): void {
   
@@ -203,7 +273,7 @@ export class NiftyoptionsComponent implements OnInit {
   }
   
   getNiftyData(){
-  
+   this.processIntersectionPoints();
     this.signalRBreezeService.connection.invoke('GetNiftyPNL')
           .catch((error: any) => {
             console.log(`SGetAllStocks error: ${error}`);
