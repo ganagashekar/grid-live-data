@@ -18,6 +18,7 @@ import { process } from "@progress/kendo-data-query";
 import { MatSelect } from '@angular/material/select';
 import { FormControl } from '@angular/forms';
 import { dropdownModel } from '../models/transaction.model';
+import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 
 @Component({
 
@@ -35,6 +36,9 @@ export class StocklistComponent implements OnInit {
     take: 200
 
 };
+  selectedDate: Date = new Date();
+
+
 
   @ViewChild('selectSector') selectSector: MatSelect | any;
 
@@ -182,6 +186,7 @@ export class StocklistComponent implements OnInit {
   IsOrderbyVolumne:boolean=false;
 
   IsVolumeBRK:boolean=false;
+  IsTTQ:boolean=false;
   Is52weeks:boolean=false;
   IsDeal:boolean=false;
 
@@ -200,7 +205,7 @@ export class StocklistComponent implements OnInit {
   constructor(private toastrService: ToastrService,public signalRService: SignalrService, public signalRBreezeService: SignalrBreezeService,public stocksService: StocksService, private http: HttpClient) {
  this.gridloading=true;
     this.signalRService.connection
-    .invoke('GetStocksList',false,false,false,false,false,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,false,false,false,false,false,"","",0,200,false,'All','','','',false,false,true,false)
+    .invoke('GetStocksList',false,false,false,false,false,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,false,false,false,false,false,"","",0,200,false,'All','','','',false,false,true,false,this.selectedDate,this.IsTTQ)
     .catch((error: any) => {
       console.log(`SGetAllStocks error: ${error}`);
       this.showError(`SGetAllStocks error: ${error}`, "StockList")
@@ -275,12 +280,15 @@ export class StocklistComponent implements OnInit {
     this.statepg = state;
    this.GetData()
 }
-
+onDateChange(date: Date) {
+ 
+  this.selectedDate = date;
+}
 GetData(){
   debugger;
   this.signalRService.connection
   .invoke('GetStocksList',this.Favoriteselected,this.upperckt,this.lowerckt,this.EnabledAutoTradeSelected,this.ShowNotification,this.minPriceValue,this.maxPriceValue,this.tday,this.WatchList,this.targetPrice,this.bullish,this.bearish, this.IsOrderbyVolumne,this.IsOrderbyaward,this.selectedCKTName,this.selectedorder,this.statepg.skip,this.statepg.take,this.IncludeDeleted,this.selectedExchange,
-  this.selectedStatsColumn,this.selectedStatsColumnCondition,this.selectedpastChange,this.IsVolumeBRK,this.Is52weeks,this.IsorderByChg,this.IsDeal)
+  this.selectedStatsColumn,this.selectedStatsColumnCondition,this.selectedpastChange,this.IsVolumeBRK,this.Is52weeks,this.IsorderByChg,this.IsDeal,this.selectedDate,this.IsTTQ)
   .catch((error: any) => {
     console.log(`SGetAllStocks error: ${error}`);
     alert('GetAllStocks error!, see console for details.');
@@ -400,8 +408,19 @@ selectedExchangeChange(event: any) {
     this.IsVolumeBRK=!this.IsVolumeBRK;
     this.GetData();
   }
+   GetTTQ(){
+    this.IsTTQ=!this.IsTTQ;
+    this.GetData();
+  }
 
-
+ImportLiveFeeds(){
+  this.signalRService.connection
+  .invoke('RunTickLoader',this.selectedDate)
+  .catch((error: any) => {
+    console.log(`RunTickLoader error: ${error}`);
+    alert('RunTickLoader error!, see console for details.');
+  });
+}
   SortOrderbyOrder() {
     this.IsOrderbyaward = !this.IsOrderbyaward;
     this.GetData();
@@ -689,6 +708,26 @@ carDateCalculator(value :string ){
     })
 
 
+    this.signalRService.connection.on("status",(data :any) => {
+debugger;
+      this.showSuccess(data, "Status Import")
+     // alert(data)
+    })
+    this.signalRService.connection.on("SendEquitieslog",(data :any) => {
+debugger;
+      this.showInfo(data, "Status log")
+     // alert(data)
+    })
+    this.signalRService.connection.on("error",(data :any) => {
+debugger;
+      this.showError(data, "Status error")
+     // alert(data)
+    })
+    this.signalRService.connection.on("SendEquitiescompleted",(data :any) => {
+debugger;
+      this.showSuccess(data, "Status Completed")
+     // alert(data)
+    })
 
     this.signalRService.connection.on("SendAddOrModifyAutoTrade",(data :any) => {
 

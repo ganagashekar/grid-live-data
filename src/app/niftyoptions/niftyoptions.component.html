@@ -84,7 +84,7 @@
   </kendo-chart>
 
 <br>
-  <kendo-chart visible="false"   [transitions]="false"   >
+  <kendo-chart visible="false" #chart  [transitions]="false"   >
     <kendo-chart-legend position="bottom" orientation="horizontal">
     
     </kendo-chart-legend>
@@ -182,3 +182,4 @@
 
 <br>
 <button mat-flat-button color="primary" (click)="ImportPCR()" > Save </button>
+<button kendoButton (click)="exportChart()">Export as Image</button>

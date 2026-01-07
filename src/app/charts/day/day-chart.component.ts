@@ -71,7 +71,7 @@ export class DayChartComponent {
     },
   ]
     ngOnChanges(changes: any) {
-
+     debugger;
       if(changes.CurrentData.currentValue.open < changes.CurrentData.currentValue.last){
         this.lineStyle.color="green";
       }

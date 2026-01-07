@@ -8,6 +8,20 @@
     <div style="margin-top: -1.2%;" >
       <ngx-slider style="height: 10px;" class="custom-slider" (userChangeEnd)="sliderEvent($event)"  [(value)]="minPriceValue" [(highValue)]="maxPriceValue" [options]="optionsRange"></ngx-slider>
     </div>
+  <mat-form-field appearance="outline">
+  <mat-label>Select date</mat-label>
+
+  <input
+    matInput
+    [matDatepicker]="picker"
+    [(ngModel)]="selectedDate"
+    (ngModelChange)="onDateChange($event)"
+  />
+
+  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+  <mat-datepicker #picker></mat-datepicker>
+</mat-form-field>
+ <button (click)="ImportLiveFeeds()"  mat-stroked-button color="accent">Import</button>
   </mat-expansion-panel>
 </div>
 
@@ -129,6 +143,22 @@
 
         <mat-icon
         *ngIf="!IsVolumeBRK">
+        arrow_upward
+        </mat-icon>
+        </button>
+
+         <button (click)="GetTTQ()" mat-stroked-button color="accent">
+
+          
+        TTQ
+        <mat-icon
+        *ngIf="IsTTQ"
+        >arrow_downward
+
+        </mat-icon>
+
+        <mat-icon
+        *ngIf="!IsTTQ">
         arrow_upward
         </mat-icon>
         </button>
@@ -311,6 +341,7 @@
         </mat-select>
       </mat-form-field>
 
+      
      
 
 

@@ -43,12 +43,15 @@ export const environment = {
 SignalrAPISaveJson:"//st",
 //signalrHubUrl:"http://localhost/StockSignalRServer/livefeedhub"
 
+
+  // signalrHubUrl:  document.location.protocol + "//" + document.location.hostname + ":" + 48 +"/livefeedhub",
+  // signalrBreezeHubUrl: document.location.protocol + "//" + document.location.hostname + ":" + 48 +"/BreezeOperation",
 //  signalrHubUrl:  document.location.protocol + "//" + document.location.hostname + ":" + 90 +"/livefeedhub",
  signalrHubUrl: 'https://localhost:7189/livefeedhub',
  signalrBreezeHubUrl: 'https://localhost:7189/BreezeOperation',
 
-//signalrHubUrl:  document.location.protocol + "//" + document.location.hostname + ":" + 48 +"/livefeedhub",
-//signalrBreezeHubUrl: document.location.protocol + "//" + document.location.hostname + ":" + 48 +"/BreezeOperation",
+// signalrHubUrl:  document.location.protocol + "//" + document.location.hostname + ":" + 48 +"/livefeedhub",
+// signalrBreezeHubUrl: document.location.protocol + "//" + document.location.hostname + ":" + 48 +"/BreezeOperation",
 
 
 // // signalrHubUrl: 'http://127.0.0.1:5000/livefeedhub',
